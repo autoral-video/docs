@@ -1,97 +1,71 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: "Introdução"
+description: "API REST pública da plataforma autoral.me — multi-tenant, escopo-restrita, com rate-limit por plano."
 ---
 
-## Setting up
+A API da **autoral.me** permite que tenants integrem programaticamente sistemas externos (CRMs, automações n8n/Zapier, ERPs, dashboards próprios) com a plataforma de cursos.
 
-Get your documentation site up and running in minutes.
+## Características
 
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
-
-## Make it yours
-
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
+<CardGroup cols={2}>
+  <Card title="REST + JSON" icon="code">
+    Versionada em `/api/v1`, métodos HTTP padrão, respostas JSON.
   </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
+  <Card title="Bearer tokens" icon="key">
+    Autenticação via Personal Access Tokens (Laravel Sanctum) com prefixo `aut_`.
   </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
+  <Card title="Escopos granulares" icon="shield-check">
+    21 escopos do tipo `recurso:ação` (ex: `courses:read`, `students:write`).
   </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
+  <Card title="Tenant-isolated" icon="building">
+    Cada token é amarrado a um tenant na emissão. Recursos de outros tenants retornam 404.
   </Card>
-</Columns>
+  <Card title="Rate limit por plano" icon="gauge">
+    Limite de requisições/minuto definido pelo plano do tenant.
+  </Card>
+  <Card title="Idempotency" icon="repeat">
+    Header `Idempotency-Key` opcional em endpoints de escrita.
+  </Card>
+</CardGroup>
 
-## Create beautiful pages
+## Base URL
 
-Everything you need to create world-class documentation.
+```
+https://{seu-dominio}/api/v1
+```
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+Substitua `{seu-dominio}` pelo domínio da sua tenant (ex: `escola.autoral.me` ou domínio próprio configurado).
 
-## Need inspiration?
+<Note>
+  Diferente do painel web (resolvido por domínio), a API resolve o tenant a partir do **token** — não do `Host`. Por segurança, um token emitido em uma tenant nunca acessa recursos de outra, mesmo se chamado em outro domínio.
+</Note>
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+## Recursos disponíveis
+
+| Recurso | Endpoints | Escopos |
+|---|---|---|
+| Identidade | `GET /me` | — |
+| Cursos | list, show, modules | `courses:read` |
+| Módulos | lessons | `modules:read` |
+| Aulas | show | `lessons:read` |
+| Alunos | list, show, grant/revoke access | `students:read`, `students:write` |
+| Acesso | CRUD | `access:read`, `access:write` |
+| Pagamentos | list, show, refund | `payments:read`, `payments:refund` |
+| Assinaturas | list, show, cancel | `subscriptions:read`, `subscriptions:cancel` |
+| Cupons | CRUD | `coupons:read`, `coupons:write` |
+| Leads | list, show, create | `leads:read`, `leads:write` |
+| Checkouts | list, show | `checkouts:read` |
+| Certificados | list, show | `certificates:read` |
+| Perguntas | list, show | `questions:read` |
+| Webhooks | CRUD | `webhooks:read`, `webhooks:write` |
+
+## Próximos passos
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Crie seu primeiro token e faça uma chamada de teste em 5 minutos.
+  </Card>
+  <Card title="Autenticação" icon="lock" href="/authentication/overview">
+    Entenda como funcionam tokens, escopos e segurança.
+  </Card>
+</CardGroup>
