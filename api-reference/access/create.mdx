@@ -1,0 +1,46 @@
+---
+title: "Criar matrícula"
+api: "POST /v1/access"
+description: "Cria uma matrícula informando user_id e course_id."
+---
+
+**Escopo:** `access:write`
+**Idempotency:** suportada
+
+Equivalente a [Conceder acesso](/api-reference/students/grant-access), mas sem path param de student. Use quando você tem `user_id` direto.
+
+## Body params
+
+<ParamField body="user_id" type="integer" required>ID do user.</ParamField>
+<ParamField body="course_id" type="integer" required>ID do curso (na tenant).</ParamField>
+<ParamField body="type" type="string" required>`lifetime`, `temporary`, `subscription`.</ParamField>
+<ParamField body="duration" type="string">`monthly`, `quarterly`, `semiannual`, `annual`.</ParamField>
+<ParamField body="days" type="integer">Dias customizados.</ParamField>
+<ParamField body="class_id" type="integer">ID da turma.</ParamField>
+<ParamField body="notes" type="string">Observação.</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://seu-dominio/api/v1/access \
+  -H "Authorization: Bearer aut_..." \
+  -H "Idempotency-Key: bulk-import-001" \
+  -H "Content-Type: application/json" \
+  -d '{"user_id": 42, "course_id": 1, "type": "temporary", "days": 30}'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 201
+{
+  "data": {
+    "id": 1235,
+    "user_id": 42,
+    "course_id": 1,
+    "type": "temporary",
+    "is_active": true,
+    "granted_at": "2026-05-05T19:30:00+00:00",
+    "expires_at": "2026-06-04T19:30:00+00:00"
+  }
+}
+```
+</ResponseExample>

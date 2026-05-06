@@ -1,0 +1,72 @@
+---
+title: "Listar cursos"
+api: "GET /v1/courses"
+description: "Retorna lista paginada de cursos da tenant."
+---
+
+**Escopo:** `courses:read`
+
+## Query params
+
+<ParamField query="per_page" type="integer" default="25">
+  Itens por página (1-100).
+</ParamField>
+
+<ParamField query="page" type="integer" default="1">
+  Página (length-aware).
+</ParamField>
+
+## Response
+
+<ResponseField name="data" type="array<Course>">
+  Lista de cursos.
+</ResponseField>
+
+<ResponseField name="data[].id" type="integer">ID.</ResponseField>
+<ResponseField name="data[].name" type="string">Nome.</ResponseField>
+<ResponseField name="data[].slug" type="string">Slug.</ResponseField>
+<ResponseField name="data[].description" type="string|null">Descrição.</ResponseField>
+<ResponseField name="data[].short_description" type="string|null">Descrição curta.</ResponseField>
+<ResponseField name="data[].thumbnail" type="string|null">URL do thumbnail.</ResponseField>
+<ResponseField name="data[].cover_image" type="string|null">URL da capa.</ResponseField>
+<ResponseField name="data[].is_active" type="boolean">Ativo.</ResponseField>
+<ResponseField name="data[].is_featured" type="boolean">Destaque.</ResponseField>
+<ResponseField name="data[].sequential_lessons" type="boolean">Aulas em sequência.</ResponseField>
+<ResponseField name="data[].sequential_modules" type="boolean">Módulos em sequência.</ResponseField>
+<ResponseField name="data[].modules_count" type="integer">Total de módulos.</ResponseField>
+<ResponseField name="data[].created_at" type="string">ISO 8601.</ResponseField>
+<ResponseField name="data[].updated_at" type="string">ISO 8601.</ResponseField>
+
+<RequestExample>
+```bash cURL
+curl 'https://seu-dominio/api/v1/courses?per_page=10' \
+  -H "Authorization: Bearer aut_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "Curso de PHP",
+      "slug": "curso-de-php",
+      "description": "Do básico ao avançado.",
+      "short_description": "Aprenda PHP em 30 dias",
+      "thumbnail": "https://cdn.../thumb.jpg",
+      "cover_image": null,
+      "is_active": true,
+      "is_featured": false,
+      "sequential_lessons": true,
+      "sequential_modules": false,
+      "modules_count": 8,
+      "created_at": "2026-01-15T10:00:00+00:00",
+      "updated_at": "2026-04-20T14:30:00+00:00"
+    }
+  ],
+  "links": { "first": "...", "last": "...", "prev": null, "next": "..." },
+  "meta": { "current_page": 1, "per_page": 10, "total": 47 }
+}
+```
+</ResponseExample>

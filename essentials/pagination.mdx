@@ -1,0 +1,117 @@
+---
+title: "Paginação"
+description: "Estratégias de paginação para listagens — length-aware vs cursor."
+---
+
+A API usa **dois estilos de paginação** dependendo do volume esperado do recurso.
+
+## Length-aware (offset)
+
+Recursos de baixo volume usam paginação tradicional com `page` + `total`:
+
+- `GET /courses`
+- `GET /modules/{id}/lessons`
+- `GET /coupons`
+- `GET /webhooks`
+
+### Request
+
+```http
+GET /api/v1/courses?page=2&per_page=25
+```
+
+### Response
+
+```json
+{
+  "data": [...],
+  "links": {
+    "first": "https://.../courses?page=1",
+    "last": "https://.../courses?page=10",
+    "prev": "https://.../courses?page=1",
+    "next": "https://.../courses?page=3"
+  },
+  "meta": {
+    "current_page": 2,
+    "from": 26,
+    "last_page": 10,
+    "per_page": 25,
+    "to": 50,
+    "total": 247
+  }
+}
+```
+
+## Cursor (recomendado para alto volume)
+
+Recursos com muitos registros usam **cursor pagination** (mais eficiente em DBs grandes, sem `COUNT(*)`):
+
+- `GET /students`
+- `GET /access`
+- `GET /payments`
+- `GET /subscriptions`
+- `GET /leads`
+- `GET /checkouts`
+- `GET /certificates`
+- `GET /questions`
+
+### Request
+
+```http
+GET /api/v1/payments?per_page=50
+```
+
+### Response
+
+```json
+{
+  "data": [...],
+  "path": "https://.../payments",
+  "per_page": 50,
+  "next_cursor": "eyJpZCI6MTIzfQ",
+  "next_page_url": "https://.../payments?cursor=eyJpZCI6MTIzfQ&per_page=50",
+  "prev_cursor": null,
+  "prev_page_url": null
+}
+```
+
+### Iteração
+
+```python
+import requests
+
+url = 'https://seu-dominio/api/v1/payments?per_page=100'
+headers = {'Authorization': 'Bearer aut_...'}
+
+while url:
+    res = requests.get(url, headers=headers).json()
+    for payment in res['data']:
+        process(payment)
+    url = res.get('next_page_url')
+```
+
+## Limites
+
+| Parâmetro | Default | Máximo |
+|---|---|---|
+| `per_page` | 25 | 100 |
+
+<Warning>
+  Valores acima de 100 são silenciosamente truncados. Para iterar tudo, use cursor + loop.
+</Warning>
+
+## Filtros adicionais
+
+Muitos endpoints aceitam filtros via query string:
+
+```http
+GET /api/v1/payments?status=succeeded&gateway=stripe&user_id=42
+GET /api/v1/access?course_id=10&active_only=true
+GET /api/v1/leads?status=pending&checkout_id=5
+```
+
+Veja a página de cada endpoint para a lista completa de filtros suportados.
+
+## Ordem padrão
+
+Listagens vêm em **ordem decrescente por `id`** (mais recente primeiro). Não há suporte a `?sort=` no v1.

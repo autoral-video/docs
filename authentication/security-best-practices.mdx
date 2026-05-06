@@ -1,0 +1,114 @@
+---
+title: "Boas práticas de segurança"
+description: "Diretrizes para usar a API com segurança em produção."
+---
+
+## Princípio do menor privilégio
+
+Emita tokens com **apenas os escopos necessários** para a integração. Um token só com `students:read` que vaza é uma fração do problema de um com `students:write` + `payments:refund`.
+
+<Warning>
+  Nunca crie um único token "master" com todos os escopos para reusar em múltiplas integrações. Crie um token por integração.
+</Warning>
+
+## Tokens curtos de vida
+
+Para integrações temporárias (testes, scripts ad-hoc), defina **`expires_at`** próximo. Um token sem expiração é eterno até revogação manual.
+
+| Cenário | Sugestão de expiração |
+|---|---|
+| Teste local | 1-7 dias |
+| Script de migração | data + 1 |
+| Integração beta | 30 dias |
+| Produção estável | sem expiração + revisão semestral |
+
+## IP allowlist quando possível
+
+Sempre que o consumer tem IP conhecido (servidor próprio, cron interno), restrinja com `allowed_ips`. Veja [IP allowlist](/authentication/ip-allowlist).
+
+## Armazenamento de tokens
+
+<CardGroup cols={2}>
+  <Card title="✅ Faça">
+    - Variáveis de ambiente (`.env` não commitado)
+    - Secrets manager (Vault, AWS SM, 1Password)
+    - GitHub Actions Secrets / GitLab CI variables
+    - Cofres do n8n, Zapier, etc.
+  </Card>
+  <Card title="❌ Evite">
+    - Hardcoded em código-fonte
+    - Commitado em repositório (mesmo privado)
+    - Logs de aplicação ou stack traces
+    - Compartilhado em chat / e-mail
+    - URLs (query string)
+  </Card>
+</CardGroup>
+
+## Rotação periódica
+
+Estabeleça uma cadência de rotação:
+
+<Steps>
+  <Step title="Crie novo token">
+    Com mesmos escopos (ou mais restritivos).
+  </Step>
+  <Step title="Atualize a integração">
+    Substitua o segredo onde for usado.
+  </Step>
+  <Step title="Valide funcionando">
+    Cheque `last_used_at` aumentando.
+  </Step>
+  <Step title="Revogue o antigo">
+    Após confirmar que o novo está em uso.
+  </Step>
+</Steps>
+
+## Detecção de uso anômalo
+
+A API registra `last_used_at` a cada chamada. Estabeleça monitoramento:
+
+- Tokens não usados em N dias → revogar.
+- Pico de uso fora do padrão → investigar.
+- Origem inesperada (sem allowlist) → considerar adicionar.
+
+## Princípios extras
+
+### Idempotência em writes
+
+Use header [`Idempotency-Key`](/essentials/idempotency) em endpoints sensíveis (refunds, grant-access, leads). Protege contra retries acidentais e bugs de cliente.
+
+### Verificação de webhooks outgoing
+
+Se você usa webhooks (entregas para sistemas externos), valide a assinatura HMAC do `X-Signature` no receptor. Veja docs específicas de webhooks outgoing.
+
+### Resposta a vazamento
+
+<Steps>
+  <Step title="Revogue o token vazado">
+    Imediatamente.
+  </Step>
+  <Step title="Audite ações recentes">
+    Cheque `last_used_at` e correlacione com logs por `X-Request-Id`.
+  </Step>
+  <Step title="Reverta side-effects">
+    Reembolsos suspeitos? Acessos não-autorizados? Reverta.
+  </Step>
+  <Step title="Notifique stakeholders">
+    LGPD: incidente envolvendo dados pessoais → DPO + autoridade.
+  </Step>
+  <Step title="Postmortem">
+    Como vazou? Como evitar? Documente.
+  </Step>
+</Steps>
+
+## Multi-tenancy: isolamento garantido
+
+A plataforma garante isolamento total entre tenants:
+
+- Tokens são amarrados ao `tenant_id` na emissão.
+- Recursos de outros tenants retornam **404** (não 403) para não vazar existência.
+- Não é possível criar/usar token "global" que veja múltiplos tenants.
+
+<Note>
+  Se você é uma agência com múltiplas tenants no autoral.me, **crie um token por tenant**. Não há atalho.
+</Note>

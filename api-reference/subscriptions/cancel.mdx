@@ -1,0 +1,64 @@
+---
+title: "Cancelar assinatura"
+api: "DELETE /v1/subscriptions/{subscription}"
+description: "Cancela imediatamente no gateway e marca como canceled."
+---
+
+**Escopo:** `subscriptions:cancel`
+
+Cancela no gateway externo (Stripe/MP/Asaas) e atualiza o registro local com `status=canceled`, `canceled_at=now()`, `ended_at=now()`.
+
+<Warning>
+  Operação **sensível e irreversível**. O usuário perde acesso imediatamente (não há grace period).
+</Warning>
+
+<ParamField path="subscription" type="integer" required>ID.</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X DELETE https://seu-dominio/api/v1/subscriptions/9001 \
+  -H "Authorization: Bearer aut_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": {
+    "id": 9001,
+    "status": "canceled",
+    "canceled_at": "2026-05-05T19:45:00+00:00",
+    "ended_at": "2026-05-05T19:45:00+00:00"
+  }
+}
+```
+
+```json 422
+{
+  "error": {
+    "type": "subscription_already_canceled",
+    "title": "Esta assinatura já foi cancelada.",
+    "status": 422,
+    "request_id": "..."
+  }
+}
+```
+
+```json 502
+{
+  "error": {
+    "type": "gateway_cancel_failed",
+    "title": "Falha ao cancelar no gateway: ...",
+    "status": 502,
+    "request_id": "..."
+  }
+}
+```
+</ResponseExample>
+
+## Erros possíveis
+
+| Status | Causa |
+|---|---|
+| 422 | Assinatura já cancelada. |
+| 502 | Gateway externo falhou. Tente novamente em alguns minutos. |

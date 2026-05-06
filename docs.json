@@ -1,127 +1,156 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "autoral.me API",
+  "description": "Documentação da API REST pública da plataforma autoral.me.",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#7C3AED",
+    "light": "#A78BFA",
+    "dark": "#5B21B6"
   },
   "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Guia",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Introdução",
             "pages": [
-              "index",
-              "quickstart",
-              "development"
+              "introduction",
+              "quickstart"
             ]
           },
           {
-            "group": "Customization",
+            "group": "Autenticação",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
+              "authentication/overview",
+              "authentication/creating-tokens",
+              "authentication/scopes",
+              "authentication/ip-allowlist",
+              "authentication/revoking-tokens",
+              "authentication/security-best-practices"
             ]
           },
           {
-            "group": "Writing content",
+            "group": "Essenciais",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "AI tools",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "essentials/rate-limiting",
+              "essentials/errors",
+              "essentials/pagination",
+              "essentials/idempotency",
+              "essentials/request-id"
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "Referência da API",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Identidade",
             "pages": [
-              "api-reference/introduction"
+              "api-reference/identity/me"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Conteúdo",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "api-reference/courses/list",
+              "api-reference/courses/show",
+              "api-reference/courses/modules",
+              "api-reference/modules/lessons",
+              "api-reference/lessons/show"
+            ]
+          },
+          {
+            "group": "Alunos",
+            "pages": [
+              "api-reference/students/list",
+              "api-reference/students/show",
+              "api-reference/students/grant-access",
+              "api-reference/students/revoke-access"
+            ]
+          },
+          {
+            "group": "Acesso",
+            "pages": [
+              "api-reference/access/list",
+              "api-reference/access/show",
+              "api-reference/access/create",
+              "api-reference/access/delete"
+            ]
+          },
+          {
+            "group": "Pagamentos",
+            "pages": [
+              "api-reference/payments/list",
+              "api-reference/payments/show",
+              "api-reference/payments/refund"
+            ]
+          },
+          {
+            "group": "Assinaturas",
+            "pages": [
+              "api-reference/subscriptions/list",
+              "api-reference/subscriptions/show",
+              "api-reference/subscriptions/cancel"
+            ]
+          },
+          {
+            "group": "Cupons",
+            "pages": [
+              "api-reference/coupons/list",
+              "api-reference/coupons/show",
+              "api-reference/coupons/create",
+              "api-reference/coupons/delete"
+            ]
+          },
+          {
+            "group": "Leads",
+            "pages": [
+              "api-reference/leads/list",
+              "api-reference/leads/show",
+              "api-reference/leads/create"
+            ]
+          },
+          {
+            "group": "Checkouts",
+            "pages": [
+              "api-reference/checkouts/list",
+              "api-reference/checkouts/show"
+            ]
+          },
+          {
+            "group": "Certificados",
+            "pages": [
+              "api-reference/certificates/list",
+              "api-reference/certificates/show"
+            ]
+          },
+          {
+            "group": "Perguntas",
+            "pages": [
+              "api-reference/questions/list",
+              "api-reference/questions/show"
+            ]
+          },
+          {
+            "group": "Webhooks",
+            "pages": [
+              "api-reference/webhooks/list",
+              "api-reference/webhooks/show",
+              "api-reference/webhooks/create",
+              "api-reference/webhooks/delete"
             ]
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Community",
-          "href": "https://mintlify.com/community",
-          "icon": "slack"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
-  },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
-    }
-  },
-  "contextual": {
-    "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+    ]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "website": "https://autoral.me"
     }
   }
 }

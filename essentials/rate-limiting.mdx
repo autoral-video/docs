@@ -1,0 +1,99 @@
+---
+title: "Rate limiting"
+description: "Limites de requisições por minuto e como lidar com 429."
+---
+
+A API aplica rate limit por **token + tenant** — não por IP, não por user. Cada token tem sua própria janela.
+
+## Limites por plano
+
+| Plano | Requests/minuto |
+|---|---|
+| Free | — (sem API) |
+| Lite | 60 |
+| Pro | 300 |
+| Scale | 1.200 |
+| Custom | Sob consulta |
+
+## Comportamento ao exceder
+
+Resposta `429 Too Many Requests`:
+
+```json
+{
+  "error": {
+    "type": "rate_limited",
+    "title": "Limite de requisições excedido.",
+    "status": 429,
+    "retry_after": 30,
+    "request_id": "..."
+  }
+}
+```
+
+Headers:
+
+| Header | Significado |
+|---|---|
+| `Retry-After` | Segundos até a próxima janela. |
+| `X-RateLimit-Limit` | Limite total da janela. |
+| `X-RateLimit-Remaining` | Quantos restam. |
+
+## Estratégias de cliente
+
+### Backoff exponencial
+
+```javascript
+async function callWithRetry(url, options, maxRetries = 3) {
+  for (let i = 0; i < maxRetries; i++) {
+    const res = await fetch(url, options);
+
+    if (res.status !== 429) return res;
+
+    const retryAfter = parseInt(res.headers.get('Retry-After') || '1');
+    const wait = retryAfter * 1000 * Math.pow(2, i);
+    await new Promise(r => setTimeout(r, wait));
+  }
+  throw new Error('Rate limit excedido após retries');
+}
+```
+
+### Throttle no cliente
+
+Se você sabe que vai disparar muitas requests (ex: bulk import), respeite o limite proativamente:
+
+```python
+import time
+
+LIMIT_PER_MINUTE = 300
+INTERVAL = 60 / LIMIT_PER_MINUTE  # 0.2s entre requests
+
+for item in items:
+    api_call(item)
+    time.sleep(INTERVAL)
+```
+
+### Múltiplos tokens
+
+Se você precisa de mais throughput, considere upgrade de plano. Múltiplos tokens **não somam quota** — cada um tem janela própria, mas o total ainda está limitado pela infra do tenant.
+
+<Tip>
+  Para cargas pesadas (importação inicial), prefira agendar fora de horário comercial e usar `Idempotency-Key` para retries seguros.
+</Tip>
+
+## Como verificar seu limite
+
+```bash
+curl https://seu-dominio/api/v1/me \
+  -H "Authorization: Bearer aut_..."
+```
+
+```json
+{
+  "data": {
+    "plan": {
+      "api_rate_limit_per_minute": 300
+    }
+  }
+}
+```

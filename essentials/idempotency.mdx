@@ -1,0 +1,112 @@
+---
+title: "Idempotência"
+description: "Use Idempotency-Key para tornar writes seguros contra retries."
+---
+
+Endpoints de escrita aceitam um header opcional `Idempotency-Key`. Requisições subsequentes com a mesma chave **retornam a resposta cacheada** sem reexecutar — protegendo contra retries de cliente, timeouts de rede e bugs.
+
+## Endpoints que suportam
+
+<Check>`POST /students/{id}/access`</Check>
+<Check>`POST /access`</Check>
+<Check>`POST /payments/{id}/refunds`</Check>
+<Check>`POST /coupons`</Check>
+<Check>`POST /leads`</Check>
+<Check>`POST /webhooks`</Check>
+
+DELETEs **não precisam** de idempotency — são idempotentes por natureza.
+
+## Como usar
+
+```http
+POST /api/v1/leads HTTP/1.1
+Authorization: Bearer aut_...
+Idempotency-Key: integration-2026-05-05-lead-12345
+Content-Type: application/json
+
+{"checkout_id": 1, "name": "João", "email": "joao@x.com"}
+```
+
+## Formato da chave
+
+- 8 a 128 caracteres
+- Alfanumérico + `_` e `-`
+- Regex: `^[a-zA-Z0-9_-]{8,128}$`
+
+Chave inválida → `422 invalid_idempotency_key`.
+
+## Boas práticas para gerar chaves
+
+<CardGroup cols={2}>
+  <Card title="UUID v4" icon="fingerprint">
+    `crypto.randomUUID()` em JS, `uuid.uuid4()` em Python. 36 chars.
+  </Card>
+  <Card title="Hash de business key" icon="hashtag">
+    `sha256(order_id + action)` — determinístico para a mesma operação.
+  </Card>
+  <Card title="Timestamp + ID" icon="clock">
+    `lead-{date}-{external_id}` — legível em logs.
+  </Card>
+  <Card title="ULID" icon="sort">
+    Sortable por tempo, único globalmente.
+  </Card>
+</CardGroup>
+
+## Cache window
+
+A resposta cacheada permanece **24 horas**. Após esse período, a mesma chave produz nova execução.
+
+Cache key = `idem:{tenant_id}:{token_id}:{key}:{sha256(method|path|body)}`.
+
+<Note>
+  Se você reusar a chave com **body diferente**, cada body gera uma entrada separada no cache (o hash do body faz parte da key). Isso evita que retries com payload alterado retornem a resposta antiga.
+</Note>
+
+## Resposta de replay
+
+Quando a chave bate em cache, a resposta inclui:
+
+```http
+HTTP/1.1 201 Created
+Idempotent-Replay: true
+Content-Type: application/json
+
+{ "data": { ... } }
+```
+
+O `Idempotent-Replay: true` indica que o body veio do cache.
+
+## Exemplo: refund seguro
+
+```python
+import requests
+import uuid
+
+key = str(uuid.uuid4())
+
+def refund(payment_id):
+    return requests.post(
+        f'https://seu-dominio/api/v1/payments/{payment_id}/refunds',
+        headers={
+            'Authorization': 'Bearer aut_...',
+            'Idempotency-Key': key,
+        },
+        json={'reason': 'Cliente solicitou'},
+    )
+
+# Mesmo se a primeira chamada timeout → retry seguro
+try:
+    res = refund(123)
+except requests.Timeout:
+    res = refund(123)  # Mesma key → retorna a resposta original
+```
+
+## Erros não cacheados
+
+Apenas respostas com status **< 500** são cacheadas. Erros de servidor (5xx) não bloqueiam retries.
+
+## Limites
+
+- 1 entrada de cache por `(tenant, token, key, body-hash)`.
+- TTL: 24 horas.
+- Não há API para listar/limpar cache de idempotency.

@@ -1,0 +1,90 @@
+---
+title: "Visão geral"
+description: "Como funciona a autenticação por bearer token na API da autoral.me."
+---
+
+A API usa **Personal Access Tokens** (PATs) gerenciados pelo Laravel Sanctum. Cada token é amarrado a uma tenant no momento da emissão e carrega um conjunto fixo de escopos (abilities).
+
+## Cabeçalho de autenticação
+
+Toda requisição autenticada deve incluir:
+
+```http
+Authorization: Bearer aut_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+## Anatomia de um token
+
+```
+aut_9W6EqUmMrsHUKt896DU1MQ2YDrxfhgIGh1krpxbQ7b685569
+└─┬─┘└────────────────────┬───────────────────────┘
+prefix             entropy + crc32 (Sanctum)
+```
+
+| Campo | Descrição |
+|---|---|
+| `aut_` | Prefixo fixo. Ajuda secret-scanners (GitHub, GitLab) a detectar vazamentos. |
+| `entropy` | 40 caracteres aleatórios. |
+| `crc32` | 8 caracteres de checksum. |
+
+<Note>
+  No banco, o token é armazenado como SHA-256 — o valor em claro **só existe no momento da criação**. Perdeu? Crie outro.
+</Note>
+
+## Atributos de um token
+
+| Atributo | Descrição |
+|---|---|
+| `name` | Identificador legível (`n8n produção`, `Cron interno`). |
+| `description` | Descrição livre da integração. |
+| `abilities` | Lista de escopos (`courses:read`, etc). |
+| `tenant_id` | Tenant proprietário — fixo na emissão. |
+| `allowed_ips` | Lista opcional de IPs/CIDRs permitidos. |
+| `expires_at` | Data de expiração opcional. |
+| `last_used_at` | Atualizado a cada uso bem-sucedido. |
+| `revoked_at` | Preenchido quando revogado (soft-revoke, auditável). |
+| `created_by_user_id` | Usuário que criou. |
+| `revoked_by_user_id` | Usuário que revogou. |
+
+## Fluxo de validação
+
+```mermaid
+sequenceDiagram
+    Cliente->>API: Request com Bearer aut_...
+    API->>API: Extrai token
+    API->>API: Lookup PAT (SHA-256)
+    API->>API: Token revogado? → 401 token_revoked
+    API->>API: Token expirado? → 401 token_expired
+    API->>API: Tenant ativo? → 403 tenant_inactive
+    API->>API: IP permitido? → 403 ip_not_allowed
+    API->>API: Resolve TenantService
+    API->>API: Verifica scope da rota → 403 se faltar
+    API->>API: Aplica rate limit do plano
+    API->>Cliente: Resposta
+```
+
+## Erros comuns
+
+| Status | Código | Causa |
+|---|---|---|
+| 401 | `missing_token` | Sem header `Authorization`. |
+| 401 | `invalid_token` | Token não encontrado ou mal-formado. |
+| 401 | `token_revoked` | Token foi revogado no painel. |
+| 401 | `token_expired` | Passou de `expires_at`. |
+| 403 | `tenant_inactive` | Tenant proprietário foi suspenso. |
+| 403 | `ip_not_allowed` | Origem não está em `allowed_ips`. |
+| 403 | (sem código) | Token não tem escopo necessário. |
+| 402 | `plan_limit_exceeded` | Plano não permite o recurso. |
+| 429 | `rate_limited` | Excedeu requests/min do plano. |
+
+Veja [Errors](/essentials/errors) para o envelope JSON completo.
+
+## Diferença vs. autenticação web
+
+| Aspecto | Web (sessão) | API (token) |
+|---|---|---|
+| Tenant | Resolvido pelo `Host` | Amarrado ao token |
+| Auth | Cookie de sessão | Bearer header |
+| CSRF | Sim | Não (sem cookies) |
+| Expiração | Sessão Laravel | `expires_at` por token |
+| Audit | Last login | `last_used_at` |

@@ -1,0 +1,76 @@
+---
+title: "Criar cupom"
+api: "POST /v1/coupons"
+description: "Cria um cupom de desconto."
+---
+
+**Escopo:** `coupons:write`
+**Idempotency:** suportada
+
+## Body params
+
+<ParamField body="code" type="string" required>
+  Código (1-50 chars, `[A-Z0-9_-]`). Salvo em uppercase. Único por tenant.
+</ParamField>
+
+<ParamField body="name" type="string">Nome amigável.</ParamField>
+
+<ParamField body="discount_type" type="string" required>
+  `percentage` ou `fixed`.
+</ParamField>
+
+<ParamField body="discount_value" type="number" required>
+  Valor do desconto. `25.00` em percentage = 25%; em fixed = R$ 25,00.
+</ParamField>
+
+<ParamField body="usage_limit" type="integer">Limite total.</ParamField>
+<ParamField body="per_customer_limit" type="integer">Limite por cliente.</ParamField>
+<ParamField body="single_use" type="boolean">Uso único.</ParamField>
+<ParamField body="is_active" type="boolean">Default `true`.</ParamField>
+<ParamField body="starts_at" type="string">ISO date.</ParamField>
+<ParamField body="expires_at" type="string">ISO date (após `starts_at`).</ParamField>
+<ParamField body="applies_to_all_products" type="boolean">Default `true`.</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://seu-dominio/api/v1/coupons \
+  -H "Authorization: Bearer aut_..." \
+  -H "Idempotency-Key: coupon-blackfriday-2026" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "code": "black-friday",
+    "name": "Black Friday",
+    "discount_type": "percentage",
+    "discount_value": 25,
+    "usage_limit": 1000,
+    "expires_at": "2026-11-30"
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 201
+{
+  "data": {
+    "id": 1,
+    "code": "BLACK-FRIDAY",
+    "name": "Black Friday",
+    "discount_type": "percentage",
+    "discount_value": "25.00",
+    "is_active": true
+  }
+}
+```
+
+```json 422
+{
+  "error": {
+    "type": "validation_error",
+    "errors": {
+      "code": ["Já existe um cupom com este código."]
+    },
+    "status": 422
+  }
+}
+```
+</ResponseExample>

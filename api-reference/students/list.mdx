@@ -1,0 +1,69 @@
+---
+title: "Listar alunos"
+api: "GET /v1/students"
+description: "Lista paginada (cursor) de alunos da tenant."
+---
+
+**Escopo:** `students:read`
+
+Retorna usuários com role `student` na tenant atual.
+
+## Query params
+
+<ParamField query="per_page" type="integer" default="25">1-100.</ParamField>
+<ParamField query="cursor" type="string">Cursor para próxima página.</ParamField>
+
+## Response
+
+<ResponseField name="data[].id" type="integer">ID do user.</ResponseField>
+<ResponseField name="data[].name" type="string">Nome.</ResponseField>
+<ResponseField name="data[].email" type="string">E-mail.</ResponseField>
+<ResponseField name="data[].phone" type="string|null">Número.</ResponseField>
+<ResponseField name="data[].phone_country" type="string|null">Código do país.</ResponseField>
+<ResponseField name="data[].email_verified_at" type="string|null">ISO 8601.</ResponseField>
+<ResponseField name="data[].last_login_at" type="string|null">ISO 8601.</ResponseField>
+<ResponseField name="data[].active_accesses_count" type="integer">Matrículas ativas.</ResponseField>
+<ResponseField name="data[].created_at" type="string">ISO 8601.</ResponseField>
+
+<RequestExample>
+```bash cURL
+curl 'https://seu-dominio/api/v1/students?per_page=50' \
+  -H "Authorization: Bearer aut_..."
+```
+
+```python Python
+import requests
+url = 'https://seu-dominio/api/v1/students?per_page=100'
+headers = {'Authorization': 'Bearer aut_...'}
+
+while url:
+    res = requests.get(url, headers=headers).json()
+    for s in res['data']:
+        print(s['email'])
+    url = res.get('next_page_url')
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": [
+    {
+      "id": 42,
+      "name": "Maria Silva",
+      "email": "maria@example.com",
+      "phone": "11999999999",
+      "phone_country": "BR",
+      "email_verified_at": "2026-04-01T10:00:00+00:00",
+      "last_login_at": "2026-05-04T18:30:00+00:00",
+      "active_accesses_count": 2,
+      "created_at": "2026-04-01T09:00:00+00:00"
+    }
+  ],
+  "next_cursor": "eyJpZCI6NDF9",
+  "next_page_url": "https://.../students?cursor=eyJpZCI6NDF9&per_page=50",
+  "prev_cursor": null,
+  "prev_page_url": null
+}
+```
+</ResponseExample>

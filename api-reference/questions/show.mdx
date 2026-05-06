@@ -1,0 +1,30 @@
+---
+title: "Detalhes da pergunta"
+api: "GET /v1/questions/{question}"
+description: "Retorna uma pergunta."
+---
+
+**Escopo:** `questions:read`
+
+<ParamField path="question" type="integer" required>ID.</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://seu-dominio/api/v1/questions/200 \
+  -H "Authorization: Bearer aut_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": {
+    "id": 200,
+    "user_id": 42,
+    "lesson_id": 100,
+    "question": "Como funciona X?",
+    "status": "pending"
+  }
+}
+```
+</ResponseExample>

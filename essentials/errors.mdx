@@ -1,0 +1,139 @@
+---
+title: "Errors"
+description: "Envelope JSON padrão para erros, códigos HTTP e como tratar."
+---
+
+Toda resposta de erro segue o mesmo envelope JSON:
+
+```json
+{
+  "error": {
+    "type": "validation_error",
+    "title": "Mensagem legível.",
+    "status": 422,
+    "code": "field.specific.code",
+    "errors": { "field": ["..."] },
+    "request_id": "uuid-v4"
+  }
+}
+```
+
+## Campos
+
+<ResponseField name="error.type" type="string">
+  Categoria do erro: `validation_error`, `authentication_error`, `authorization_error`, `not_found`, `rate_limited`, `plan_limit_exceeded`, etc.
+</ResponseField>
+
+<ResponseField name="error.title" type="string">
+  Mensagem legível em pt-BR.
+</ResponseField>
+
+<ResponseField name="error.status" type="integer">
+  Código HTTP. Espelha o status da resposta.
+</ResponseField>
+
+<ResponseField name="error.code" type="string">
+  Código específico (ex: `missing_token`, `token_revoked`). Útil para branch lógico no cliente.
+</ResponseField>
+
+<ResponseField name="error.errors" type="object">
+  Apenas em `validation_error`. Mapa `campo → ["mensagens"]`.
+</ResponseField>
+
+<ResponseField name="error.request_id" type="string">
+  UUID da request. Use para correlacionar com logs do servidor.
+</ResponseField>
+
+## Códigos HTTP
+
+| Status | Significado | Exemplo |
+|---|---|---|
+| 200 | OK | Listagem retornada |
+| 201 | Created | Recurso criado |
+| 202 | Accepted | Operação assíncrona aceita |
+| 204 | No Content | Delete bem-sucedido |
+| 400 | Bad Request | Body malformado |
+| 401 | Unauthorized | Token ausente, inválido, revogado, expirado |
+| 402 | Payment Required | Plano não inclui o recurso |
+| 403 | Forbidden | Sem escopo, IP não permitido, tenant inativo |
+| 404 | Not Found | Recurso inexistente ou de outro tenant |
+| 422 | Unprocessable Entity | Validação falhou |
+| 429 | Too Many Requests | Rate limit excedido |
+| 500 | Internal Server Error | Bug do servidor |
+| 502 | Bad Gateway | Falha em gateway externo (Stripe/MP) |
+
+## Códigos específicos por categoria
+
+### Autenticação (401)
+
+| `code` | Causa |
+|---|---|
+| `missing_token` | Sem header `Authorization`. |
+| `invalid_token` | Token mal-formado ou inexistente. |
+| `token_revoked` | Token revogado no painel. |
+| `token_expired` | Passou de `expires_at`. |
+
+### Autorização (403)
+
+| `code` | Causa |
+|---|---|
+| `tenant_inactive` | Tenant suspenso. |
+| `ip_not_allowed` | Origem fora do allowlist. |
+| (sem code) | Token sem escopo necessário. |
+
+### Validação (422)
+
+| `code` | Causa |
+|---|---|
+| `invalid_idempotency_key` | Chave de idempotência malformada. |
+| (sem code) | Falha de validação de campo. Veja `errors`. |
+
+### Outros
+
+| Status | Code | Causa |
+|---|---|---|
+| 402 | `plan_limit_exceeded` | Recurso não incluso no plano. |
+| 429 | `rate_limited` | Rate limit do plano excedido. |
+
+## Exemplo: tratamento robusto
+
+```javascript
+async function apiCall(path, options = {}) {
+  const res = await fetch(`https://seu-dominio/api/v1${path}`, options);
+
+  if (!res.ok) {
+    const body = await res.json();
+    const err = body.error;
+
+    // Branch por categoria
+    switch (err.type) {
+      case 'authentication_error':
+        // Token inválido — força login / rotação
+        throw new AuthError(err.code, err.request_id);
+
+      case 'rate_limited':
+        // Backoff
+        throw new RateLimitError(res.headers.get('Retry-After'));
+
+      case 'validation_error':
+        // Mostra ao usuário
+        throw new ValidationError(err.errors);
+
+      default:
+        throw new ApiError(err.title, err.status, err.request_id);
+    }
+  }
+
+  return res.json();
+}
+```
+
+## Reportando bugs
+
+Inclua no ticket:
+
+- `request_id` do erro
+- Endpoint chamado
+- Body enviado (sem segredos)
+- Timestamp UTC
+- Token (apenas o ID, **nunca** o segredo)

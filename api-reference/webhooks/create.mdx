@@ -1,0 +1,72 @@
+---
+title: "Criar webhook"
+api: "POST /v1/webhooks"
+description: "Registra um endpoint externo para receber eventos."
+---
+
+**Escopo:** `webhooks:write`
+**Idempotency:** suportada
+
+## Body params
+
+<ParamField body="name" type="string" required>1-120 chars.</ParamField>
+
+<ParamField body="url" type="string" required>
+  URL HTTPS pública. Não aceita IPs privados nem hosts internos (defesa contra SSRF).
+</ParamField>
+
+<ParamField body="secret" type="string">
+  32-255 chars. Se omitido, é gerado automaticamente. Usado para assinar payloads (HMAC-SHA256 no header `X-Signature`).
+</ParamField>
+
+<ParamField body="events" type="array<string>" required>
+  Lista de eventos. Veja [eventos disponíveis](#eventos-disponíveis).
+</ParamField>
+
+<ParamField body="is_active" type="boolean">Default `true`.</ParamField>
+
+## Eventos disponíveis
+
+| Evento | Disparo |
+|---|---|
+| `payment.approved` | Pagamento único aprovado |
+| `payment.failed` | Pagamento recusado |
+| `subscription.created` | Nova assinatura |
+| `subscription.updated` | Mudança de status |
+| `subscription.canceled` | Cancelamento |
+| `student.enrolled` | Aluno matriculado |
+| `access.revoked` | Acesso revogado |
+| `refund.created` | Reembolso processado |
+
+<RequestExample>
+```bash cURL
+curl https://seu-dominio/api/v1/webhooks \
+  -H "Authorization: Bearer aut_..." \
+  -H "Idempotency-Key: webhook-n8n-prod-001" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "n8n produção",
+    "url": "https://n8n.example.com/webhook/autoral",
+    "events": ["payment.approved", "student.enrolled"]
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 201
+{
+  "data": {
+    "id": 1,
+    "name": "n8n produção",
+    "url": "https://n8n.example.com/webhook/autoral",
+    "events": ["payment.approved", "student.enrolled"],
+    "is_active": true,
+    "created_at": "2026-05-05T19:00:00+00:00"
+  }
+}
+```
+</ResponseExample>
+
+<Warning>
+  O `secret` retornado **só aparece na criação**. Anote-o se gerado pelo servidor.
+</Warning>

@@ -1,0 +1,31 @@
+---
+title: "Detalhes do certificado"
+api: "GET /v1/certificates/{certificate}"
+description: "Retorna um certificado."
+---
+
+**Escopo:** `certificates:read`
+
+<ParamField path="certificate" type="integer" required>ID.</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://seu-dominio/api/v1/certificates/50 \
+  -H "Authorization: Bearer aut_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": {
+    "id": 50,
+    "user_id": 42,
+    "course_id": 1,
+    "certificate_number": "CERT-2026-000050",
+    "completion_percentage": "100.00",
+    "issued_at": "2026-04-30T14:00:00+00:00"
+  }
+}
+```
+</ResponseExample>

@@ -1,0 +1,75 @@
+---
+title: "Criando tokens"
+description: "Passo-a-passo para criar Personal Access Tokens no painel administrativo."
+---
+
+Apenas usuários com role **Super Admin** na tenant podem criar tokens.
+
+## Pré-requisitos
+
+<Check>Plano permite tokens de API (`allow_api_tokens=true`).</Check>
+<Check>Você tem role **Super Admin** na tenant.</Check>
+<Check>Não atingiu `max_api_tokens` do plano.</Check>
+
+## Passo-a-passo
+
+<Steps>
+  <Step title="Acesse Configurações → Tokens de API">
+    No painel admin, vá em **Configurações** e clique em **Tokens de API** (seção *Desenvolvedores*).
+  </Step>
+
+  <Step title="Clique em 'Novo token'">
+    Se o botão estiver desabilitado, é porque seu plano não inclui o recurso ou você atingiu o limite.
+  </Step>
+
+  <Step title="Preencha o formulário">
+    <ParamField path="name" type="string" required>
+      Nome curto e descritivo. Ex: `n8n produção`, `Zapier - matrícula`, `Cron interno`.
+    </ParamField>
+
+    <ParamField path="description" type="string">
+      Descrição livre do uso. Útil para auditoria futura.
+    </ParamField>
+
+    <ParamField path="expires_at" type="date">
+      Data de expiração opcional. Recomendado para integrações temporárias e testes.
+    </ParamField>
+
+    <ParamField path="scopes" type="array<string>" required>
+      Lista de escopos. Marque **apenas o necessário** — princípio do menor privilégio. Veja [Escopos](/authentication/scopes).
+    </ParamField>
+
+    <ParamField path="allowed_ips" type="textarea">
+      Lista de IPs ou blocos CIDR (um por linha). Vazio = qualquer IP. Veja [IP allowlist](/authentication/ip-allowlist).
+    </ParamField>
+  </Step>
+
+  <Step title="Clique em 'Criar token'">
+    Um modal aparece com o token em texto puro.
+
+    <Warning>
+      **Copie agora.** O token nunca mais será exibido. Se perder, você precisará revogar e criar outro.
+    </Warning>
+  </Step>
+
+  <Step title="Armazene em local seguro">
+    Use um secrets manager (1Password, Vault, AWS Secrets Manager, GitHub Secrets, variáveis de ambiente do servidor). Nunca commite em repositório.
+  </Step>
+</Steps>
+
+## Programaticamente (via API)
+
+<Note>
+  Atualmente **não é possível criar tokens via API** — apenas pelo painel. Tokens podem criar webhooks, conceder acessos, etc., mas não tokens novos. Isso evita escalonamento de privilégios em caso de comprometimento.
+</Note>
+
+## Limites por plano
+
+| Plano | `allow_api_tokens` | `max_api_tokens` | `api_rate_limit_per_minute` |
+|---|---|---|---|
+| Free | ❌ | 0 | — |
+| Lite | ✅ | 3 | 60 |
+| Pro | ✅ | 10 | 300 |
+| Scale | ✅ | 50 | 1.200 |
+
+Tokens revogados **não contam** para o limite. Tokens expirados também são liberados.

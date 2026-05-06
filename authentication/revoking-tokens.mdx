@@ -1,0 +1,70 @@
+---
+title: "Revogando tokens"
+description: "Como revogar tokens comprometidos ou não mais necessários."
+---
+
+Revogar um token é **imediato e irreversível**. Próximas requisições retornam `401 token_revoked`. O registro permanece no banco para auditoria (soft-revoke).
+
+## Quando revogar
+
+<CardGroup cols={2}>
+  <Card title="Suspeita de vazamento" icon="triangle-exclamation">
+    Token commitado por engano, log compartilhado, funcionário desligado.
+  </Card>
+  <Card title="Integração descomissionada" icon="trash">
+    Sistema não usa mais a API.
+  </Card>
+  <Card title="Rotação periódica" icon="rotate">
+    Boa prática de higiene de credenciais.
+  </Card>
+  <Card title="Alerta de secret-scanner" icon="bell">
+    GitHub/GitLab detectou padrão `aut_` em repo público.
+  </Card>
+</CardGroup>
+
+## Como revogar
+
+<Steps>
+  <Step title="Acesse Configurações → Tokens de API">
+    No painel admin, listagem de tokens.
+  </Step>
+
+  <Step title="Clique no ícone X (revogar)">
+    Botão vermelho ao lado do token. Disponível apenas para tokens ativos.
+  </Step>
+
+  <Step title="Confirme no modal">
+    Botão **Revogar**. A operação não pode ser desfeita.
+  </Step>
+
+  <Step title="Verifique o status">
+    O token aparecerá com badge "Revogado" e linha em opacidade reduzida. O campo `revoked_at` é preenchido com `now()` e `revoked_by_user_id` registra quem revogou.
+  </Step>
+</Steps>
+
+## Comportamento pós-revogação
+
+- Próxima request → `401 token_revoked`.
+- Token continua aparecendo na listagem (auditoria).
+- Não conta para o limite `max_api_tokens` do plano.
+- Não pode ser "desrevogado". Crie um novo se necessário.
+
+## Boas práticas em incidentes
+
+<Steps>
+  <Step title="Revogue imediatamente">
+    Não espere para investigar. Revogue primeiro, investigue depois.
+  </Step>
+  <Step title="Audite uso recente">
+    Cheque `last_used_at` e logs do servidor pelo `X-Request-Id` se você correlaciona.
+  </Step>
+  <Step title="Verifique side-effects">
+    Se o token tinha `students:write` ou `payments:refund`, audite registros criados/alterados no período suspeito.
+  </Step>
+  <Step title="Crie token de substituição">
+    Com escopos menores, IP allowlist, e expiração curta se possível.
+  </Step>
+  <Step title="Documente">
+    Registre o incidente e a remediação para auditoria futura.
+  </Step>
+</Steps>

@@ -1,0 +1,30 @@
+---
+title: "Detalhes do lead"
+api: "GET /v1/leads/{lead}"
+description: "Retorna um lead."
+---
+
+**Escopo:** `leads:read`
+
+<ParamField path="lead" type="integer" required>ID.</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://seu-dominio/api/v1/leads/100 \
+  -H "Authorization: Bearer aut_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": {
+    "id": 100,
+    "checkout_id": 5,
+    "name": "João Silva",
+    "email": "joao@example.com",
+    "status": "pending"
+  }
+}
+```
+</ResponseExample>

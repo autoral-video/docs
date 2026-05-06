@@ -1,0 +1,56 @@
+---
+title: "Listar checkouts"
+api: "GET /v1/checkouts"
+description: "Lista paginada (cursor) de páginas de checkout."
+---
+
+**Escopo:** `checkouts:read`
+
+## Query params
+
+<ParamField query="per_page" type="integer" default="25">1-100.</ParamField>
+<ParamField query="active" type="boolean">Filtra ativos/inativos.</ParamField>
+
+## Response
+
+<ResponseField name="data[].id" type="integer">ID.</ResponseField>
+<ResponseField name="data[].name" type="string">Nome.</ResponseField>
+<ResponseField name="data[].slug" type="string">Slug (URL pública).</ResponseField>
+<ResponseField name="data[].course_id" type="integer">Curso vinculado.</ResponseField>
+<ResponseField name="data[].offer_id" type="integer">Oferta vinculada.</ResponseField>
+<ResponseField name="data[].class_id" type="integer|null">Turma.</ResponseField>
+<ResponseField name="data[].access_type" type="string">`lifetime`, `temporary`, `subscription`.</ResponseField>
+<ResponseField name="data[].is_active" type="boolean">Ativo.</ResponseField>
+<ResponseField name="data[].sales_count" type="integer">Vendas totais.</ResponseField>
+<ResponseField name="data[].payment_methods" type="array">Métodos aceitos.</ResponseField>
+<ResponseField name="data[].allow_refund" type="boolean">Permite reembolso.</ResponseField>
+
+<RequestExample>
+```bash cURL
+curl 'https://seu-dominio/api/v1/checkouts?active=true' \
+  -H "Authorization: Bearer aut_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": [
+    {
+      "id": 5,
+      "name": "Curso PHP - Padrão",
+      "slug": "curso-php-padrao",
+      "course_id": 1,
+      "offer_id": 10,
+      "class_id": null,
+      "access_type": "lifetime",
+      "is_active": true,
+      "sales_count": 247,
+      "payment_methods": ["card", "pix", "boleto"],
+      "allow_refund": true,
+      "refund_days_limit": 7
+    }
+  ]
+}
+```
+</ResponseExample>

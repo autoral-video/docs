@@ -1,0 +1,23 @@
+---
+title: "Remover cupom"
+api: "DELETE /v1/coupons/{coupon}"
+description: "Soft delete de cupom."
+---
+
+**Escopo:** `coupons:write`
+
+Soft delete (registro permanece no banco com `deleted_at` preenchido). Usos passados ficam preservados.
+
+<ParamField path="coupon" type="integer" required>ID.</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X DELETE https://seu-dominio/api/v1/coupons/1 \
+  -H "Authorization: Bearer aut_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```http 204 No Content
+```
+</ResponseExample>

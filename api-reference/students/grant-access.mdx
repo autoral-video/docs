@@ -1,0 +1,107 @@
+---
+title: "Conceder acesso"
+api: "POST /v1/students/{student}/access"
+description: "Matricula o aluno em um curso da tenant."
+---
+
+**Escopo:** `students:write`
+**Idempotency:** suportada (`Idempotency-Key`)
+
+Cria um registro de [Access](/api-reference/access/list) para o par `(student, course)`. Se já existir matrícula ativa, **estende** a expiração ou faz upgrade para vitalício.
+
+Dispara webhook `student.enrolled` para sistemas externos.
+
+## Path params
+
+<ParamField path="student" type="integer" required>ID do aluno (user).</ParamField>
+
+## Body params
+
+<ParamField body="course_id" type="integer" required>
+  ID do curso. Deve pertencer à tenant.
+</ParamField>
+
+<ParamField body="type" type="string" required>
+  `lifetime`, `temporary` ou `subscription`.
+</ParamField>
+
+<ParamField body="duration" type="string">
+  `monthly`, `quarterly`, `semiannual`, `annual`. Usado quando `type=temporary` ou `subscription`.
+</ParamField>
+
+<ParamField body="days" type="integer">
+  Dias de duração customizados. Sobrepõe `duration` se ambos definidos.
+</ParamField>
+
+<ParamField body="class_id" type="integer">
+  ID da turma (opcional).
+</ParamField>
+
+<ParamField body="notes" type="string">
+  Observação livre. Útil para auditoria (ex: "Cortesia comercial").
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://seu-dominio/api/v1/students/42/access \
+  -H "Authorization: Bearer aut_..." \
+  -H "Idempotency-Key: enroll-42-course-1-2026-05-05" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "course_id": 1,
+    "type": "lifetime",
+    "notes": "Cortesia"
+  }'
+```
+
+```javascript Node.js
+await fetch('https://seu-dominio/api/v1/students/42/access', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer aut_...',
+    'Idempotency-Key': crypto.randomUUID(),
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    course_id: 1,
+    type: 'temporary',
+    duration: 'annual',
+  }),
+});
+```
+</RequestExample>
+
+<ResponseExample>
+```json 201
+{
+  "data": {
+    "id": 1234,
+    "user_id": 42,
+    "course_id": 1,
+    "checkout_id": null,
+    "subscription_id": null,
+    "class_id": null,
+    "type": "lifetime",
+    "duration": null,
+    "is_active": true,
+    "granted_at": "2026-05-05T19:00:00+00:00",
+    "expires_at": null,
+    "created_at": "2026-05-05T19:00:00+00:00"
+  }
+}
+```
+
+```json 422
+{
+  "error": {
+    "type": "validation_error",
+    "title": "Dados inválidos.",
+    "status": 422,
+    "errors": {
+      "course_id": ["Curso não encontrado."]
+    },
+    "request_id": "..."
+  }
+}
+```
+</ResponseExample>

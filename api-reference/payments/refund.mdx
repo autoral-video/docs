@@ -1,0 +1,70 @@
+---
+title: "Reembolsar pagamento"
+api: "POST /v1/payments/{payment}/refunds"
+description: "Cria solicitação de reembolso e processa no gateway."
+---
+
+**Escopo:** `payments:refund`
+**Idempotency:** **fortemente recomendada**
+
+Cria um `RefundRequest`, aprova automaticamente e dispara o reembolso no gateway (Stripe/MP/Asaas). O acesso vinculado ao pagamento é revogado.
+
+<Warning>
+  Operação **sensível**. Use sempre `Idempotency-Key` para evitar reembolsos duplicados em caso de retry.
+</Warning>
+
+## Path params
+
+<ParamField path="payment" type="integer" required>ID do pagamento.</ParamField>
+
+## Body params
+
+<ParamField body="reason" type="string">
+  Motivo do reembolso (registrado em audit log).
+</ParamField>
+
+<ParamField body="amount" type="integer">
+  Valor parcial em centavos. Se omitido, reembolsa o total.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://seu-dominio/api/v1/payments/5001/refunds \
+  -H "Authorization: Bearer aut_..." \
+  -H "Idempotency-Key: refund-5001-2026-05-05" \
+  -H "Content-Type: application/json" \
+  -d '{"reason": "Cliente solicitou cancelamento"}'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 202
+{
+  "data": {
+    "refund_request_id": 77,
+    "payment_id": 5001,
+    "status": "refunded"
+  }
+}
+```
+
+```json 422
+{
+  "error": {
+    "type": "payment_not_refundable",
+    "title": "Este pagamento não é elegível para reembolso.",
+    "status": 422,
+    "request_id": "..."
+  }
+}
+```
+</ResponseExample>
+
+## Critérios de elegibilidade
+
+Um pagamento é reembolsável se:
+
+- `status` = `succeeded`
+- Não tem `RefundRequest` pendente/processado
+- O checkout permite refund (`allow_refund=true`)
+- Está dentro do prazo (`refund_days_limit`)

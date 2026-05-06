@@ -1,0 +1,76 @@
+---
+title: "Request ID"
+description: "Identificador único de cada request — para correlação em logs e suporte."
+---
+
+Toda request recebe (ou herda) um identificador único, retornado no header `X-Request-Id` da resposta.
+
+## Como funciona
+
+<Steps>
+  <Step title="Cliente envia (opcional)">
+    Se você incluir `X-Request-Id` na request com valor válido (8-64 chars `[a-zA-Z0-9-]`), o servidor honra.
+  </Step>
+  <Step title="Servidor gera (default)">
+    Se ausente ou malformado, o servidor gera um UUID v4.
+  </Step>
+  <Step title="Resposta inclui">
+    `X-Request-Id` no header da resposta + `request_id` no envelope de erro (se houver).
+  </Step>
+  <Step title="Logs do servidor referenciam">
+    Toda linha de log relacionada à request inclui o ID.
+  </Step>
+</Steps>
+
+## Por que importa
+
+<CardGroup cols={2}>
+  <Card title="Suporte" icon="headset">
+    Quando reportar um problema, mande o `X-Request-Id` — encontramos a request em segundos.
+  </Card>
+  <Card title="Distributed tracing" icon="link">
+    Propague o ID nos seus próprios logs/spans para tracing end-to-end.
+  </Card>
+  <Card title="Debug de webhooks" icon="bug">
+    Correlacione webhook recebido com request original.
+  </Card>
+  <Card title="Reproducibilidade" icon="microscope">
+    Logs estruturados ficam navegáveis por ID único.
+  </Card>
+</CardGroup>
+
+## Exemplo
+
+```bash
+curl -i https://seu-dominio/api/v1/me \
+  -H "Authorization: Bearer aut_..." \
+  -H "X-Request-Id: my-app-trace-abc123"
+```
+
+Resposta:
+
+```http
+HTTP/1.1 200 OK
+X-Request-Id: my-app-trace-abc123
+Content-Type: application/json
+
+{ "data": {...} }
+```
+
+## Em respostas de erro
+
+```json
+{
+  "error": {
+    "type": "validation_error",
+    "title": "Dados inválidos.",
+    "status": 422,
+    "errors": {...},
+    "request_id": "550e8400-e29b-41d4-a716-446655440000"
+  }
+}
+```
+
+<Tip>
+  Sempre logue `request_id` no seu cliente quando uma chamada falhar. É a chave para o suporte resolver rapidamente.
+</Tip>

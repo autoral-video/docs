@@ -1,0 +1,53 @@
+---
+title: "Listar perguntas"
+api: "GET /v1/questions"
+description: "Lista paginada (cursor) de perguntas em aulas."
+---
+
+**Escopo:** `questions:read`
+
+## Query params
+
+<ParamField query="per_page" type="integer" default="25">1-100.</ParamField>
+<ParamField query="status" type="string">`pending`, `viewed`, `answered`.</ParamField>
+<ParamField query="lesson_id" type="integer">Filtra por aula.</ParamField>
+
+## Response
+
+<ResponseField name="data[].id" type="integer">ID.</ResponseField>
+<ResponseField name="data[].user_id" type="integer">Quem perguntou.</ResponseField>
+<ResponseField name="data[].lesson_id" type="integer">Aula.</ResponseField>
+<ResponseField name="data[].question" type="string">Pergunta.</ResponseField>
+<ResponseField name="data[].answer" type="string|null">Resposta (se houver).</ResponseField>
+<ResponseField name="data[].answered_by" type="integer|null">User que respondeu.</ResponseField>
+<ResponseField name="data[].status" type="string">Status atual.</ResponseField>
+<ResponseField name="data[].viewed_at" type="string|null">ISO 8601.</ResponseField>
+<ResponseField name="data[].answered_at" type="string|null">ISO 8601.</ResponseField>
+
+<RequestExample>
+```bash cURL
+curl 'https://seu-dominio/api/v1/questions?status=pending' \
+  -H "Authorization: Bearer aut_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": [
+    {
+      "id": 200,
+      "user_id": 42,
+      "lesson_id": 100,
+      "question": "Como funciona X?",
+      "answer": null,
+      "answered_by": null,
+      "status": "pending",
+      "viewed_at": null,
+      "answered_at": null,
+      "created_at": "2026-05-05T17:00:00+00:00"
+    }
+  ]
+}
+```
+</ResponseExample>

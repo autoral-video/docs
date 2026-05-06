@@ -1,0 +1,33 @@
+---
+title: "Detalhes da assinatura"
+api: "GET /v1/subscriptions/{subscription}"
+description: "Retorna uma assinatura."
+---
+
+**Escopo:** `subscriptions:read`
+
+<ParamField path="subscription" type="integer" required>ID.</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://seu-dominio/api/v1/subscriptions/9001 \
+  -H "Authorization: Bearer aut_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": {
+    "id": 9001,
+    "user_id": 42,
+    "gateway": "stripe",
+    "status": "active",
+    "amount": "199.90",
+    "currency": "BRL",
+    "billing_period": "month",
+    "current_period_end": "2026-06-01T00:00:00+00:00"
+  }
+}
+```
+</ResponseExample>

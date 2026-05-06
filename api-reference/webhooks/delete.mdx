@@ -1,0 +1,21 @@
+---
+title: "Remover webhook"
+api: "DELETE /v1/webhooks/{webhook}"
+description: "Remove um webhook outgoing."
+---
+
+**Escopo:** `webhooks:write`
+
+<ParamField path="webhook" type="integer" required>ID.</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X DELETE https://seu-dominio/api/v1/webhooks/1 \
+  -H "Authorization: Bearer aut_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```http 204 No Content
+```
+</ResponseExample>

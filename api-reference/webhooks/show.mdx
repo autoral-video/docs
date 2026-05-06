@@ -1,0 +1,30 @@
+---
+title: "Detalhes do webhook"
+api: "GET /v1/webhooks/{webhook}"
+description: "Retorna um webhook."
+---
+
+**Escopo:** `webhooks:read`
+
+<ParamField path="webhook" type="integer" required>ID.</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://seu-dominio/api/v1/webhooks/1 \
+  -H "Authorization: Bearer aut_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": {
+    "id": 1,
+    "name": "n8n produção",
+    "url": "https://n8n.example.com/webhook/autoral",
+    "events": ["payment.approved"],
+    "is_active": true
+  }
+}
+```
+</ResponseExample>

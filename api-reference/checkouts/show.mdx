@@ -1,0 +1,31 @@
+---
+title: "Detalhes do checkout"
+api: "GET /v1/checkouts/{checkout}"
+description: "Retorna um checkout."
+---
+
+**Escopo:** `checkouts:read`
+
+<ParamField path="checkout" type="integer" required>ID.</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://seu-dominio/api/v1/checkouts/5 \
+  -H "Authorization: Bearer aut_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": {
+    "id": 5,
+    "name": "Curso PHP - Padrão",
+    "slug": "curso-php-padrao",
+    "course_id": 1,
+    "is_active": true,
+    "payment_methods": ["card", "pix"]
+  }
+}
+```
+</ResponseExample>

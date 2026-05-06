@@ -1,0 +1,52 @@
+---
+title: "Listar webhooks"
+api: "GET /v1/webhooks"
+description: "Lista paginada (length-aware) de webhooks outgoing."
+---
+
+**Escopo:** `webhooks:read`
+
+Webhooks **outgoing** são endpoints externos que a plataforma chama quando eventos ocorrem (pagamento aprovado, aluno matriculado, etc.).
+
+## Query params
+
+<ParamField query="per_page" type="integer" default="25">1-100.</ParamField>
+<ParamField query="active" type="boolean">Filtra ativos/inativos.</ParamField>
+
+## Response
+
+<ResponseField name="data[].id" type="integer">ID.</ResponseField>
+<ResponseField name="data[].name" type="string">Nome.</ResponseField>
+<ResponseField name="data[].url" type="string">Endpoint HTTPS.</ResponseField>
+<ResponseField name="data[].events" type="array<string>">Eventos assinados.</ResponseField>
+<ResponseField name="data[].is_active" type="boolean">Ativo.</ResponseField>
+
+<RequestExample>
+```bash cURL
+curl https://seu-dominio/api/v1/webhooks \
+  -H "Authorization: Bearer aut_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "n8n produção",
+      "url": "https://n8n.example.com/webhook/autoral",
+      "events": ["payment.approved", "student.enrolled"],
+      "is_active": true,
+      "created_at": "2026-05-01T10:00:00+00:00",
+      "updated_at": "2026-05-01T10:00:00+00:00"
+    }
+  ],
+  "meta": { "total": 3 }
+}
+```
+</ResponseExample>
+
+<Note>
+  O **secret** do webhook nunca é retornado pela API — fica encriptado no banco. Para regenerar, delete e crie outro.
+</Note>

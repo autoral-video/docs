@@ -1,0 +1,64 @@
+---
+title: "IP allowlist"
+description: "Restrinja a origem das requisições de um token a IPs específicos."
+---
+
+Cada token aceita uma lista opcional de IPs (IPv4/IPv6) ou blocos CIDR. Se preenchida, requests vindas de outros IPs retornam **403 `ip_not_allowed`**.
+
+## Quando usar
+
+<CardGroup cols={2}>
+  <Card title="Cron jobs com IP fixo" icon="server">
+    Servidor de tarefas com IP estático conhecido.
+  </Card>
+  <Card title="Integrações on-premise" icon="building">
+    Sua infra atrás de NAT corporativo.
+  </Card>
+  <Card title="Defesa em profundidade" icon="shield">
+    Mesmo se o token vazar, atacante precisa estar no IP permitido.
+  </Card>
+  <Card title="Compliance" icon="scale-balanced">
+    Auditoria que exige rastreabilidade de origem.
+  </Card>
+</CardGroup>
+
+## Formato
+
+Um item por linha no campo **IPs permitidos** ao criar o token:
+
+```
+192.168.1.10
+10.0.0.0/24
+2001:db8::/32
+203.0.113.42
+```
+
+## Quando NÃO usar
+
+<Warning>
+  Não use IP allowlist com clientes em **redes residenciais**, **móveis**, **clouds com IPs efêmeros** (ex: AWS Lambda, Cloud Run sem NAT) ou **plataformas SaaS** (Zapier, Make) — os IPs mudam.
+</Warning>
+
+Para essas integrações, prefira:
+- Token de curta duração (`expires_at`).
+- Escopo mínimo.
+- Rotação periódica.
+
+## Suporte a CIDR
+
+A validação aceita máscaras IPv4 (`/0`-`/32`) e IPv6 (`/0`-`/128`). Implementação usa `Symfony\Component\HttpFoundation\IpUtils::checkIp`.
+
+| Entrada | Match |
+|---|---|
+| `192.168.1.10` | exatamente este IP |
+| `192.168.1.0/24` | `192.168.1.0` até `192.168.1.255` |
+| `10.0.0.0/8` | toda a rede `10.x.x.x` |
+| `0.0.0.0/0` | qualquer IPv4 (equivalente a sem allowlist) |
+
+## Verificando IP do cliente
+
+A API obtém o IP via `$request->ip()` — por padrão o IP da conexão TCP. Se sua API estiver atrás de proxy/load-balancer, certifique-se de que `TrustedProxies` está configurado corretamente para que o `X-Forwarded-For` seja respeitado.
+
+<Note>
+  No painel admin, ao criar um token você pode incluir IPs públicos de seus servidores. Consulte `https://api.ipify.org` ou `curl ifconfig.me` para descobrir o IP público de origem.
+</Note>

@@ -1,0 +1,25 @@
+---
+title: "Remover matrícula"
+api: "DELETE /v1/access/{access}"
+description: "Marca matrícula como inativa (soft revoke)."
+---
+
+**Escopo:** `access:write`
+
+<ParamField path="access" type="integer" required>ID do Access.</ParamField>
+
+<ParamField body="reason" type="string">Motivo (vai para `notes`).</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X DELETE https://seu-dominio/api/v1/access/1234 \
+  -H "Authorization: Bearer aut_..." \
+  -H "Content-Type: application/json" \
+  -d '{"reason": "Encerramento de turma"}'
+```
+</RequestExample>
+
+<ResponseExample>
+```http 204 No Content
+```
+</ResponseExample>

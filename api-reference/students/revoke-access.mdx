@@ -1,0 +1,38 @@
+---
+title: "Revogar acesso"
+api: "DELETE /v1/students/{student}/access/{access}"
+description: "Marca uma matrícula como inativa (soft revoke)."
+---
+
+**Escopo:** `students:write`
+
+A matrícula é **marcada inativa** (`is_active=false`) — não deletada. Mantém histórico para auditoria. Dispara webhook `access.revoked`.
+
+## Path params
+
+<ParamField path="student" type="integer" required>ID do aluno.</ParamField>
+<ParamField path="access" type="integer" required>ID do registro de Access.</ParamField>
+
+## Body params
+
+<ParamField body="reason" type="string">
+  Motivo da revogação. Adicionado às `notes` do Access.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X DELETE https://seu-dominio/api/v1/students/42/access/1234 \
+  -H "Authorization: Bearer aut_..." \
+  -H "Content-Type: application/json" \
+  -d '{"reason": "Reembolso processado"}'
+```
+</RequestExample>
+
+<ResponseExample>
+```http 204 No Content
+```
+</ResponseExample>
+
+<Warning>
+  Se `access.user_id` não bater com `{student}`, retorna 404.
+</Warning>

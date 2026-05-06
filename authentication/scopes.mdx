@@ -1,0 +1,109 @@
+---
+title: "Escopos"
+description: "Permissões granulares aplicadas a cada token."
+---
+
+Cada token carrega uma lista fixa de escopos no formato `recurso:ação`. O servidor aplica esses escopos por endpoint via middleware `ability:*`.
+
+## Como funcionam
+
+- Quando você faz `GET /api/v1/courses`, o servidor exige `courses:read`.
+- Quando você faz `POST /api/v1/leads`, o servidor exige `leads:write`.
+- Faltou o escopo? **403 Forbidden**.
+
+<Tip>
+  Princípio do menor privilégio — emita tokens com o **mínimo** de escopos. Um token só de leitura vazado é menos perigoso que um com `students:write`.
+</Tip>
+
+## Lista completa
+
+### Conteúdo
+
+| Escopo | Permite |
+|---|---|
+| `courses:read` | Listar e ver cursos, listar módulos de um curso. |
+| `courses:write` | (reservado) |
+| `modules:read` | Listar aulas de um módulo. |
+| `lessons:read` | Ver detalhes de uma aula. |
+
+### Alunos & Acesso
+
+| Escopo | Permite |
+|---|---|
+| `students:read` | Listar e ver alunos. |
+| `students:write` | Conceder/revogar acesso a cursos. |
+| `access:read` | Listar matrículas (registros de Access). |
+| `access:write` | Criar/remover matrículas diretamente. |
+
+### Financeiro
+
+| Escopo | Permite |
+|---|---|
+| `payments:read` | Listar e ver pagamentos. |
+| `payments:refund` | Solicitar reembolso. **Sensível.** |
+| `subscriptions:read` | Listar e ver assinaturas. |
+| `subscriptions:cancel` | Cancelar assinaturas no gateway. **Sensível.** |
+
+### Marketing
+
+| Escopo | Permite |
+|---|---|
+| `coupons:read` | Listar e ver cupons. |
+| `coupons:write` | Criar e remover cupons. |
+| `leads:read` | Listar leads. |
+| `leads:write` | Criar leads (capturar de formulários externos). |
+| `checkouts:read` | Listar e ver checkouts (somente leitura). |
+
+### Conta & Integrações
+
+| Escopo | Permite |
+|---|---|
+| `certificates:read` | Listar e ver certificados emitidos. |
+| `questions:read` | Listar e ver perguntas em aulas. |
+| `webhooks:read` | Listar e ver webhooks outgoing. |
+| `webhooks:write` | Criar e remover webhooks. |
+
+## Combinações comuns
+
+<AccordionGroup>
+  <Accordion title="Read-only (dashboard externo)">
+    `courses:read`, `modules:read`, `lessons:read`, `students:read`, `payments:read`, `subscriptions:read`, `coupons:read`, `leads:read`, `checkouts:read`, `certificates:read`
+  </Accordion>
+
+  <Accordion title="Integração de matrícula (n8n/Zapier)">
+    `students:read`, `students:write`, `courses:read`
+  </Accordion>
+
+  <Accordion title="Captura de leads (form externo)">
+    `leads:write`, `checkouts:read`
+  </Accordion>
+
+  <Accordion title="Gestão financeira">
+    `payments:read`, `payments:refund`, `subscriptions:read`, `subscriptions:cancel`
+  </Accordion>
+
+  <Accordion title="Provisionar webhooks programaticamente">
+    `webhooks:read`, `webhooks:write`
+  </Accordion>
+</AccordionGroup>
+
+## Validando escopos do token atual
+
+```bash
+curl https://seu-dominio/api/v1/me \
+  -H "Authorization: Bearer aut_..."
+```
+
+```json
+{
+  "data": {
+    "token": {
+      "abilities": ["courses:read", "students:write"]
+    }
+  }
+}
+```
+
+<Warning>
+  Mudou os escopos necessários da sua integração? Você precisa **criar um novo token** — escopos não são editáveis após a emissão.
+</Warning>

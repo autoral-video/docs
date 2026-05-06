@@ -1,0 +1,30 @@
+---
+title: "Detalhes do cupom"
+api: "GET /v1/coupons/{coupon}"
+description: "Retorna um cupom."
+---
+
+**Escopo:** `coupons:read`
+
+<ParamField path="coupon" type="integer" required>ID.</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://seu-dominio/api/v1/coupons/1 \
+  -H "Authorization: Bearer aut_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": {
+    "id": 1,
+    "code": "BLACK-FRIDAY",
+    "discount_type": "percentage",
+    "discount_value": "25.00",
+    "is_active": true
+  }
+}
+```
+</ResponseExample>

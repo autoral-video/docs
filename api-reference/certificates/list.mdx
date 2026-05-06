@@ -1,0 +1,50 @@
+---
+title: "Listar certificados"
+api: "GET /v1/certificates"
+description: "Lista paginada (cursor) de certificados emitidos."
+---
+
+**Escopo:** `certificates:read`
+
+## Query params
+
+<ParamField query="per_page" type="integer" default="25">1-100.</ParamField>
+<ParamField query="course_id" type="integer">Filtra por curso.</ParamField>
+<ParamField query="user_id" type="integer">Filtra por aluno.</ParamField>
+
+## Response
+
+<ResponseField name="data[].id" type="integer">ID.</ResponseField>
+<ResponseField name="data[].user_id" type="integer">FK do user.</ResponseField>
+<ResponseField name="data[].course_id" type="integer">FK do curso.</ResponseField>
+<ResponseField name="data[].certificate_number" type="string">Número público.</ResponseField>
+<ResponseField name="data[].completion_percentage" type="string">Decimal.</ResponseField>
+<ResponseField name="data[].issued_at" type="string|null">ISO 8601.</ResponseField>
+<ResponseField name="data[].expires_at" type="string|null">ISO 8601.</ResponseField>
+<ResponseField name="data[].revoked_at" type="string|null">ISO 8601.</ResponseField>
+
+<RequestExample>
+```bash cURL
+curl 'https://seu-dominio/api/v1/certificates?course_id=1' \
+  -H "Authorization: Bearer aut_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": [
+    {
+      "id": 50,
+      "user_id": 42,
+      "course_id": 1,
+      "certificate_number": "CERT-2026-000050",
+      "completion_percentage": "100.00",
+      "issued_at": "2026-04-30T14:00:00+00:00",
+      "expires_at": null,
+      "revoked_at": null
+    }
+  ]
+}
+```
+</ResponseExample>

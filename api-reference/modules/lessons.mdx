@@ -1,0 +1,58 @@
+---
+title: "Listar aulas do módulo"
+api: "GET /v1/modules/{module}/lessons"
+description: "Lista paginada de aulas de um módulo."
+---
+
+**Escopo:** `modules:read`
+
+## Path params
+
+<ParamField path="module" type="integer" required>ID do módulo.</ParamField>
+
+## Query params
+
+<ParamField query="per_page" type="integer" default="25">1-100.</ParamField>
+
+## Response
+
+<ResponseField name="data[].id" type="integer">ID.</ResponseField>
+<ResponseField name="data[].module_id" type="integer">FK do módulo.</ResponseField>
+<ResponseField name="data[].type" type="string">`video`, `article` ou `quiz`.</ResponseField>
+<ResponseField name="data[].title" type="string">Título.</ResponseField>
+<ResponseField name="data[].slug" type="string">Slug.</ResponseField>
+<ResponseField name="data[].description" type="string|null">Descrição.</ResponseField>
+<ResponseField name="data[].duration_seconds" type="integer">Duração total.</ResponseField>
+<ResponseField name="data[].sort_order" type="integer">Ordem.</ResponseField>
+<ResponseField name="data[].is_active" type="boolean">Ativa.</ResponseField>
+<ResponseField name="data[].is_free" type="boolean">Aula gratuita (preview).</ResponseField>
+
+<RequestExample>
+```bash cURL
+curl https://seu-dominio/api/v1/modules/10/lessons \
+  -H "Authorization: Bearer aut_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": [
+    {
+      "id": 100,
+      "module_id": 10,
+      "type": "video",
+      "title": "Bem-vindo",
+      "slug": "bem-vindo",
+      "description": "Introdução do módulo.",
+      "duration_seconds": 320,
+      "sort_order": 1,
+      "is_active": true,
+      "is_free": true,
+      "created_at": "2026-01-15T10:00:00+00:00",
+      "updated_at": "2026-01-15T10:00:00+00:00"
+    }
+  ]
+}
+```
+</ResponseExample>
