@@ -1,0 +1,27 @@
+---
+title: "Remover produto"
+api: "DELETE /v1/products/{product}"
+description: "Soft delete do produto e suas ofertas."
+---
+
+**Escopo:** `products:write`
+
+Soft delete (registro permanece com `deleted_at` preenchido). **Todas as ofertas vinculadas também são soft-deleted** automaticamente.
+
+<Warning>
+  Checkouts que apontam para ofertas deste produto **continuam funcionando** apenas se a oferta também for restaurada. Tenha cuidado em produção.
+</Warning>
+
+<ParamField path="product" type="integer" required>ID do produto.</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X DELETE https://seu-dominio/api/v1/products/10 \
+  -H "Authorization: Bearer aut_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```http 204 No Content
+```
+</ResponseExample>

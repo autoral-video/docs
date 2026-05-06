@@ -1,0 +1,77 @@
+---
+title: "Criar produto"
+api: "POST /v1/products"
+description: "Cria um produto vinculado a um curso da tenant."
+---
+
+**Escopo:** `products:write`
+**Idempotency:** suportada
+
+## Body params
+
+<ParamField body="name" type="string" required>1-120 chars.</ParamField>
+
+<ParamField body="description" type="string">Max 2000 chars.</ParamField>
+
+<ParamField body="course_id" type="integer" required>
+  ID do curso (deve pertencer à tenant).
+</ParamField>
+
+<ParamField body="is_active" type="boolean">Default `true`.</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://seu-dominio/api/v1/products \
+  -H "Authorization: Bearer aut_..." \
+  -H "Idempotency-Key: prod-php-vitalicio-001" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Curso PHP — Vitalício",
+    "description": "Acesso permanente.",
+    "course_id": 1,
+    "is_active": true
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 201
+{
+  "data": {
+    "id": 11,
+    "name": "Curso PHP — Vitalício",
+    "description": "Acesso permanente.",
+    "course_id": 1,
+    "is_active": true,
+    "created_at": "2026-05-05T19:00:00+00:00"
+  }
+}
+```
+
+```json 402
+{
+  "error": {
+    "type": "plan_limit_exceeded",
+    "title": "Limite de produtos do plano atingido.",
+    "status": 402
+  }
+}
+```
+
+```json 422
+{
+  "error": {
+    "type": "validation_error",
+    "errors": {
+      "course_id": ["Curso não encontrado."]
+    },
+    "status": 422
+  }
+}
+```
+</ResponseExample>
+
+## Limites
+
+- **Plano** — `max_products` define quantos produtos sua tenant pode ter ativos.
+- **Plataforma** — limite de segurança de 500 produtos por tenant (anti-abuse).

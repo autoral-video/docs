@@ -1,0 +1,52 @@
+---
+title: "Listar produtos"
+api: "GET /v1/products"
+description: "Lista paginada (length-aware) de produtos da tenant."
+---
+
+**Escopo:** `products:read`
+
+Produtos representam o "SKU" vinculado a um curso. Cada produto pode ter múltiplas ofertas (preços/planos).
+
+## Query params
+
+<ParamField query="per_page" type="integer" default="25">1-100.</ParamField>
+<ParamField query="page" type="integer" default="1">Página.</ParamField>
+<ParamField query="course_id" type="integer">Filtra por curso.</ParamField>
+<ParamField query="active" type="boolean">Filtra ativos/inativos.</ParamField>
+
+## Response
+
+<ResponseField name="data[].id" type="integer">ID.</ResponseField>
+<ResponseField name="data[].name" type="string">Nome.</ResponseField>
+<ResponseField name="data[].description" type="string|null">Descrição.</ResponseField>
+<ResponseField name="data[].course_id" type="integer">Curso vinculado.</ResponseField>
+<ResponseField name="data[].is_active" type="boolean">Ativo.</ResponseField>
+<ResponseField name="data[].offers_count" type="integer">Total de ofertas.</ResponseField>
+
+<RequestExample>
+```bash cURL
+curl 'https://seu-dominio/api/v1/products?course_id=1' \
+  -H "Authorization: Bearer aut_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": [
+    {
+      "id": 10,
+      "name": "Curso PHP — Acesso Vitalício",
+      "description": "Acesso permanente ao curso completo.",
+      "course_id": 1,
+      "is_active": true,
+      "offers_count": 3,
+      "created_at": "2026-01-15T10:00:00+00:00",
+      "updated_at": "2026-04-20T14:00:00+00:00"
+    }
+  ],
+  "meta": { "current_page": 1, "per_page": 25, "total": 18 }
+}
+```
+</ResponseExample>

@@ -1,0 +1,110 @@
+---
+title: "Criar oferta"
+api: "POST /v1/offers"
+description: "Cria uma oferta (preço/plano) vinculada a um produto."
+---
+
+**Escopo:** `offers:write`
+**Idempotency:** suportada
+
+## Body params
+
+<ParamField body="product_id" type="integer" required>
+  ID do produto (deve pertencer à tenant).
+</ParamField>
+
+<ParamField body="name" type="string" required>1-120 chars.</ParamField>
+
+<ParamField body="payment_type" type="string" required>
+  `one_time` ou `subscription`.
+</ParamField>
+
+<ParamField body="price" type="number" required>Preço decimal (≥ 0).</ParamField>
+
+<ParamField body="currency" type="string" required>
+  ISO 4217 (3 letras). Salvo em uppercase. Ex: `BRL`, `USD`.
+</ParamField>
+
+<ParamField body="billing_period" type="string">
+  `month`, `quarter`, `semester`, `year`. Obrigatório quando `payment_type=subscription`.
+</ParamField>
+
+<ParamField body="schedule_iterations" type="integer">
+  Número de cobranças antes da assinatura encerrar. Use para parcelamentos com fim definido.
+</ParamField>
+
+<ParamField body="is_active" type="boolean">Default `true`.</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://seu-dominio/api/v1/offers \
+  -H "Authorization: Bearer aut_..." \
+  -H "Idempotency-Key: offer-mensal-php-001" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "product_id": 10,
+    "name": "Mensal",
+    "payment_type": "subscription",
+    "price": 199.90,
+    "currency": "BRL",
+    "billing_period": "month"
+  }'
+```
+
+```javascript Node.js
+await fetch('https://seu-dominio/api/v1/offers', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer aut_...',
+    'Idempotency-Key': crypto.randomUUID(),
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    product_id: 10,
+    name: 'Anual',
+    payment_type: 'one_time',
+    price: 1990.00,
+    currency: 'BRL',
+  }),
+});
+```
+</RequestExample>
+
+<ResponseExample>
+```json 201
+{
+  "data": {
+    "id": 102,
+    "product_id": 10,
+    "name": "Mensal",
+    "payment_type": "subscription",
+    "price": "199.90",
+    "currency": "BRL",
+    "billing_period": "month",
+    "is_active": true,
+    "created_at": "2026-05-05T19:00:00+00:00"
+  }
+}
+```
+
+```json 422
+{
+  "error": {
+    "type": "validation_error",
+    "errors": {
+      "payment_type": ["Tipo de pagamento deve ser \"one_time\" ou \"subscription\"."]
+    },
+    "status": 422
+  }
+}
+```
+</ResponseExample>
+
+## Limites
+
+- 50 ofertas por produto.
+- 500 ofertas por tenant.
+
+<Note>
+  Após criar a oferta, vincule-a a um **checkout** existente para começar a vender. A criação de checkout via API ainda não está disponível — use o painel.
+</Note>

@@ -127,6 +127,24 @@
             ]
           },
           {
+            "group": "Produtos",
+            "pages": [
+              "api-reference/products/list",
+              "api-reference/products/show",
+              "api-reference/products/create",
+              "api-reference/products/delete"
+            ]
+          },
+          {
+            "group": "Ofertas",
+            "pages": [
+              "api-reference/offers/list",
+              "api-reference/offers/show",
+              "api-reference/offers/create",
+              "api-reference/offers/delete"
+            ]
+          },
+          {
             "group": "Certificados",
             "pages": [
               "api-reference/certificates/list",

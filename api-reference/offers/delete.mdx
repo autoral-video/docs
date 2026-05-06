@@ -1,0 +1,25 @@
+---
+title: "Remover oferta"
+api: "DELETE /v1/offers/{offer}"
+description: "Soft delete da oferta."
+---
+
+**Escopo:** `offers:write`
+
+<Warning>
+  Se a oferta está vinculada a um **checkout ativo**, o checkout deixará de funcionar. Verifique vínculos antes de remover.
+</Warning>
+
+<ParamField path="offer" type="integer" required>ID da oferta.</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X DELETE https://seu-dominio/api/v1/offers/100 \
+  -H "Authorization: Bearer aut_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```http 204 No Content
+```
+</ResponseExample>
