@@ -1,0 +1,178 @@
+---
+title: "Script Manager"
+description: "Inject tracking pixels, analytics and external scripts into specific page positions without editing theme files."
+---
+
+The Script Manager lets you inject external code (tracking pixels, analytics, chat widgets, etc.) into specific positions across the platform's pages — no theme file editing required.
+
+## Accessing the manager
+
+Go to **Admin → Settings → Scripts**.
+
+## Adding a script
+
+1. Click **New script**
+2. Fill in the form fields
+3. Click **Save**
+
+### Form fields
+
+| Field | Description |
+|---|---|
+| **Name** | Internal label for the script. E.g. "Google Analytics", "Meta Pixel". Not shown to students. |
+| **Position** | Where the script will be injected (see section below). |
+| **Order** | Number that sets execution priority when multiple scripts share the same position. Lower number = runs first. Default: 0. |
+| **Active** | Controls whether the script is currently being injected. Can be toggled without deleting the script. |
+| **Script code** | The full HTML/JS code, including `<script>` or `<noscript>` tags. |
+
+## Available positions
+
+Scripts are organized by group and position. Each position corresponds to a specific point in the page HTML.
+
+### Global
+
+| Position | Where it's injected |
+|---|---|
+| **Global Head** | Inside the `<head>` of **every** page on the platform |
+| **Global Footer** | Before the `</body>` of **every** page on the platform |
+
+### Members Area
+
+| Position | Where it's injected |
+|---|---|
+| **Members Area Head** | Inside the `<head>` of members area pages |
+| **Members Area Footer** | Before the `</body>` of members area pages |
+
+### Lessons
+
+| Position | Where it's injected |
+|---|---|
+| **Lesson Pages Head** | Inside the `<head>` of lesson pages |
+| **Lesson Pages Footer** | Before the `</body>` of lesson pages |
+
+### Checkout
+
+| Position | Where it's injected |
+|---|---|
+| **Checkout Head** | Inside the `<head>` of the checkout page |
+| **Checkout Footer** | Before the `</body>` of the checkout page |
+| **Purchase Confirmation Head** | Inside the `<head>` of the order confirmation page |
+| **Purchase Confirmation Footer** | Before the `</body>` of the order confirmation page |
+
+<Note>Use **Footer** positions for most tracking scripts — it's the recommended position to avoid blocking page load. Use **Head** positions when the script must load before content renders (e.g. some A/B testing scripts).</Note>
+
+## Dynamic variables
+
+When you select a position, the form shows the **available placeholders** for that position. They are automatically replaced with the actual value when the page loads.
+
+Click any variable to copy it, then paste it directly into your script code.
+
+### Global variables (available in all positions)
+
+| Variable | Replaced with |
+|---|---|
+| `{{site_name}}` | Platform name |
+| `{{user_id}}` | Logged-in user's ID (empty if not logged in) |
+| `{{user_email}}` | Logged-in user's email address |
+| `{{user_name}}` | Logged-in user's full name |
+
+### Lesson variables (Lesson positions)
+
+In addition to the global variables:
+
+| Variable | Replaced with |
+|---|---|
+| `{{course_id}}` | Course ID |
+| `{{course_name}}` | Course name |
+| `{{module_id}}` | Current module ID |
+| `{{module_name}}` | Current module name |
+| `{{lesson_id}}` | Current lesson ID |
+| `{{lesson_name}}` | Current lesson title |
+
+### Checkout variables (Checkout positions)
+
+In addition to the global variables:
+
+| Variable | Replaced with |
+|---|---|
+| `{{checkout_id}}` | Checkout ID |
+| `{{product_name}}` | Product/checkout name |
+| `{{product_price}}` | Product price |
+| `{{course_id}}` | Course ID |
+| `{{course_name}}` | Course name |
+
+## Activating and deactivating scripts
+
+In the list, click the status badge (**Active** or **Inactive**) on any row to toggle it without opening the form. Useful for temporarily disabling a pixel during testing.
+
+## Editing a script
+
+1. In the list, click the pencil icon on the script row
+2. The form loads with the current values
+3. Make your changes and click **Save**
+
+## Deleting a script
+
+1. In the list, click the trash icon on the script row
+2. Confirm the deletion in the modal — **this action cannot be undone**
+
+## Examples
+
+### Google Analytics 4
+
+Position: **Global Head**
+
+```html
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX', {
+    'user_id': '{{user_id}}'
+  });
+</script>
+```
+
+### Meta Pixel (Facebook)
+
+Position: **Global Head**
+
+```html
+<script>
+  !function(f,b,e,v,n,t,s){...}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', 'YOUR_PIXEL_ID');
+  fbq('track', 'PageView');
+</script>
+<noscript>
+  <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1"/>
+</noscript>
+```
+
+### Purchase conversion event
+
+Position: **Purchase Confirmation Footer**
+
+```html
+<script>
+  gtag('event', 'purchase', {
+    'transaction_id': '{{checkout_id}}',
+    'value': '{{product_price}}',
+    'currency': 'USD',
+    'items': [{
+      'item_name': '{{product_name}}'
+    }]
+  });
+</script>
+```
+
+## FAQ
+
+**Does a script on the Checkout position appear on all checkout pages?**
+It depends on the position. "Checkout" positions are exclusive to the payment page; "Purchase Confirmation" positions are exclusive to the success page shown after payment is completed.
+
+**Can I have multiple scripts in the same position?**
+Yes. Use the **Order** field to control the injection sequence.
+
+**How do I verify a script is being injected?**
+Visit the corresponding page, open the browser DevTools (F12), and inspect the page source or the **Network** tab to confirm the script is loading.

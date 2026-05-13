@@ -1,0 +1,155 @@
+---
+title: "Criando um Checkout"
+description: "Configure a página pública de compra vinculando produto, oferta, turma, métodos de pagamento, up-sell, cross-sell e regras de acesso."
+---
+
+Um **checkout** é a página pública onde seus alunos compram acesso a um curso. Ele vincula um produto/oferta a configurações de pagamento, acesso e estratégias de vendas adicionais como up-sell e cross-sell.
+
+Acesse **Admin → Checkouts → Novo Checkout** para criar um.
+
+## Pré-requisitos
+
+Antes de criar um checkout, você precisa ter:
+
+- Ao menos um **Produto com uma Oferta ativa** cadastrado — veja [Produtos e Ofertas](/help-center/pt/checkout/produtos-e-ofertas)
+- O gateway de pagamento desejado configurado:
+  - Cartão via Stripe — veja [Configurando o Stripe](/help-center/pt/integracoes/configurando-stripe)
+  - PIX ou cartão parcelado via Mercado Pago — veja [Configurando o Mercado Pago](/help-center/pt/integracoes/configurando-mercadopago)
+
+## Passo 1: Informações básicas
+
+| Campo | Descrição |
+|---|---|
+| **Nome do Checkout** | Nome interno para identificação. Não é exibido ao comprador. Obrigatório. |
+| **Slug (URL)** | Identificador na URL pública do checkout. Auto-gerado a partir do nome se deixado vazio. |
+| **Descrição** | Texto exibido na página de checkout para o comprador. |
+
+<Note>O campo **Curso** é preenchido automaticamente ao selecionar um produto na próxima seção.</Note>
+
+## Passo 2: Produto e Oferta
+
+Selecione o **Produto** e, em seguida, a **Oferta** que define o preço e o tipo de pagamento.
+
+Ao selecionar uma oferta, um resumo é exibido com o preço e o tipo (pagamento único ou recorrente).
+
+**Se a oferta tiver preços em mais de uma moeda**, um seletor de **Moeda** é exibido. Escolha a moeda que será apresentada por padrão neste checkout. O Stripe pode exibir automaticamente a moeda correta para cada comprador com base em sua localização.
+
+<Note>O preço, o tipo de pagamento e o período de cobrança são definidos pela oferta. Para alterar, gerencie em **Admin → Produtos**.</Note>
+
+## Passo 3: Turma (opcional)
+
+Se o curso vinculado ao produto tiver **Turmas** cadastradas, uma seção de seleção de turma é exibida.
+
+Ao fixar uma turma no checkout, todos os alunos que comprarem via este link serão alocados nela automaticamente no momento da compra.
+
+Deixe em **Nenhuma** se não quiser usar turmas, ou se o curso não tiver turmas com vagas disponíveis.
+
+## Passo 4: Configurações de Pagamento
+
+As opções disponíveis dependem do **tipo de pagamento da oferta** selecionada e dos **gateways configurados**.
+
+### Para ofertas de Pagamento Único
+
+Selecione um ou mais métodos:
+
+| Método | Gateway | Quando usar |
+|---|---|---|
+| **Stripe** | Stripe | Cartão de crédito/débito internacional |
+| **PIX** | Mercado Pago | Pagamento instantâneo brasileiro |
+| **Cartão de Crédito Parcelado** | Mercado Pago | Parcelamento em até 12x no cartão |
+
+<Note>Apenas os gateways que estiverem configurados aparecem como opções.</Note>
+
+### Para ofertas de Assinatura e Assinatura Programada
+
+O método é fixo: **Cartão de Crédito via Stripe**. Assinaturas não suportam PIX ou parcelamento via Mercado Pago.
+
+## Passo 5: Parcelamento (Mercado Pago)
+
+Aparece somente quando **Cartão de Crédito Parcelado** está selecionado.
+
+| Campo | Descrição |
+|---|---|
+| **Máximo de Parcelas** | Número máximo de parcelas permitidas (1 a 12). |
+| **Valor Mínimo da Parcela (R$)** | Valor mínimo por parcela. O Mercado Pago calcula automaticamente as opções disponíveis. Mínimo: R$ 5,00. |
+
+<Note>O parcelamento é processado pelo Mercado Pago. O número exato de parcelas exibido ao comprador depende do BIN do cartão e das regras do emissor.</Note>
+
+## Passo 6: Oferta de Upgrade — Up-sell (opcional)
+
+O up-sell permite apresentar ao comprador uma oferta superior antes de concluir a compra. Se aceito, **o produto original é substituído** pelo produto do up-sell.
+
+| Campo | Descrição |
+|---|---|
+| **Oferta de Upgrade** | Selecione a oferta que substituirá o produto principal. Pode ser de qualquer produto ativo. |
+| **Texto de Conversão** | Argumento exibido ao comprador explicando o benefício do upgrade. |
+
+<Warning>O up-sell substitui, não adiciona. Se o cliente aceitar o upgrade, apenas o produto do up-sell é processado.</Warning>
+
+## Passo 7: Produtos Adicionais — Cross-sell (opcional)
+
+O cross-sell permite oferecer produtos complementares que o comprador pode adicionar à compra. Ao contrário do up-sell, o produto principal não é substituído — os produtos são adicionados.
+
+Clique em **Adicionar produto adicional** para incluir cada item. Para cada um:
+
+| Campo | Descrição |
+|---|---|
+| **Produto Adicional** | Selecione a oferta do produto complementar. |
+| **Texto de Conversão** | Descrição do benefício do produto adicional para o comprador. |
+
+<Note>O acesso a cada produto do cross-sell é concedido individualmente após a confirmação do pagamento.</Note>
+
+Remova um cross-sell clicando no ícone × no canto do item.
+
+## Passo 8: Tipo de Acesso
+
+Define por quanto tempo o aluno terá acesso ao curso após a compra.
+
+| Tipo | Descrição |
+|---|---|
+| **Vitalício** | Acesso permanente, sem data de expiração. |
+| **Temporário** | Acesso expira automaticamente após o período definido. |
+
+Para acesso **Temporário**, selecione a duração:
+
+| Opção | Duração |
+|---|---|
+| 30 dias | — |
+| 90 dias | — |
+| 180 dias | — |
+| 365 dias | — |
+| **Personalizado** | Insira qualquer número de dias (mínimo: 1) |
+
+<Note>Para assinaturas, o acesso é gerenciado automaticamente pelo ciclo de cobrança do Stripe — enquanto a assinatura estiver ativa, o acesso é mantido.</Note>
+
+## Passo 9: Configurações Adicionais
+
+| Opção | Efeito |
+|---|---|
+| **Exigir Telefone** | Torna o campo de telefone obrigatório no formulário de checkout |
+| **Ativo** | Define se o checkout está acessível para compras. Ativado por padrão. |
+
+## Passo 10: Política de Reembolso
+
+| Campo | Descrição |
+|---|---|
+| **Permitir Reembolso** | Habilita a opção de solicitação de reembolso pela área de membros. |
+| **Prazo para Reembolso (dias)** | Número de dias após a compra dentro do qual o reembolso pode ser solicitado. Deixe vazio para permitir a qualquer momento. |
+
+As solicitações de reembolso são analisadas manualmente em **Admin → Financeiro → Solicitações de Reembolso**.
+
+## Finalizando
+
+Clique em **Criar Checkout**. Após a criação, o checkout estará acessível na URL:
+
+```
+https://seudominio.com/checkout/{slug}
+```
+
+A URL pública pode ser compartilhada diretamente ou vinculada na página do curso em **Admin → Cursos → [Seu Curso] → Configurações → Exibir checkouts na página do curso**.
+
+## Artigos relacionados
+
+- [Produtos e Ofertas](/help-center/pt/checkout/produtos-e-ofertas) — Como criar produtos e definir preços em múltiplas moedas
+- [Criando um Curso](/help-center/pt/cursos/criando-um-curso) — Como vincular checkouts à página do curso
+- [Configurando o Stripe](/help-center/pt/integracoes/configurando-stripe) — Requisito para pagamentos com cartão

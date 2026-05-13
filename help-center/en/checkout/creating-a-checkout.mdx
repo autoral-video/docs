@@ -1,0 +1,155 @@
+---
+title: "Creating a Checkout"
+description: "Build the public purchase page by linking product, offer, class, payment methods, up-sell, cross-sell and access rules."
+---
+
+A **checkout** is the public page where your students purchase access to a course. It links a product/offer to payment settings, access configuration, and additional sales strategies like up-sell and cross-sell.
+
+Go to **Admin → Checkouts → New Checkout** to create one.
+
+## Prerequisites
+
+Before creating a checkout, you need:
+
+- At least one **Product with an active Offer** — see [Products and Offers](/help-center/en/checkout/products-and-offers)
+- The desired payment gateway configured:
+  - Card via Stripe — see [Setting Up Stripe](/help-center/en/integrations/setting-up-stripe)
+  - PIX or installment card via Mercado Pago — see [Setting Up Mercado Pago](/help-center/en/integrations/setting-up-mercadopago)
+
+## Step 1: Basic Information
+
+| Field | Description |
+|---|---|
+| **Checkout Name** | Internal name for identification. Not shown to the buyer. Required. |
+| **Slug (URL)** | Identifier in the checkout's public URL. Auto-generated from the name if left blank. |
+| **Description** | Text shown on the checkout page to the buyer. |
+
+<Note>The **Course** field is filled automatically when you select a product in the next section.</Note>
+
+## Step 2: Product and Offer
+
+Select the **Product** and then the **Offer** that defines the price and payment type.
+
+When you select an offer, a summary appears showing the price and type (one-time or recurring payment).
+
+**If the offer has prices in more than one currency**, a **Currency** selector appears. Choose the currency that will be shown by default on this checkout. Stripe can automatically display the correct currency for each buyer based on their location.
+
+<Note>The price, payment type, and billing period are defined by the offer. To change them, manage under **Admin → Products**.</Note>
+
+## Step 3: Class (optional)
+
+If the course linked to the product has **Classes** registered, a class selection section appears.
+
+By pinning a class to the checkout, all students who purchase through this link will be automatically enrolled in it at the time of purchase.
+
+Leave as **None** if you don't want to use classes, or if the course has no classes with available spots.
+
+## Step 4: Payment Settings
+
+Available options depend on the **payment type of the selected offer** and the **configured gateways**.
+
+### For One-Time Payment offers
+
+Select one or more methods:
+
+| Method | Gateway | When to use |
+|---|---|---|
+| **Stripe** | Stripe | International credit/debit card |
+| **PIX** | Mercado Pago | Brazilian instant payment |
+| **Installment Credit Card** | Mercado Pago | Up to 12 installments on the card |
+
+<Note>Only configured gateways appear as options.</Note>
+
+### For Subscription and Scheduled Subscription offers
+
+The method is fixed: **Credit Card via Stripe**. Subscriptions do not support PIX or installments via Mercado Pago.
+
+## Step 5: Installments (Mercado Pago)
+
+Appears only when **Installment Credit Card** is selected.
+
+| Field | Description |
+|---|---|
+| **Maximum Installments** | Maximum number of installments allowed (1 to 12). |
+| **Minimum Installment Amount (R$)** | Minimum amount per installment. Mercado Pago automatically calculates the available options. Minimum: R$ 5.00. |
+
+<Note>Installments are processed by Mercado Pago. The exact number of installments shown to the buyer depends on the card BIN and issuer rules.</Note>
+
+## Step 6: Upgrade Offer — Up-sell (optional)
+
+The up-sell lets you present the buyer with a superior offer before completing the purchase. If accepted, **the original product is replaced** by the up-sell product.
+
+| Field | Description |
+|---|---|
+| **Upgrade Offer** | Select the offer that will replace the main product. Can be from any active product. |
+| **Conversion Text** | Argument shown to the buyer explaining the benefit of the upgrade. |
+
+<Warning>The up-sell replaces, it does not add. If the customer accepts the upgrade, only the up-sell product is processed.</Warning>
+
+## Step 7: Additional Products — Cross-sell (optional)
+
+The cross-sell lets you offer complementary products that the buyer can add to the purchase. Unlike up-sell, the main product is not replaced — the products are added.
+
+Click **Add additional product** to include each item. For each one:
+
+| Field | Description |
+|---|---|
+| **Additional Product** | Select the complementary product's offer. |
+| **Conversion Text** | Description of the additional product's benefit for the buyer. |
+
+<Note>Access to each cross-sell product is granted individually upon payment confirmation.</Note>
+
+Remove a cross-sell by clicking the × icon on the item's corner.
+
+## Step 8: Access Type
+
+Defines how long the student will have access to the course after purchase.
+
+| Type | Description |
+|---|---|
+| **Lifetime** | Permanent access, no expiration date. |
+| **Temporary** | Access expires automatically after the defined period. |
+
+For **Temporary** access, select the duration:
+
+| Option | Duration |
+|---|---|
+| 30 days | — |
+| 90 days | — |
+| 180 days | — |
+| 365 days | — |
+| **Custom** | Enter any number of days (minimum: 1) |
+
+<Note>For subscriptions, access is managed automatically by Stripe's billing cycle — as long as the subscription is active, access is maintained.</Note>
+
+## Step 9: Additional Settings
+
+| Option | Effect |
+|---|---|
+| **Require Phone** | Makes the phone field mandatory on the checkout form |
+| **Active** | Defines whether the checkout is accessible for purchases. Enabled by default. |
+
+## Step 10: Refund Policy
+
+| Field | Description |
+|---|---|
+| **Allow Refund** | Enables the refund request option in the members area. |
+| **Refund Period (days)** | Number of days after purchase within which a refund can be requested. Leave blank to allow at any time. |
+
+Refund requests are reviewed manually under **Admin → Finance → Refund Requests**.
+
+## Finishing
+
+Click **Create Checkout**. After creation, the checkout will be accessible at the URL:
+
+```
+https://yourdomain.com/checkout/{slug}
+```
+
+The public URL can be shared directly or linked on the course page under **Admin → Courses → [Your Course] → Settings → Show checkouts on the course page**.
+
+## Related articles
+
+- [Products and Offers](/help-center/en/checkout/products-and-offers) — How to create products and define prices in multiple currencies
+- [Creating a Course](/help-center/en/courses/creating-a-course) — How to link checkouts to the course page
+- [Setting Up Stripe](/help-center/en/integrations/setting-up-stripe) — Required for card payments

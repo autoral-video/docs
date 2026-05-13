@@ -1,0 +1,117 @@
+---
+title: "Creating and Managing Coupons"
+description: "Create discount coupons with validity rules, usage limits, eligible products and differentiated installment discounts."
+---
+
+A **coupon** is a discount code that the buyer enters on the checkout page before completing a purchase. You can configure the discount value, validity period, eligible products, and usage limits.
+
+Go to **Admin → Marketing → Coupons → New Coupon** to create one.
+
+## Step 1: Identification
+
+| Field | Description |
+|---|---|
+| **Code** | The text the buyer types at checkout. Always saved in uppercase. Required. |
+| **Name** | Internal label to identify the coupon. Not shown to the buyer. |
+
+Click **Generate** to create a random code automatically, or type your own (e.g. `PROMO20`, `BLACKFRIDAY`).
+
+## Step 2: Discount
+
+| Field | Description |
+|---|---|
+| **Discount Type** | Defines how the discount is calculated. Currently available: **Percentage (%)**. |
+| **Value** | Discount percentage applied to the total purchase amount. |
+
+**Example:** with type `Percentage` and value `20`, the buyer pays 20% less.
+
+## Step 3: Installment Discount
+
+<Note>This section appears only when **Mercado Pago** is enabled in the platform settings.</Note>
+
+Allows you to define different discount percentages based on the number of installments chosen by the buyer. This is useful for incentivizing upfront or fewer-installment payments.
+
+**How it works:**
+- Each range defines an installment interval (**From** / **To**) and the corresponding discount
+- PIX and single-payment purchases count as **1 installment**
+- Add multiple ranges by clicking **Add range**
+- To remove a range, click the × icon
+
+**Example configuration:**
+
+| From | To | Discount |
+|---|---|---|
+| 1 | 1 | 25% |
+| 2 | 6 | 15% |
+| 7 | 12 | 10% |
+
+<Warning>When installment discount is enabled, it overrides the default discount set in Step 2 for each matching range.</Warning>
+
+## Step 4: Usage Limits
+
+| Field | Description |
+|---|---|
+| **Total usage limit** | Maximum number of times the coupon can be used in total. Leave blank for unlimited. |
+| **Per-customer limit** | Maximum number of times the same customer can use the coupon. Leave blank for unlimited. |
+| **Single use per customer** | When enabled, each customer can only use the coupon once, regardless of the per-customer limit. |
+
+## Step 5: Validity
+
+| Field | Description |
+|---|---|
+| **Start** | Date and time from which the coupon becomes valid. Leave blank to make it valid immediately. |
+| **Expiration** | Date and time when the coupon stops being accepted. Leave blank for no expiration date. |
+
+<Note>The coupon can only be applied within the window between **Start** and **Expiration**. Outside this period, it is rejected at checkout.</Note>
+
+## Step 6: Products
+
+Defines which products the coupon can be applied to.
+
+| Option | Effect |
+|---|---|
+| **Apply to all products** *(enabled)* | The coupon is accepted on any checkout in the platform. |
+| **Apply to all products** *(disabled)* | Displays the product list for manual selection. The coupon only works on the selected products. |
+
+## Step 7: Scarcity
+
+| Field | Description |
+|---|---|
+| **Urgency timer (minutes)** | When filled, displays a countdown timer on the checkout after the buyer applies the coupon. |
+
+The counter creates a visual sense of urgency, encouraging the buyer to complete the purchase before time runs out. Leave blank to show no countdown.
+
+<Note>The timer is visual only — the coupon is not automatically invalidated when the counter reaches zero.</Note>
+
+## Step 8: Status
+
+| Option | Effect |
+|---|---|
+| **Active coupon** *(enabled)* | The coupon can be applied at checkout. |
+| **Active coupon** *(disabled)* | The coupon exists but is rejected when someone tries to use it. |
+
+Use this option to temporarily pause a coupon without deleting it.
+
+## Finishing
+
+Click **Create Coupon**. The coupon will be immediately available for use on eligible checkouts.
+
+## Usage History
+
+On the edit screen of an existing coupon, the **Usage History** appears automatically when there are usage records.
+
+The table displays:
+
+| Column | Description |
+|---|---|
+| **Email** | Email of the buyer who used the coupon |
+| **Checkout** | Name of the checkout where the coupon was applied |
+| **Original** | Total amount before the discount |
+| **Discount** | Amount discounted |
+| **Final** | Amount actually paid |
+| **Date** | Date and time of use |
+
+## Related articles
+
+- [Creating a Checkout](/help-center/en/checkout/creating-a-checkout) — How to configure the purchase page where the coupon is applied
+- [Products and Offers](/help-center/en/checkout/products-and-offers) — How to create the products that can be linked to coupons

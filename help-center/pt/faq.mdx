@@ -1,0 +1,138 @@
+---
+title: "Perguntas Frequentes"
+description: "Respostas rápidas para as dúvidas mais comuns sobre cursos, checkout, pagamentos, integrações e marketing."
+---
+
+Respostas para as dúvidas mais comuns. Não achou o que procura? Abra um ticket pela área administrativa em **Admin → Central de Ajuda**.
+
+## Cursos e Aulas
+
+<AccordionGroup>
+  <Accordion title="Como crio um curso do zero?">
+    Acesse **Admin → Cursos → Novo Curso**, preencha as informações básicas (nome, slug, descrição), crie os módulos e, dentro de cada módulo, as aulas. Cada aula pode ser do tipo **vídeo**, **artigo** ou **quiz**. Veja o guia completo em [Criando um Curso](/help-center/pt/cursos/criando-um-curso).
+  </Accordion>
+
+  <Accordion title="Posso oferecer aulas gratuitas como amostra?">
+    Sim. Na aba **Configurações** da aula, marque a opção **Gratuita**. A aula ficará disponível como preview mesmo para visitantes que não tenham acesso ao curso.
+  </Accordion>
+
+  <Accordion title="Como funciona a progressão sequencial?">
+    Ative **Aulas Sequenciais** e/ou **Módulos Sequenciais** nas configurações do curso. O aluno só avança para a próxima aula/módulo após concluir o atual. A primeira aula de cada módulo é sempre acessível, mesmo com progressão sequencial.
+  </Accordion>
+
+  <Accordion title="Qual o limite de tamanho de vídeo e materiais?">
+    Vídeos são enviados ao Bunny.net (sem limite prático). Materiais complementares têm limite de **300 MB** por arquivo. Thumbnails do curso: até 2 MB. Imagens de fundo: até 4 MB.
+  </Accordion>
+
+  <Accordion title="Posso usar vídeos do YouTube ou Vimeo em vez do Bunny.net?">
+    Sim. Na aba **Vídeo** da aula, cole a URL do vídeo ou o código `<iframe>` no campo de embed. O sistema converte automaticamente URLs do YouTube e Vimeo para o formato correto.
+  </Accordion>
+</AccordionGroup>
+
+## Checkout e Vendas
+
+<AccordionGroup>
+  <Accordion title="Qual a diferença entre Produto, Oferta e Checkout?">
+    **Produto** representa o que você vende (vinculado a um curso). **Oferta** é um plano de preço dentro do produto (ex: pagamento único, mensal, anual). **Checkout** é a página pública de compra que apresenta uma oferta específica. Fluxo: `Produto → Ofertas → Checkout`.
+  </Accordion>
+
+  <Accordion title="Posso vender em mais de uma moeda?">
+    Sim. Cada oferta pode ter preços em até **27 moedas**. O Stripe exibe automaticamente o preço na moeda do país do comprador quando disponível. Use o botão **Gerar em outras moedas** para calcular preços via cotação com margem de proteção.
+  </Accordion>
+
+  <Accordion title="Qual a diferença entre up-sell e cross-sell?">
+    **Up-sell** substitui o produto principal por uma oferta superior antes de finalizar a compra (não soma). **Cross-sell** adiciona produtos complementares à compra atual (soma ao total). O acesso é concedido individualmente para cada cross-sell aceito.
+  </Accordion>
+
+  <Accordion title="Como compartilho a página de checkout?">
+    Após criar o checkout, a URL pública é `https://seudominio.com/checkout/{slug}`. Compartilhe-a diretamente ou ative **Exibir checkouts na página do curso** para que apareça automaticamente na página pública do curso.
+  </Accordion>
+
+  <Accordion title="Como configuro reembolso?">
+    Em cada checkout, na seção **Política de Reembolso**, ative **Permitir Reembolso** e defina o **Prazo para Reembolso (dias)**. As solicitações são revisadas manualmente em **Admin → Financeiro → Solicitações de Reembolso**.
+  </Accordion>
+</AccordionGroup>
+
+## Pagamentos e Integrações
+
+<AccordionGroup>
+  <Accordion title="Quais gateways de pagamento são suportados?">
+    A plataforma suporta **Stripe** (cartão internacional + assinaturas), **Mercado Pago** (PIX + cartão parcelado em até 12x) e **Asaas** (cartão, PIX, boleto e assinaturas recorrentes). Cada um é configurado independentemente em **Admin → Configurações**.
+  </Accordion>
+
+  <Accordion title="Preciso copiar chaves de API do Stripe ou Mercado Pago?">
+    Não. Ambos usam **OAuth** — você conecta com um clique e a plataforma configura credenciais e webhooks automaticamente. Apenas o **Asaas** exige inserir manualmente a chave de API e o token do webhook.
+  </Accordion>
+
+  <Accordion title="Posso aceitar PIX e cartão parcelado?">
+    Sim, via Mercado Pago. PIX confirma em segundos; cartão parcelado vai até 12x com ou sem juros. Configure em **Admin → Configurações → Mercado Pago**.
+  </Accordion>
+
+  <Accordion title="Como recebo notificação de novas vendas?">
+    Após cada venda confirmada, o admin recebe um e-mail de alerta automaticamente. Webhooks outgoing também podem ser configurados em **Admin → Configurações → Webhooks** para integração com sistemas externos.
+  </Accordion>
+
+  <Accordion title="O que fazer quando o token do Mercado Pago expira?">
+    A renovação é automática. Caso falhe, um aviso aparecerá no painel. Basta **desconectar e reconectar** sua conta em **Admin → Configurações → Mercado Pago**.
+  </Accordion>
+</AccordionGroup>
+
+## Alunos e Acessos
+
+<AccordionGroup>
+  <Accordion title="Como importo alunos de outra plataforma?">
+    Acesse **Admin → Configurações → Importar / Exportar**, suba o CSV exportado da plataforma original (Hotmart, Kiwify, Eduzz, Monetizze) e use o **preset** correspondente para mapeamento automático. Veja [Importando e Exportando Alunos](/help-center/pt/alunos/importando-e-exportando-alunos).
+  </Accordion>
+
+  <Accordion title="Posso conceder acesso manual a um aluno?">
+    Sim. Em **Admin → Alunos**, busque o aluno e use **Gerenciar Acessos** para conceder, revogar ou estender acesso a cursos específicos com tipo vitalício ou temporário.
+  </Accordion>
+
+  <Accordion title="Como funciona o acesso temporário?">
+    Defina **Tipo: Temporário** e selecione a duração (30, 90, 180, 365 dias ou personalizado). O acesso expira automaticamente na data calculada. Para assinaturas, o acesso é gerenciado pelo ciclo do Stripe — ativo enquanto a assinatura estiver ativa.
+  </Accordion>
+
+  <Accordion title="O que são Turmas?">
+    **Turmas** agrupam alunos com vagas e período de inscrição. Ao vincular uma turma a um checkout, todos os compradores entram automaticamente nela. Útil para mentorias com data de início ou cursos com limite de alunos.
+  </Accordion>
+</AccordionGroup>
+
+## Marketing
+
+<AccordionGroup>
+  <Accordion title="Como crio um cupom de desconto?">
+    Acesse **Admin → Marketing → Cupons → Novo Cupom**. Defina código, percentual de desconto, validade, limites de uso e produtos elegíveis. Veja o guia em [Criando Cupons](/help-center/pt/marketing/criando-cupons).
+  </Accordion>
+
+  <Accordion title="Posso oferecer descontos diferentes por número de parcelas?">
+    Sim, quando o Mercado Pago está habilitado. No cupom, configure **Desconto por Parcela** com faixas (ex: 1 parcela = 25%, 2-6 = 15%, 7-12 = 10%) para incentivar pagamentos à vista.
+  </Accordion>
+
+  <Accordion title="O que é abandono de carrinho?">
+    A plataforma captura e-mails de leads no checkout e dispara cupons automáticos para quem não concluiu a compra. Configure em **Admin → Marketing → Abandono de Carrinho**.
+  </Accordion>
+
+  <Accordion title="Como adiciono pixels de rastreamento (Google Analytics, Meta Pixel)?">
+    Use o **Gerenciador de Scripts** em **Admin → Configurações → Scripts**. Cole o código do pixel na posição desejada (cabeçalho global, rodapé da confirmação de compra, etc.). Variáveis dinâmicas como `{{checkout_id}}` e `{{product_price}}` estão disponíveis para eventos de conversão.
+  </Accordion>
+</AccordionGroup>
+
+## Geral
+
+<AccordionGroup>
+  <Accordion title="Como personalizo o tema da plataforma?">
+    Acesse **Admin → Configurações → Tema** para alterar cores, logo, favicon e elementos visuais. As alterações refletem imediatamente em toda a área pública e de membros.
+  </Accordion>
+
+  <Accordion title="Posso ter um domínio próprio?">
+    Sim. A plataforma é multi-tenant e cada conta opera em um domínio dedicado. Configure em **Admin → Configurações → Domínio**.
+  </Accordion>
+
+  <Accordion title="Onde encontro o backup do banco de dados?">
+    Backups automáticos são exibidos em **Admin → Configurações → Monitor de Backup**. Os backups são gerados em intervalos regulares e ficam disponíveis para download.
+  </Accordion>
+
+  <Accordion title="Como entro em contato com o suporte?">
+    Abra um ticket em **Admin → Central de Ajuda**. A equipe responde por e-mail e dentro da própria plataforma.
+  </Accordion>
+</AccordionGroup>

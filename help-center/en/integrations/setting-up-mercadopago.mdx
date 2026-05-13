@@ -1,0 +1,84 @@
+---
+title: "Setting Up Mercado Pago"
+description: "Connect your Mercado Pago account via OAuth to accept PIX and up to 12x credit card installments in Brazil."
+---
+
+Mercado Pago is the main gateway for receiving payments in Brazil, offering the best rates for credit card installments and PIX. It is the preferred option for Brazilian students because of its familiarity and trust on the platform.
+
+The platform uses **OAuth** to link your Mercado Pago account. This means you connect with a single click — no API keys to copy, no webhooks to configure manually. Access token, public key, and webhooks are set up automatically.
+
+## Available payment methods
+
+- **Credit card** — up to 12 installments, with or without interest
+- **PIX** — instant payment confirmed in seconds
+
+## What you'll need
+
+Before you begin, make sure you have:
+
+- A Mercado Pago account — sign up at [mercadopago.com.br](https://www.mercadopago.com.br)
+- Access to the Mercado Pago dashboard
+
+## Step 1: Go to Mercado Pago settings
+
+1. Go to **Admin → Settings → Mercado Pago**
+
+You will see a connection panel with a **Connect with Mercado Pago** button.
+
+## Step 2: Connect your Mercado Pago account
+
+1. Click **Connect with Mercado Pago**
+2. You will be redirected to the Mercado Pago authorization page
+3. Log in to your Mercado Pago account (or create one)
+4. Review the requested permissions and authorize access
+5. You will be redirected back to the platform
+
+Once redirected, the panel will display:
+
+- A **Mercado Pago connected** confirmation badge
+- The **account ID** linked
+- The date the connection was made
+- The access token expiration date
+- The environment in use: **Production** or **Sandbox**
+
+<Note>Your credentials and webhook configuration are set up automatically — no manual credentials are required.</Note>
+
+## Step 3: Enable Mercado Pago
+
+After connecting, toggle **Enable Mercado Pago** to activate it as a payment method in your checkouts.
+
+<Note>Mercado Pago will only be available at checkout after it is both connected and enabled.</Note>
+
+## Automatic token renewal
+
+The Mercado Pago access token has a limited validity and is renewed automatically by the platform before it expires.
+
+If the token is close to expiration, a warning will appear in the panel. If the automatic renewal fails, simply **disconnect and reconnect** your account via the OAuth flow.
+
+## Webhooks
+
+Because the connection is made via OAuth, **webhooks are configured automatically** by the platform. No additional action is required in the Mercado Pago dashboard.
+
+## Managing your connection
+
+### Disabling Mercado Pago
+
+You can disable Mercado Pago at any time by toggling **Enable Mercado Pago** off. Your account remains connected — you can re-enable it without going through the OAuth flow again.
+
+### Disconnecting your account
+
+To fully remove the Mercado Pago integration:
+
+1. Go to **Admin → Settings → Mercado Pago**
+2. Click **Disconnect**
+3. Confirm the action
+
+This revokes the OAuth authorization and removes all stored credentials. To use Mercado Pago again, you will need to go through the Connect flow once more.
+
+## Quick reference
+
+| Action | Where |
+|---|---|
+| Connect Mercado Pago account | Admin → Settings → Mercado Pago → **Connect with Mercado Pago** |
+| Enable / disable at checkout | Admin → Settings → Mercado Pago → **Enable Mercado Pago** toggle |
+| Disconnect account | Admin → Settings → Mercado Pago → **Disconnect** |

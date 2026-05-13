@@ -2,7 +2,7 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "autoral.me API",
-  "description": "Documentação da API REST pública da plataforma autoral.me.",
+  "description": "Documentação da API REST pública e Central de Ajuda da plataforma autoral.me.",
   "colors": {
     "primary": "#7C3AED",
     "light": "#A78BFA",
@@ -15,156 +15,271 @@
   },
   "favicon": "/favicon.svg",
   "navigation": {
-    "tabs": [
+    "languages": [
       {
-        "tab": "Guia",
-        "groups": [
+        "language": "pt",
+        "default": true,
+        "tabs": [
           {
-            "group": "Introdução",
-            "pages": [
-              "introduction",
-              "quickstart"
+            "tab": "Central de Ajuda",
+            "groups": [
+              {
+                "group": "Início",
+                "pages": [
+                  "help-center/pt/index",
+                  "help-center/pt/faq"
+                ]
+              },
+              {
+                "group": "Cursos",
+                "pages": [
+                  "help-center/pt/cursos/criando-um-curso"
+                ]
+              },
+              {
+                "group": "Checkout",
+                "pages": [
+                  "help-center/pt/checkout/produtos-e-ofertas",
+                  "help-center/pt/checkout/criando-um-checkout"
+                ]
+              },
+              {
+                "group": "Alunos",
+                "pages": [
+                  "help-center/pt/alunos/importando-e-exportando-alunos"
+                ]
+              },
+              {
+                "group": "Marketing",
+                "pages": [
+                  "help-center/pt/marketing/criando-cupons"
+                ]
+              },
+              {
+                "group": "Integrações",
+                "pages": [
+                  "help-center/pt/integracoes/configurando-stripe",
+                  "help-center/pt/integracoes/configurando-mercadopago",
+                  "help-center/pt/integracoes/configurando-asaas",
+                  "help-center/pt/integracoes/configurando-bunnynet"
+                ]
+              },
+              {
+                "group": "Configurações",
+                "pages": [
+                  "help-center/pt/configuracoes/gerenciador-de-scripts"
+                ]
+              }
             ]
           },
           {
-            "group": "Autenticação",
-            "pages": [
-              "authentication/overview",
-              "authentication/creating-tokens",
-              "authentication/scopes",
-              "authentication/ip-allowlist",
-              "authentication/revoking-tokens",
-              "authentication/security-best-practices"
+            "tab": "Guia da API",
+            "groups": [
+              {
+                "group": "Introdução",
+                "pages": [
+                  "introduction",
+                  "quickstart"
+                ]
+              },
+              {
+                "group": "Autenticação",
+                "pages": [
+                  "authentication/overview",
+                  "authentication/creating-tokens",
+                  "authentication/scopes",
+                  "authentication/ip-allowlist",
+                  "authentication/revoking-tokens",
+                  "authentication/security-best-practices"
+                ]
+              },
+              {
+                "group": "Essenciais",
+                "pages": [
+                  "essentials/rate-limiting",
+                  "essentials/errors",
+                  "essentials/pagination",
+                  "essentials/idempotency",
+                  "essentials/request-id"
+                ]
+              }
             ]
           },
           {
-            "group": "Essenciais",
-            "pages": [
-              "essentials/rate-limiting",
-              "essentials/errors",
-              "essentials/pagination",
-              "essentials/idempotency",
-              "essentials/request-id"
+            "tab": "Referência da API",
+            "groups": [
+              {
+                "group": "Identidade",
+                "pages": [
+                  "api-reference/identity/me"
+                ]
+              },
+              {
+                "group": "Conteúdo",
+                "pages": [
+                  "api-reference/courses/list",
+                  "api-reference/courses/show",
+                  "api-reference/courses/modules",
+                  "api-reference/modules/lessons",
+                  "api-reference/lessons/show"
+                ]
+              },
+              {
+                "group": "Alunos",
+                "pages": [
+                  "api-reference/students/list",
+                  "api-reference/students/show",
+                  "api-reference/students/grant-access",
+                  "api-reference/students/revoke-access"
+                ]
+              },
+              {
+                "group": "Acesso",
+                "pages": [
+                  "api-reference/access/list",
+                  "api-reference/access/show",
+                  "api-reference/access/create",
+                  "api-reference/access/delete"
+                ]
+              },
+              {
+                "group": "Pagamentos",
+                "pages": [
+                  "api-reference/payments/list",
+                  "api-reference/payments/show",
+                  "api-reference/payments/refund"
+                ]
+              },
+              {
+                "group": "Assinaturas",
+                "pages": [
+                  "api-reference/subscriptions/list",
+                  "api-reference/subscriptions/show",
+                  "api-reference/subscriptions/cancel"
+                ]
+              },
+              {
+                "group": "Cupons",
+                "pages": [
+                  "api-reference/coupons/list",
+                  "api-reference/coupons/show",
+                  "api-reference/coupons/create",
+                  "api-reference/coupons/delete"
+                ]
+              },
+              {
+                "group": "Leads",
+                "pages": [
+                  "api-reference/leads/list",
+                  "api-reference/leads/show",
+                  "api-reference/leads/create"
+                ]
+              },
+              {
+                "group": "Checkouts",
+                "pages": [
+                  "api-reference/checkouts/list",
+                  "api-reference/checkouts/show"
+                ]
+              },
+              {
+                "group": "Produtos",
+                "pages": [
+                  "api-reference/products/list",
+                  "api-reference/products/show",
+                  "api-reference/products/create",
+                  "api-reference/products/delete"
+                ]
+              },
+              {
+                "group": "Ofertas",
+                "pages": [
+                  "api-reference/offers/list",
+                  "api-reference/offers/show",
+                  "api-reference/offers/create",
+                  "api-reference/offers/delete"
+                ]
+              },
+              {
+                "group": "Certificados",
+                "pages": [
+                  "api-reference/certificates/list",
+                  "api-reference/certificates/show"
+                ]
+              },
+              {
+                "group": "Perguntas",
+                "pages": [
+                  "api-reference/questions/list",
+                  "api-reference/questions/show"
+                ]
+              },
+              {
+                "group": "Webhooks",
+                "pages": [
+                  "api-reference/webhooks/list",
+                  "api-reference/webhooks/show",
+                  "api-reference/webhooks/create",
+                  "api-reference/webhooks/delete"
+                ]
+              }
             ]
           }
         ]
       },
       {
-        "tab": "Referência da API",
-        "groups": [
+        "language": "en",
+        "tabs": [
           {
-            "group": "Identidade",
-            "pages": [
-              "api-reference/identity/me"
-            ]
-          },
-          {
-            "group": "Conteúdo",
-            "pages": [
-              "api-reference/courses/list",
-              "api-reference/courses/show",
-              "api-reference/courses/modules",
-              "api-reference/modules/lessons",
-              "api-reference/lessons/show"
-            ]
-          },
-          {
-            "group": "Alunos",
-            "pages": [
-              "api-reference/students/list",
-              "api-reference/students/show",
-              "api-reference/students/grant-access",
-              "api-reference/students/revoke-access"
-            ]
-          },
-          {
-            "group": "Acesso",
-            "pages": [
-              "api-reference/access/list",
-              "api-reference/access/show",
-              "api-reference/access/create",
-              "api-reference/access/delete"
-            ]
-          },
-          {
-            "group": "Pagamentos",
-            "pages": [
-              "api-reference/payments/list",
-              "api-reference/payments/show",
-              "api-reference/payments/refund"
-            ]
-          },
-          {
-            "group": "Assinaturas",
-            "pages": [
-              "api-reference/subscriptions/list",
-              "api-reference/subscriptions/show",
-              "api-reference/subscriptions/cancel"
-            ]
-          },
-          {
-            "group": "Cupons",
-            "pages": [
-              "api-reference/coupons/list",
-              "api-reference/coupons/show",
-              "api-reference/coupons/create",
-              "api-reference/coupons/delete"
-            ]
-          },
-          {
-            "group": "Leads",
-            "pages": [
-              "api-reference/leads/list",
-              "api-reference/leads/show",
-              "api-reference/leads/create"
-            ]
-          },
-          {
-            "group": "Checkouts",
-            "pages": [
-              "api-reference/checkouts/list",
-              "api-reference/checkouts/show"
-            ]
-          },
-          {
-            "group": "Produtos",
-            "pages": [
-              "api-reference/products/list",
-              "api-reference/products/show",
-              "api-reference/products/create",
-              "api-reference/products/delete"
-            ]
-          },
-          {
-            "group": "Ofertas",
-            "pages": [
-              "api-reference/offers/list",
-              "api-reference/offers/show",
-              "api-reference/offers/create",
-              "api-reference/offers/delete"
-            ]
-          },
-          {
-            "group": "Certificados",
-            "pages": [
-              "api-reference/certificates/list",
-              "api-reference/certificates/show"
-            ]
-          },
-          {
-            "group": "Perguntas",
-            "pages": [
-              "api-reference/questions/list",
-              "api-reference/questions/show"
-            ]
-          },
-          {
-            "group": "Webhooks",
-            "pages": [
-              "api-reference/webhooks/list",
-              "api-reference/webhooks/show",
-              "api-reference/webhooks/create",
-              "api-reference/webhooks/delete"
+            "tab": "Help Center",
+            "groups": [
+              {
+                "group": "Getting Started",
+                "pages": [
+                  "help-center/en/index",
+                  "help-center/en/faq"
+                ]
+              },
+              {
+                "group": "Courses",
+                "pages": [
+                  "help-center/en/courses/creating-a-course"
+                ]
+              },
+              {
+                "group": "Checkout",
+                "pages": [
+                  "help-center/en/checkout/products-and-offers",
+                  "help-center/en/checkout/creating-a-checkout"
+                ]
+              },
+              {
+                "group": "Students",
+                "pages": [
+                  "help-center/en/students/importing-and-exporting-students"
+                ]
+              },
+              {
+                "group": "Marketing",
+                "pages": [
+                  "help-center/en/marketing/creating-coupons"
+                ]
+              },
+              {
+                "group": "Integrations",
+                "pages": [
+                  "help-center/en/integrations/setting-up-stripe",
+                  "help-center/en/integrations/setting-up-mercadopago",
+                  "help-center/en/integrations/setting-up-asaas",
+                  "help-center/en/integrations/setting-up-bunnynet"
+                ]
+              },
+              {
+                "group": "Settings",
+                "pages": [
+                  "help-center/en/settings/script-manager"
+                ]
+              }
             ]
           }
         ]

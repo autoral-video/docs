@@ -1,0 +1,154 @@
+---
+title: "Products and Offers"
+description: "Create course-linked products and configure offers with one-time, subscription or installment payment, in up to 27 currencies."
+---
+
+A **Product** represents what you are selling and is linked to a course. Inside each product you create **Offers** — the payment plans that will be shown at checkout (one-time payment, subscription, etc.).
+
+The complete flow is:
+
+```
+Product → Offers → Checkout
+```
+
+Before creating a checkout, you need at least one active offer.
+
+## Core concepts
+
+| Concept | What it is |
+|---|---|
+| **Product** | Container linked to a course. Automatically synced with Stripe. |
+| **Offer** | A pricing plan inside the product (e.g., "One-Time Payment $97", "Monthly $9"). |
+| **Additional price** | The same offer value in a different currency (for international sales). |
+
+A product can have multiple offers. Each offer can have prices in up to 27 currencies.
+
+## Step 1: Create the product
+
+Go to **Admin → Products → New Product**.
+
+| Field | Description |
+|---|---|
+| **Product Name** | Internal name of the product. Also sent to Stripe. Required. |
+| **Course** | Course linked to this product. A product always represents one course. Required. |
+| **Active** | Whether the product is available for use in checkouts. Enabled by default. |
+| **Description** | Descriptive text visible in the Stripe dashboard. Optional. |
+
+Click **Create Product**. The product is automatically synced with Stripe — a Stripe product ID will be assigned and displayed on the edit screen.
+
+<Note>After creating, you will be redirected to the edit screen where you can manage offers.</Note>
+
+## Step 2: Add offers
+
+On the product edit screen, the **Add Offer** section appears below the product information.
+
+### Offer fields
+
+| Field | Description |
+|---|---|
+| **Offer Name** | Label for the plan (e.g., "Monthly Plan", "Lifetime Access"). Required. |
+| **Payment Type** | Defines how the student will be charged. See types below. |
+| **Main Price** | The offer value in the primary currency. Minimum: 0.01. |
+| **Currency** | Base currency for the main price. Default: BRL. |
+
+### Payment types
+
+**One-time payment (`one_time`)**
+The student pays once and receives permanent access (as configured in the checkout). No billing period required.
+
+**Subscription (`subscription`)**
+The student is charged recurrently while the subscription is active.
+
+Additional fields:
+
+| Field | Options |
+|---|---|
+| **Billing Period** | Monthly · Quarterly · Semiannual · Annual |
+
+**Scheduled subscription (`subscription_schedule`)**
+Same as a subscription, but with a fixed number of charges. After reaching the cycle limit, billing ends automatically. Ideal for installment plans on international credit cards.
+
+Additional fields:
+
+| Field | Description |
+|---|---|
+| **Billing Period** | Monthly · Quarterly · Semiannual · Annual |
+| **Number of Cycles** | Number of charges (1 to 120). E.g., 12 = 12 months of billing. |
+
+## Step 3: Add prices in other currencies (optional)
+
+Each offer can have prices in multiple currencies. Stripe will automatically use the price in the buyer's country currency when available.
+
+### Adding manually
+
+1. In the **Select currency** dropdown, choose the desired currency
+2. Click **Add Currency**
+3. Fill in the amount for the added currency
+4. Repeat for each needed currency
+
+### Generating automatically via exchange rate
+
+Use the **Generate in other currencies** button to calculate prices automatically based on the current exchange rate.
+
+A modal will open with the following options:
+
+**Protection margin (%)**
+Percentage added on top of the exchange rate to cover currency costs. The platform recommends between **5% and 14%**, considering:
+
+| Cost | Estimate |
+|---|---|
+| Provider spread (Stripe, Wise...) | 1–3% |
+| Financial transaction tax (IOF) | 0.38% |
+| Gateway conversion fee | 0.5–2% |
+| Exchange rate volatility | 3–8% |
+
+**Psychological pricing**
+Adjustment of the final value to commercially convenient price formats:
+
+| Option | Example |
+|---|---|
+| Round | $14.00 |
+| Ending .94 | $13.94 |
+| Ending .97 | $13.97 |
+| Ending .99 | $13.99 |
+
+The table shows for each currency:
+- **Converted:** gross amount at the day's exchange rate
+- **With margin:** amount after applying the margin and chosen rounding
+
+Uncheck any currencies you do not want to apply. Click **Apply selected** to add the prices to the offer.
+
+<Note>The exchange rate is updated daily. Review the values before saving, especially for volatile currencies.</Note>
+
+### Supported currencies
+
+The platform supports 27 currencies across regions:
+
+| Region | Currencies |
+|---|---|
+| **Americas** | BRL, USD, CAD, MXN, ARS, CLP, COP, PEN, UYU |
+| **Europe** | EUR, GBP, CHF, DKK, NOK, SEK, PLN |
+| **Asia & Oceania** | JPY, AUD, NZD, SGD, HKD, INR, KRW, THB |
+| **Other** | ZAR, AED, ILS |
+
+<Note>CLP, COP, JPY and KRW are zero-decimal currencies. Values are automatically calculated in the correct format.</Note>
+
+## Step 4: Save the offer
+
+Click **Add Offer**. The offer is created and **automatically synced with Stripe** — a green "Stripe" badge will confirm the sync.
+
+If the sync fails, the offer is created locally and a warning will be displayed. You can edit and save again to retry the sync.
+
+## Managing existing offers
+
+Offers appear listed below the form. For each offer you can:
+
+- **Edit:** click **Edit** to change the name, type, price, and currencies. Saving re-syncs with Stripe.
+- **Activate/Deactivate:** controls whether the offer is available for selection in checkouts.
+- **Delete:** permanently removes the offer. This action cannot be undone.
+
+## Next step: Create the checkout
+
+Once you have a product with at least one active offer, go to **Admin → Checkouts → New Checkout** and link the offer to the checkout.
+
+<Note>A checkout needs an offer to work. The offer defines the price and payment type the student will see on the purchase page.</Note>

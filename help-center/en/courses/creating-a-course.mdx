@@ -1,0 +1,215 @@
+---
+title: "Creating a Course"
+description: "Complete flow to build a course from scratch — basic info, modules, lessons (video, article, quiz), materials and publishing."
+---
+
+This guide walks you through the complete flow for creating a course from scratch — from basic information to publishing with modules, lessons, and supplementary materials.
+
+## Overview
+
+```
+Course → Modules → Lessons → (Video / Article / Quiz) → Materials
+```
+
+The course is the main container. Inside it you create modules, and inside each module you create lessons. Each lesson can have a different content type and its own supplementary materials.
+
+## Step 1: Create the course
+
+Go to **Admin → Courses → New Course**.
+
+The course form is divided into sections accessed via the left sidebar:
+
+### Tab: Information
+
+| Field | Description |
+|---|---|
+| **Course Name** | Name shown to students. Required. |
+| **Slug (URL)** | URL identifier. Auto-generated from the name if left blank. |
+| **Display Order** | Number that defines the course's position in listings. Lower = appears first. |
+| **Short Description** | Summary shown in cards and listings. Up to 500 characters. |
+| **Full Description** | Rich text (Quill editor) shown on the course page. |
+
+Click **Create Course** to save. After creating, you are redirected to the edit view where the **Modules** and **Settings** tabs become available.
+
+### Tab: Images
+
+| Field | Description |
+|---|---|
+| **Thumbnail** | Course cover image (16:9 ratio). Shown in cards and listings. Max 2 MB. |
+| **Background Image** | Featured image used on the course page. Max 4 MB. |
+
+A preview of the image appears as soon as you select a file, before saving.
+
+### Tab: Settings
+
+**Visibility**
+
+| Option | Effect |
+|---|---|
+| **Active** | Course is visible to students who have access |
+| **Featured** | Shown on the platform's home page |
+
+**Progression**
+
+| Option | Effect |
+|---|---|
+| **Sequential Lessons** | Students can only access the next lesson after completing the current one |
+| **Sequential Modules** | Students can only access the next module after completing the current one |
+
+<Note>The first lesson of each module is always accessible, even with sequential progression enabled.</Note>
+
+**Course Page**
+
+Enable **Show checkouts on the course page** to display purchase options on the public course page. Once enabled, select which checkouts to show (only active checkouts linked to this course are listed).
+
+<Note>To select checkouts, the course must be saved first and have at least one active checkout registered.</Note>
+
+## Step 2: Create modules
+
+In the **Modules** tab, you organize course content into sections. Each module groups a set of lessons.
+
+### Adding a module
+
+1. Fill in the **Module Name** (required) and **Description** (optional)
+2. Click **Add Module**
+
+The module appears immediately in the list below the form.
+
+### Managing modules
+
+- **Reorder:** drag the handle icon (⠿) to change module positions
+- **Edit:** click **Edit** to change the name and description inline
+- **Activate/Deactivate:** click **Activate** or **Deactivate** to control module visibility
+- **Delete:** click the trash icon — note that this deletes the module and **all its lessons**
+
+## Step 3: Create lessons
+
+Inside each module in the **Modules** tab, click **New Lesson** to create a lesson in that module.
+
+### Content type
+
+Each lesson must have a defined type:
+
+| Type | Description |
+|---|---|
+| **Video** | Streaming via Bunny.net or external embed (YouTube, Vimeo) |
+| **Article** | Rich text without video, edited with the Quill editor |
+| **Quiz** | Assessment with multiple choice or typed answer questions |
+
+<Warning>Changing the type after creation may require reconfiguring the content.</Warning>
+
+### Lesson information
+
+| Field | Description |
+|---|---|
+| **Lesson Title** | Name shown in the lesson list. Required. |
+| **Module** | Module this lesson belongs to. Can be changed here. |
+| **Description** | Supporting text shown below the player/article. |
+
+**Advanced options** (expandable):
+
+| Field | Description |
+|---|---|
+| **Slug (URL)** | Auto-generated if left blank |
+| **Display Order** | Position of the lesson within the module |
+
+Click **Save Changes** to proceed to the other tabs.
+
+## Step 4: Add video (Video-type lessons)
+
+After saving the lesson, open the **Video** tab.
+
+### Upload via Bunny.net (recommended)
+
+Bunny Stream is the primary option for videos hosted on the platform.
+
+1. Click **Select file** and choose the video from your computer
+2. The upload starts automatically
+3. After uploading, the video enters **processing** — the progress bar shows the status
+4. When processing completes, the player appears automatically
+
+<Note>Bunny.net must be configured under **Admin → Settings → Bunny.net** for uploads to work.</Note>
+
+### External video (YouTube, Vimeo, or other)
+
+If you prefer to use a video already hosted externally:
+
+1. Paste the **video URL** or the **embed code** (`<iframe>`) into the field
+2. Click **Save**
+
+The system automatically converts YouTube and Vimeo URLs to the correct embed format.
+
+## Step 5: Configure a quiz (Quiz-type lessons)
+
+After saving a **Quiz**-type lesson, open the **Quiz** tab.
+
+### Quiz settings
+
+| Field | Description |
+|---|---|
+| **Minimum Score (%)** | Minimum correct answer percentage to pass. Default: 70%. |
+| **Time Limit (min)** | Maximum time to complete. Leave blank for no limit. |
+| **Max. Attempts** | Number of attempts allowed. Leave blank for unlimited. |
+| **Show correct answers at the end** | Reveals which answers were right after the student finishes |
+| **Show correct answer immediately** | Instant feedback after each answer |
+| **Allow retake** | Allows the student to try again after failing |
+
+Click **Save Config.** after adjusting.
+
+### Adding questions
+
+Two question types are available:
+
+**Multiple Choice**
+1. Click **Multiple Choice**
+2. Type the question text in the text field
+3. Edit the answer options (click on each option's text to edit it)
+4. Click the green circle next to the correct option to mark it
+5. To add more options, click **Add option**
+6. To remove an option, click the ×
+
+**Typed Answer**
+1. Click **Typed Answer**
+2. Type the question text
+3. Fill in the **Correct answer** field with the expected response
+
+<Note>Typed answer comparison ignores uppercase/lowercase and extra spaces.</Note>
+
+**Explanation (optional):** for any question type, you can add an explanation that will be shown to the student after they answer.
+
+**Reorder questions:** drag the handle icon to reorganize the order of questions.
+
+## Step 6: Add supplementary materials
+
+In the **Materials** tab of any lesson, you can attach files for download.
+
+1. Optionally, fill in a **custom name** for the file
+2. Select the file in the upload field (max 300 MB)
+3. Click **Upload**
+
+Materials are listed below the form and can be:
+- **Reordered** by dragging the handle
+- **Downloaded** by clicking the download icon (opens in a new tab)
+- **Removed** by clicking the trash icon
+
+## Step 7: Configure lesson visibility
+
+In the **Settings** tab of any lesson:
+
+| Option | Effect |
+|---|---|
+| **Active** | Lesson is visible to students enrolled in the course |
+| **Free** | Lesson available as a preview without enrollment |
+
+Mark a lesson as **Free** to offer a sample of the content before purchase.
+
+## Publishing the course
+
+For students to gain access to the course:
+
+1. In the course **Settings** tab, check **Active**
+2. Make sure all modules that should be visible are **active**
+3. Make sure all lessons that should be visible are **active**
+4. Click **Save Changes**
+
+<Note>An active course is only accessible to students who have been granted access (via checkout or manually). Activating the course does not make it publicly available — you need a linked checkout or manually granted access.</Note>

@@ -1,0 +1,86 @@
+---
+title: "Configurando o Bunny.net"
+description: "Configure o streaming de vídeo via CDN global para suas aulas — credenciais, biblioteca e pull zone."
+---
+
+O Bunny.net é o provedor de streaming de vídeo da plataforma. Ele entrega os vídeos dos seus cursos por meio de uma CDN global, garantindo reprodução rápida e confiável para seus alunos em qualquer lugar do mundo.
+
+Este guia mostra como encontrar cada credencial no painel do Bunny.net e inseri-la nas configurações da sua plataforma.
+
+## Modelo de cobrança
+
+O Bunny.net funciona no modelo **pay-as-you-go**: você mantém um saldo de créditos na conta e os serviços são descontados conforme o uso. Não há mensalidade fixa.
+
+### Teste gratuito
+
+Toda conta nova recebe **$20 em créditos** sem precisar cadastrar cartão. Ao adicionar um método de pagamento, você recebe mais **$30**, totalizando **$50 em créditos** para explorar a plataforma.
+
+O período de teste dura **14 dias**. Durante esse tempo, os créditos cobrem todos os serviços: armazenamento de vídeos, transcodificação e entrega via CDN.
+
+<Note>Após os 14 dias, os créditos do teste expiram. Para continuar, basta recarregar o saldo pelo botão **Recharge Your Account** no painel do Bunny.net.</Note>
+
+### Alertas de saldo
+
+O Bunny.net envia e-mails automáticos quando o saldo está baixo:
+
+| Tipo de conta | Alertas enviados |
+|---|---|
+| Sem cartão cadastrado | Ao atingir $10 e $1 restantes |
+| Com cartão cadastrado | Ao atingir $20 e $5 restantes |
+
+<Note>Cadastre um método de pagamento para receber alertas mais cedo e evitar interrupções no streaming dos seus cursos.</Note>
+
+## O que você vai precisar
+
+Antes de começar, certifique-se de ter:
+
+- Uma conta no Bunny.net — crie em [bunny.net](https://bunny.net?ref=dr5fu0elyi)
+- Uma **Biblioteca de Stream** criada na sua conta Bunny.net
+
+## Passo 1: Obtenha sua Chave de API da conta
+
+A Chave de API é a credencial principal que conecta sua plataforma à conta do Bunny.net. Ela é utilizada em todas as operações de API, incluindo o upload de vídeos.
+
+1. Acesse [dash.bunny.net](https://bunny.net?ref=dr5fu0elyi)
+2. Clique no nome ou avatar da conta no **canto superior esquerdo**
+3. Navegue até **Account settings → API Key**
+4. Clique no **ícone de olho** para revelar a chave ou no **ícone de copiar** para copiá-la diretamente
+5. Cole o valor no campo **Chave de API** nas configurações da plataforma
+
+<Warning>**Segurança:** Essa chave concede acesso total à sua conta Bunny.net. Nunca a compartilhe publicamente nem a inclua em repositórios de código.</Warning>
+
+## Passo 2: Obtenha o ID da Biblioteca de Stream
+
+O ID da Biblioteca identifica onde seus vídeos de curso são armazenados e transcodificados. Cada biblioteca tem um identificador numérico único.
+
+### Se você já tem uma biblioteca:
+
+1. No painel do Bunny.net, acesse **Stream** no menu lateral esquerdo
+2. Clique na sua biblioteca de vídeos
+3. Abra a aba **API** dentro da biblioteca
+4. O **Library ID** é exibido no topo da página — copie-o
+5. Cole no campo **ID da Biblioteca** nas configurações da plataforma
+6. Em seguida copie o **Pull zone** exibido no mesmo bloco
+7. Cole no campo **Pull Zone** nas configurações da plataforma
+
+### Se você precisa criar uma biblioteca primeiro:
+
+1. Vá em **Stream → Add Video Library**
+2. Insira um nome para a biblioteca
+3. Selecione pelo menos **2 regiões de armazenamento** para durabilidade e desempenho
+4. Clique em **Add Video Library**
+5. Em seguida, siga os passos acima para obter o ID na aba **API**
+
+## Resumo dos campos
+
+| Campo na Plataforma | Onde encontrar no Bunny.net |
+|---|---|
+| **Chave de API** | Account → API Key |
+| **ID da Biblioteca** | Stream → [Sua Biblioteca] → aba API |
+| **Pull Zone** | Stream → [Sua Biblioteca] → aba API → procure Pull zone |
+
+## Salvando as configurações
+
+Após preencher todos os campos, clique em **Salvar**. Uma mensagem de confirmação aparecerá brevemente. Sua plataforma passará a usar o Bunny.net para todos os uploads e transmissões de vídeo.
+
+Se os vídeos não forem enviados corretamente após salvar, verifique se o **ID da Biblioteca** e a **Chave de API** estão corretos — um ID de biblioteca incorreto é a causa mais comum de falhas no upload.

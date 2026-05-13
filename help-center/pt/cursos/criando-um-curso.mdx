@@ -1,0 +1,215 @@
+---
+title: "Criando um Curso"
+description: "Fluxo completo para criar um curso do zero — informações básicas, módulos, aulas (vídeo, artigo, quiz), materiais e publicação."
+---
+
+Este guia mostra o fluxo completo para criar um curso do zero — desde as informações básicas até a publicação com módulos, aulas e materiais complementares.
+
+## Visão geral do fluxo
+
+```
+Curso → Módulos → Aulas → (Vídeo / Artigo / Quiz) → Materiais
+```
+
+O curso é o container principal. Dentro dele você cria módulos, e dentro de cada módulo você cria as aulas. Cada aula pode ter um tipo diferente de conteúdo e materiais complementares.
+
+## Passo 1: Criar o curso
+
+Acesse **Admin → Cursos → Novo Curso**.
+
+O formulário de curso é dividido em abas no menu lateral:
+
+### Aba: Informações
+
+| Campo | Descrição |
+|---|---|
+| **Nome do Curso** | Nome exibido para os alunos. Obrigatório. |
+| **Slug (URL)** | Identificador na URL. Se deixado vazio, é gerado automaticamente a partir do nome. |
+| **Ordem de Exibição** | Número que define a posição do curso nas listagens. Menor número = aparece primeiro. |
+| **Descrição Curta** | Resumo exibido em cards e listagens. Até 500 caracteres. |
+| **Descrição Completa** | Texto rico (editor Quill) exibido na página do curso. |
+
+Clique em **Criar Curso** para salvar. Após criar, você é redirecionado para a edição, onde as abas **Módulos** e **Configurações** ficam disponíveis.
+
+### Aba: Imagens
+
+| Campo | Descrição |
+|---|---|
+| **Thumbnail** | Imagem de capa do curso (proporção 16:9). Exibida em cards e listagens. Máx. 2 MB. |
+| **Imagem de Fundo** | Imagem de destaque usada na página do curso. Máx. 4 MB. |
+
+A pré-visualização da imagem aparece assim que o arquivo é selecionado, antes de salvar.
+
+### Aba: Configurações
+
+**Visibilidade**
+
+| Opção | Efeito |
+|---|---|
+| **Ativo** | Curso visível para alunos que têm acesso |
+| **Destaque** | Exibido na página inicial da plataforma |
+
+**Progressão**
+
+| Opção | Efeito |
+|---|---|
+| **Aulas Sequenciais** | O aluno só pode acessar a próxima aula após concluir a atual |
+| **Módulos Sequenciais** | O aluno só pode acessar o próximo módulo após concluir o atual |
+
+<Note>A primeira aula de cada módulo é sempre acessível, mesmo com progressão sequencial ativada.</Note>
+
+**Página do Curso**
+
+Ative **Exibir checkouts na página do curso** para mostrar opções de compra na página pública. Após ativar, selecione quais checkouts aparecerão (apenas checkouts ativos vinculados a este curso são listados).
+
+<Note>Para selecionar checkouts, o curso precisa ser salvo primeiro e ter ao menos um checkout ativo cadastrado.</Note>
+
+## Passo 2: Criar módulos
+
+Na aba **Módulos**, você organiza o conteúdo do curso em seções. Cada módulo agrupa um conjunto de aulas.
+
+### Adicionando um módulo
+
+1. Preencha o **Nome do Módulo** (obrigatório) e a **Descrição** (opcional)
+2. Clique em **Adicionar Módulo**
+
+O módulo aparece imediatamente na lista abaixo do formulário.
+
+### Gerenciando módulos
+
+- **Reordenar:** arraste o ícone de alça (⠿) para mudar a posição dos módulos
+- **Editar:** clique em **Editar** para alterar nome e descrição inline
+- **Ativar/Desativar:** clique em **Ativar** ou **Desativar** para controlar a visibilidade do módulo
+- **Excluir:** clique no ícone de lixeira — atenção, isso exclui o módulo e **todas as suas aulas**
+
+## Passo 3: Criar aulas
+
+Dentro de cada módulo na aba **Módulos**, clique em **Nova Aula** para criar uma aula naquele módulo.
+
+### Tipo de conteúdo
+
+Cada aula deve ter um tipo definido:
+
+| Tipo | Descrição |
+|---|---|
+| **Vídeo** | Streaming via Bunny.net ou embed externo (YouTube, Vimeo) |
+| **Artigo** | Texto rico sem vídeo, editado com o editor Quill |
+| **Quiz** | Avaliação com perguntas de múltipla escolha ou digitação |
+
+<Warning>Alterar o tipo após criar pode requerer reconfiguração do conteúdo.</Warning>
+
+### Informações da aula
+
+| Campo | Descrição |
+|---|---|
+| **Título da Aula** | Nome exibido na listagem de aulas. Obrigatório. |
+| **Módulo** | Módulo ao qual a aula pertence. Pode ser alterado aqui. |
+| **Descrição** | Texto de apoio exibido abaixo do player/artigo. |
+
+**Opções avançadas** (expansível):
+
+| Campo | Descrição |
+|---|---|
+| **Slug (URL)** | Gerado automaticamente se deixado vazio |
+| **Ordem de Exibição** | Posição da aula dentro do módulo |
+
+Clique em **Salvar Alterações** para avançar para as outras abas.
+
+## Passo 4: Adicionar vídeo (aulas do tipo Vídeo)
+
+Após salvar a aula, acesse a aba **Vídeo**.
+
+### Upload via Bunny.net (recomendado)
+
+O Bunny Stream é a opção principal para vídeos hospedados na plataforma.
+
+1. Clique em **Selecionar arquivo** e escolha o vídeo do seu computador
+2. O upload começa automaticamente
+3. Após o upload, o vídeo entra em **processamento** — a barra de progresso indica o andamento
+4. Quando o processamento terminar, o player é exibido automaticamente
+
+<Note>O Bunny.net precisa estar configurado em **Admin → Configurações → Bunny.net** para o upload funcionar.</Note>
+
+### Vídeo externo (YouTube, Vimeo ou outro)
+
+Se preferir usar um vídeo já hospedado externamente:
+
+1. Cole a **URL do vídeo** ou o **código de incorporação** (`<iframe>`) no campo
+2. Clique em **Salvar**
+
+O sistema converte automaticamente URLs do YouTube e Vimeo para o formato embed correto.
+
+## Passo 5: Configurar quiz (aulas do tipo Quiz)
+
+Após salvar a aula do tipo **Quiz**, acesse a aba **Quiz**.
+
+### Configurações do quiz
+
+| Campo | Descrição |
+|---|---|
+| **Nota Mínima (%)** | Percentual mínimo de acertos para aprovação. Padrão: 70%. |
+| **Tempo Limite (min)** | Tempo máximo para completar. Deixe em branco para sem limite. |
+| **Máx. Tentativas** | Limite de tentativas permitidas. Deixe em branco para ilimitado. |
+| **Mostrar respostas corretas ao final** | Exibe quais respostas estavam certas após o aluno concluir |
+| **Mostrar resposta correta na hora** | Feedback imediato após cada resposta |
+| **Permitir refazer quiz** | Permite que o aluno tente novamente após reprovar |
+
+Clique em **Salvar Config.** após ajustar.
+
+### Adicionando perguntas
+
+Dois tipos de pergunta estão disponíveis:
+
+**Múltipla Escolha**
+1. Clique em **Múltipla Escolha**
+2. Digite o enunciado da pergunta no campo de texto
+3. Edite as opções de resposta (clique no texto de cada opção para editar)
+4. Clique no círculo verde ao lado da opção correta para marcá-la
+5. Para adicionar mais opções, clique em **Adicionar opção**
+6. Para remover uma opção, clique no ×
+
+**Digitação**
+1. Clique em **Digitação**
+2. Digite o enunciado da pergunta
+3. Preencha o campo **Resposta correta** com o texto esperado
+
+<Note>A comparação de respostas de digitação ignora maiúsculas/minúsculas e espaços extras.</Note>
+
+**Explicação (opcional):** em qualquer tipo de pergunta, você pode adicionar uma explicação que será mostrada ao aluno após ele responder.
+
+**Reordenar perguntas:** arraste o ícone de alça para reorganizar a ordem das questões.
+
+## Passo 6: Adicionar materiais complementares
+
+Na aba **Materiais** de qualquer aula, você pode anexar arquivos para download.
+
+1. Opcionalmente, preencha um **Nome personalizado** para o arquivo
+2. Selecione o arquivo no campo de upload (máx. 300 MB)
+3. Clique em **Fazer Upload**
+
+Os materiais são listados abaixo do formulário e podem ser:
+- **Reordenados** arrastando pela alça
+- **Baixados** clicando no ícone de download (abre em nova aba)
+- **Removidos** clicando no ícone de lixeira
+
+## Passo 7: Configurar visibilidade da aula
+
+Na aba **Configurações** da aula:
+
+| Opção | Efeito |
+|---|---|
+| **Ativa** | Aula visível para alunos matriculados no curso |
+| **Gratuita** | Aula disponível como preview mesmo sem matrícula |
+
+Marque **Gratuita** para oferecer uma amostra do conteúdo antes da compra.
+
+## Publicando o curso
+
+Para que os alunos tenham acesso ao curso:
+
+1. Na aba **Configurações** do curso, marque **Ativo**
+2. Certifique-se de que todos os módulos que devem ser visíveis estão **ativos**
+3. Certifique-se de que as aulas que devem ser visíveis estão **ativas**
+4. Clique em **Salvar Alterações**
+
+<Note>Um curso ativo só é acessível para alunos que tiverem acesso concedido (via checkout ou manualmente). Ativar o curso não o torna público — é necessário ter um checkout vinculado ou conceder acesso manualmente.</Note>

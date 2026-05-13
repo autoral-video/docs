@@ -1,0 +1,163 @@
+---
+title: "Importing and Exporting Students"
+description: "Bulk-import students via CSV with platform presets for Hotmart, Kiwify, Eduzz and Monetizze. Export students and accesses as CSV."
+---
+
+This guide explains how to bulk-import students from a CSV file and how to export the student list with their course accesses as a downloadable file.
+
+Access this feature at **Admin → Settings → Import / Export**.
+
+## Overview
+
+The screen has two tabs:
+
+| Tab | What it does |
+|---|---|
+| **Import** | Reads a CSV file with student data, maps columns, shows a preview, and processes the file in the background |
+| **Export** | Generates a CSV file with all students and their course accesses on the platform |
+
+## Importing students
+
+The import follows a three-step guided flow, indicated by a progress indicator at the top of the screen.
+
+### Step 1 — Upload CSV file
+
+1. On the **Import** tab, click **Select file** inside the dashed area
+2. Choose a `.csv` or `.txt` file from your computer (maximum 10 MB)
+3. The file is read automatically and you advance to Step 2
+
+**File requirements:**
+- Must have a header row as the first line (column names)
+- Delimiter can be a comma (`,`) or semicolon (`;`) — detected automatically
+- Encoding: UTF-8, ISO-8859-1, or Windows-1252 — converted automatically
+
+**Compatible platforms:** Hotmart, Kiwify, Eduzz, Monetizze, or any platform with manual column mapping.
+
+### Step 2 — Map columns
+
+In this step, you indicate which CSV column corresponds to each platform field.
+
+#### Platform presets
+
+Click the button for your platform to fill in the mapping automatically:
+
+| Platform | Email column | Name column | Phone column |
+|---|---|---|---|
+| **Hotmart** | `Email` | `Nome` | `Telefone` |
+| **Kiwify** | `email` | `name` | `phone` |
+| **Eduzz** | `E-mail do Cliente` | `Nome` | `Telefone` |
+| **Monetizze** | `Email` | `Nome Completo` | _(not mapped)_ |
+
+<Note>A preset fills in the fields only if the corresponding column exists in the CSV. Always verify that the fields were filled in correctly after applying a preset.</Note>
+
+#### Manual mapping
+
+If you are not using a preset, or if your file has different column names, select them manually:
+
+| Field | Required | Description |
+|---|---|---|
+| **Email** | Required | Column containing the student's email address |
+| **Name** | Required | Column containing the student's full name |
+| **Phone** | Optional | Column containing the student's phone number. Select "Do not map" to skip |
+
+#### Course
+
+Define how students will be linked to a course:
+
+| Option | How it works |
+|---|---|
+| **Same course for all** | Select a course from the platform — all students in the file will receive access to it |
+| **Course from CSV** | Select the CSV column that contains the course name — each student will be linked to their corresponding course |
+
+<Warning>When "Course from CSV" is active, the course name in the file must be **exactly** the same as the name registered on the platform (including capitalization, accents, and spacing).</Warning>
+
+#### Access type
+
+| Field | Options |
+|---|---|
+| **Type** | **Lifetime** — no expiration date · **Temporary** — expires after a period |
+| **Period** _(Temporary only)_ | 30 days · 90 days · 180 days · 365 days · Custom days |
+| **Number of days** _(Temporary + Custom days only)_ | Enter the number of days manually |
+
+Once all fields are filled in, click **Preview** to proceed.
+
+### Step 3 — Import preview
+
+The platform displays the first 5 rows of the file with the applied mapping for validation.
+
+**Counters:**
+
+| Counter | Meaning |
+|---|---|
+| **Valid rows** | Rows that passed validation and will be imported |
+| **Rows with errors** | Rows that will be skipped during import |
+
+**Validations performed in the preview:**
+
+- Invalid or missing email
+- Missing name
+
+<Note>The preview shows only the first 5 rows. The full file is validated during background processing.</Note>
+
+If the data looks correct, click **Start import**. To fix the mapping, click **Back**.
+
+### Step 4 — Processing and results
+
+After starting, the file is processed in the background. The screen shows a loading indicator and refreshes automatically every 2 seconds.
+
+<Note>You can close the page during processing and come back later — the result will be available for 30 minutes.</Note>
+
+**When processing is complete, you will see:**
+
+| Counter | Meaning |
+|---|---|
+| **Users created** | Students who did not exist on the platform and were created |
+| **Existing users** | Students who already existed and had their data updated |
+| **Accesses granted** | Total course accesses successfully granted |
+
+**Skipped rows:** if there are errors during processing, a table details each problematic row with the reason:
+
+| Reason | Cause |
+|---|---|
+| Invalid or missing email | The email field is empty or has an invalid format |
+| Duplicate email in file (skipped) | The same email appears more than once in the CSV — only the first occurrence is processed; the rest are listed as errors |
+| Missing or invalid name | The name field is empty or contains an email address instead of a name |
+| Course _[name]_ not found | The course name in the CSV does not match any course registered on the platform |
+
+Click **New import** to start a new process from scratch.
+
+## Exporting students
+
+On the **Export** tab, you can generate a CSV file with all students and their course accesses.
+
+### Available filters
+
+| Filter | Description |
+|---|---|
+| **Filter by course** | Exports only students with access to the selected course. Leave as "All courses" to export without filtering |
+| **Active accesses only** | When checked, exports only accesses that are currently active |
+
+Click **Download CSV** to generate and download the file.
+
+### Exported file columns
+
+| Column | Content |
+|---|---|
+| Name | Student's full name |
+| Email | Email address |
+| Phone | Registered phone number (if available) |
+| Course | Course name |
+| Access Type | `lifetime`, `temporary`, or `subscription` |
+| Duration | Access period (e.g. `monthly`, `annual`) or empty for lifetime |
+| Expires On | Expiration date in `dd/mm/yyyy` format, or "Lifetime" |
+| Active | `Yes` or `No` |
+| Granted On | Date and time the access was granted |
+
+<Note>The file is generated with UTF-8 BOM encoding, compatible with Microsoft Excel and other spreadsheet editors.</Note>
+
+## Tips and best practices
+
+- **Before importing a large file**, run a test with a CSV of 5 to 10 rows to verify the column mapping is correct.
+- **To import students for multiple courses at once**, use the "Course from CSV" option and make sure the course names in the file exactly match those registered on the platform.
+- **Duplicate emails in the file** are handled automatically — only the first occurrence is processed; the rest appear in the error list.
+- **Use the export feature** before a large import to have a backup of the current state of accesses.

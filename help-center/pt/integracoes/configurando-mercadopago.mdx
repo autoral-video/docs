@@ -1,0 +1,84 @@
+---
+title: "Configurando o Mercado Pago"
+description: "Conecte sua conta Mercado Pago via OAuth e receba pagamentos por PIX e cartão parcelado em até 12x no Brasil."
+---
+
+O Mercado Pago é o principal gateway para receber pagamentos no Brasil, com as melhores taxas para cartão de crédito com parcelamento e PIX. É a opção preferida para alunos brasileiros pela familiaridade e confiança na plataforma.
+
+A plataforma utiliza **OAuth** para vincular sua conta do Mercado Pago. Isso significa que você conecta com um único clique — sem chaves de API para copiar, sem webhooks para configurar manualmente. Token de acesso, public key e webhooks são definidos automaticamente.
+
+## Métodos de pagamento disponíveis
+
+- **Cartão de crédito** — parcelamento em até 12x com ou sem juros
+- **PIX** — pagamento instantâneo com confirmação em segundos
+
+## O que você vai precisar
+
+Antes de começar, certifique-se de ter:
+
+- Uma conta no Mercado Pago — crie em [mercadopago.com.br](https://www.mercadopago.com.br)
+- Acesso ao painel do Mercado Pago
+
+## Passo 1: Acesse as configurações do Mercado Pago
+
+1. Acesse **Admin → Configurações → Mercado Pago**
+
+Você verá um painel de conexão com o botão **Conectar com Mercado Pago**.
+
+## Passo 2: Conecte sua conta Mercado Pago
+
+1. Clique em **Conectar com Mercado Pago**
+2. Você será redirecionado para a página de autorização do Mercado Pago
+3. Faça login na sua conta Mercado Pago (ou crie uma)
+4. Revise as permissões solicitadas e autorize o acesso
+5. Você será redirecionado de volta à plataforma
+
+Após o redirecionamento, o painel exibirá:
+
+- Um badge de confirmação **Mercado Pago conectado**
+- O **ID da conta** vinculada
+- A data em que a conexão foi feita
+- A validade do token de acesso
+- O ambiente em uso: **Produção** ou **Sandbox**
+
+<Note>Suas credenciais e a configuração do webhook são definidas automaticamente — nenhuma credencial precisa ser inserida manualmente.</Note>
+
+## Passo 3: Ative o Mercado Pago
+
+Após a conexão, ative o toggle **Ativar Mercado Pago** para habilitá-lo como forma de pagamento nos seus checkouts.
+
+<Note>O Mercado Pago só estará disponível no checkout após estar conectado e ativado.</Note>
+
+## Renovação automática do token
+
+O token de acesso do Mercado Pago tem validade limitada e é renovado automaticamente pela plataforma antes de expirar.
+
+Se o token estiver próximo da expiração, um aviso aparecerá no painel. Caso a renovação automática falhe, basta **desconectar e reconectar** sua conta pelo fluxo OAuth.
+
+## Webhooks
+
+Como a conexão é feita via OAuth, os **webhooks são configurados automaticamente** pela aplicação. Nenhuma ação adicional é necessária no painel do Mercado Pago.
+
+## Gerenciando a conexão
+
+### Desativar o Mercado Pago
+
+Você pode desativar o Mercado Pago a qualquer momento pelo toggle **Ativar Mercado Pago**. Sua conta permanece conectada — é possível reativar sem precisar passar pelo fluxo OAuth novamente.
+
+### Desconectar a conta
+
+Para remover completamente a integração com o Mercado Pago:
+
+1. Acesse **Admin → Configurações → Mercado Pago**
+2. Clique em **Desconectar**
+3. Confirme a ação
+
+Isso revoga a autorização OAuth e remove todas as credenciais armazenadas. Para usar o Mercado Pago novamente, será necessário passar pelo fluxo de conexão uma nova vez.
+
+## Resumo das ações
+
+| Ação | Onde |
+|---|---|
+| Conectar conta Mercado Pago | Admin → Configurações → Mercado Pago → **Conectar com Mercado Pago** |
+| Ativar / desativar no checkout | Admin → Configurações → Mercado Pago → toggle **Ativar Mercado Pago** |
+| Desconectar conta | Admin → Configurações → Mercado Pago → **Desconectar** |

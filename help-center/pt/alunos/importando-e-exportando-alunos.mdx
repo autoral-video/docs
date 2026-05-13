@@ -1,0 +1,163 @@
+---
+title: "Importando e Exportando Alunos"
+description: "Importe alunos em massa via CSV com presets de Hotmart, Kiwify, Eduzz e Monetizze. Exporte alunos e acessos como CSV."
+---
+
+Este guia explica como importar alunos em massa via arquivo CSV e como exportar a lista de alunos com seus acessos para um arquivo para download.
+
+Acesse a funcionalidade em **Admin → Configurações → Importar / Exportar**.
+
+## Visão geral
+
+A tela possui duas abas:
+
+| Aba | O que faz |
+|---|---|
+| **Importar** | Lê um arquivo CSV com dados de alunos, mapeia as colunas, exibe uma prévia e processa o arquivo em segundo plano |
+| **Exportar** | Gera um arquivo CSV com todos os alunos e seus acessos na plataforma |
+
+## Importando alunos
+
+A importação segue um fluxo de três etapas guiadas, indicadas por um indicador de progresso no topo da tela.
+
+### Etapa 1 — Enviar arquivo CSV
+
+1. Na aba **Importar**, clique em **Selecionar arquivo** dentro da área pontilhada
+2. Escolha um arquivo `.csv` ou `.txt` do seu computador (máximo 10 MB)
+3. O arquivo é lido automaticamente e você avança para a Etapa 2
+
+**Requisitos do arquivo:**
+- Deve ter cabeçalho na primeira linha (nomes das colunas)
+- Separador pode ser vírgula (`,`) ou ponto e vírgula (`;`) — detectado automaticamente
+- Codificação UTF-8, ISO-8859-1 ou Windows-1252 — convertida automaticamente
+
+**Plataformas compatíveis:** Hotmart, Kiwify, Eduzz, Monetizze ou qualquer plataforma com mapeamento manual.
+
+### Etapa 2 — Mapear colunas
+
+Nesta etapa, você indica qual coluna do CSV corresponde a cada campo da plataforma.
+
+#### Presets de plataforma
+
+Clique no botão da sua plataforma para preencher o mapeamento automaticamente:
+
+| Plataforma | Coluna E-mail | Coluna Nome | Coluna Telefone |
+|---|---|---|---|
+| **Hotmart** | `Email` | `Nome` | `Telefone` |
+| **Kiwify** | `email` | `name` | `phone` |
+| **Eduzz** | `E-mail do Cliente` | `Nome` | `Telefone` |
+| **Monetizze** | `Email` | `Nome Completo` | _(não mapeado)_ |
+
+<Note>O preset preenche os campos apenas se a coluna correspondente existir no CSV. Verifique se os campos foram preenchidos corretamente após aplicar o preset.</Note>
+
+#### Mapeamento manual
+
+Se não usar um preset ou se o arquivo tiver nomes de colunas diferentes, selecione manualmente:
+
+| Campo | Obrigatoriedade | Descrição |
+|---|---|---|
+| **E-mail** | Obrigatório | Coluna com o endereço de e-mail do aluno |
+| **Nome** | Obrigatório | Coluna com o nome completo do aluno |
+| **Telefone** | Opcional | Coluna com o telefone do aluno. Selecione "Não mapear" para ignorar |
+
+#### Curso
+
+Defina como os alunos serão vinculados a um curso:
+
+| Opção | Como funciona |
+|---|---|
+| **Mesmo curso para todos** | Selecione um curso da plataforma — todos os alunos do arquivo receberão acesso a ele |
+| **Curso vem do CSV** | Selecione a coluna do CSV que contém o nome do curso — cada aluno será vinculado ao curso correspondente |
+
+<Warning>Quando a opção "Curso vem do CSV" estiver ativa, o nome do curso no arquivo deve ser **idêntico** ao nome cadastrado na plataforma (incluindo maiúsculas, acentos e espaços).</Warning>
+
+#### Tipo de acesso
+
+| Campo | Opções |
+|---|---|
+| **Tipo** | **Vitalício** — sem data de expiração · **Temporário** — expira após um período |
+| **Período** _(apenas Temporário)_ | 30 dias · 90 dias · 180 dias · 365 dias · Dias personalizados |
+| **Número de dias** _(apenas Temporário + Dias personalizados)_ | Informe a quantidade de dias manualmente |
+
+Após preencher todos os campos, clique em **Pré-visualizar** para avançar.
+
+### Etapa 3 — Prévia da importação
+
+A plataforma exibe as primeiras 5 linhas do arquivo com o mapeamento aplicado para validação.
+
+**Contadores:**
+
+| Contador | Significado |
+|---|---|
+| **Linhas válidas** | Linhas que passaram na validação e serão importadas |
+| **Linhas com erro** | Linhas que serão ignoradas na importação |
+
+**Validações realizadas na prévia:**
+
+- E-mail inválido ou ausente
+- Nome ausente
+
+<Note>A prévia mostra apenas as primeiras 5 linhas. O arquivo completo é validado durante o processamento em segundo plano.</Note>
+
+Se os dados estiverem corretos, clique em **Iniciar importação**. Para corrigir o mapeamento, clique em **Voltar**.
+
+### Etapa 4 — Processamento e resultado
+
+Após iniciar, o arquivo é processado em segundo plano. A tela exibe um indicador de carregamento e atualiza automaticamente a cada 2 segundos.
+
+<Note>Você pode fechar a página durante o processamento e retornar mais tarde — o resultado ficará disponível por 30 minutos.</Note>
+
+**Quando o processamento terminar, você verá:**
+
+| Contador | Significado |
+|---|---|
+| **Usuários criados** | Alunos que não existiam na plataforma e foram criados |
+| **Usuários existentes** | Alunos que já existiam e tiveram seus dados atualizados |
+| **Acessos concedidos** | Total de acessos ao curso concedidos com sucesso |
+
+**Linhas ignoradas:** se houver erros no processamento, uma tabela detalha cada linha problemática com o motivo:
+
+| Motivo | Causa |
+|---|---|
+| E-mail inválido ou ausente | O campo de e-mail está vazio ou com formato inválido |
+| E-mail duplicado no arquivo (ignorado) | O mesmo e-mail aparece mais de uma vez no CSV — apenas a primeira ocorrência é processada |
+| Nome ausente ou inválido | O campo de nome está vazio ou contém um e-mail no lugar do nome |
+| Curso _[nome]_ não encontrado | O nome do curso no CSV não corresponde a nenhum curso cadastrado na plataforma |
+
+Clique em **Nova importação** para iniciar um novo processo do zero.
+
+## Exportando alunos
+
+Na aba **Exportar**, você gera um arquivo CSV com todos os alunos e seus acessos.
+
+### Filtros disponíveis
+
+| Filtro | Descrição |
+|---|---|
+| **Filtrar por curso** | Exporta apenas os alunos com acesso ao curso selecionado. Deixe em "Todos os cursos" para exportar sem filtro |
+| **Somente acessos ativos** | Quando marcado, exporta apenas os acessos ativos no momento da exportação |
+
+Clique em **Baixar CSV** para gerar e baixar o arquivo.
+
+### Colunas do arquivo exportado
+
+| Coluna | Conteúdo |
+|---|---|
+| Nome | Nome completo do aluno |
+| E-mail | Endereço de e-mail |
+| Telefone | Telefone cadastrado (se disponível) |
+| Curso | Nome do curso |
+| Tipo de Acesso | `lifetime`, `temporary` ou `subscription` |
+| Duração | Período do acesso (ex: `monthly`, `annual`) ou vazio para vitalício |
+| Expira em | Data de expiração no formato `dd/mm/aaaa` ou "Vitalício" |
+| Ativo | `Sim` ou `Não` |
+| Concedido em | Data e hora da concessão do acesso |
+
+<Note>O arquivo é gerado com codificação UTF-8 com BOM, compatível com Microsoft Excel e outros editores de planilha.</Note>
+
+## Dicas e boas práticas
+
+- **Antes de importar um arquivo grande**, faça um teste com um CSV de 5 a 10 linhas para verificar se o mapeamento está correto.
+- **Para importar alunos de múltiplos cursos** de uma só vez, use a opção "Curso vem do CSV" e certifique-se de que os nomes dos cursos no arquivo são idênticos aos cadastrados na plataforma.
+- **E-mails duplicados no arquivo** são tratados automaticamente — apenas a primeira ocorrência é processada; as demais aparecem na lista de erros.
+- **Use a exportação** antes de fazer uma importação grande para ter um backup do estado atual dos acessos.

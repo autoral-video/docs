@@ -1,0 +1,117 @@
+---
+title: "Criando e Gerenciando Cupons"
+description: "Crie cupons de desconto com regras de validade, limites de uso, produtos elegíveis e descontos diferenciados por parcela."
+---
+
+Um **cupom** é um código de desconto que o comprador insere na página de checkout antes de finalizar a compra. Você pode configurar o valor do desconto, o período de validade, os produtos elegíveis e limites de uso.
+
+Acesse **Admin → Marketing → Cupons → Novo Cupom** para criar um.
+
+## Passo 1: Identificação
+
+| Campo | Descrição |
+|---|---|
+| **Código** | Texto que o comprador digita no checkout. Sempre salvo em maiúsculas. Obrigatório. |
+| **Nome** | Rótulo interno para identificar o cupom. Não é exibido ao comprador. |
+
+Clique em **Gerar** para criar um código aleatório automaticamente, ou digite o seu próprio (ex: `PROMO20`, `BLACKFRIDAY`).
+
+## Passo 2: Desconto
+
+| Campo | Descrição |
+|---|---|
+| **Tipo de Desconto** | Define como o desconto é calculado. Atualmente disponível: **Porcentagem (%)**. |
+| **Valor** | Percentual de desconto aplicado sobre o valor total da compra. |
+
+**Exemplo:** com tipo `Porcentagem` e valor `20`, o comprador paga 20% menos.
+
+## Passo 3: Desconto por Parcela
+
+<Note>Esta seção aparece somente quando o **Mercado Pago** está habilitado nas configurações da plataforma.</Note>
+
+Permite definir percentuais de desconto diferentes conforme o número de parcelas escolhido pelo comprador. Isso é útil para incentivar pagamentos à vista ou em menos parcelas.
+
+**Como funciona:**
+- Cada faixa define um intervalo de parcelas (**De** / **Até**) e o desconto correspondente
+- PIX e pagamento à vista equivalem a **1 parcela**
+- Você pode adicionar múltiplas faixas clicando em **Adicionar faixa**
+- Para remover uma faixa, clique no ícone ×
+
+**Exemplo de configuração:**
+
+| De | Até | Desconto |
+|---|---|---|
+| 1 | 1 | 25% |
+| 2 | 6 | 15% |
+| 7 | 12 | 10% |
+
+<Warning>Quando o desconto por parcela está ativado, ele substitui o desconto padrão definido no Passo 2 para cada faixa correspondente.</Warning>
+
+## Passo 4: Limites de Uso
+
+| Campo | Descrição |
+|---|---|
+| **Limite total de usos** | Número máximo de vezes que o cupom pode ser usado no total. Deixe vazio para ilimitado. |
+| **Limite por cliente** | Número máximo de vezes que o mesmo cliente pode usar o cupom. Deixe vazio para ilimitado. |
+| **Uso único por cliente** | Quando ativado, cada cliente só pode usar o cupom uma vez, independentemente do limite por cliente. |
+
+## Passo 5: Validade
+
+| Campo | Descrição |
+|---|---|
+| **Início** | Data e hora a partir da qual o cupom passa a ser válido. Deixe vazio para válido imediatamente. |
+| **Expiração** | Data e hora em que o cupom deixa de ser aceito. Deixe vazio para sem data de expiração. |
+
+<Note>O cupom só pode ser aplicado dentro do intervalo entre **Início** e **Expiração**. Fora desse período, ele é recusado no checkout.</Note>
+
+## Passo 6: Produtos
+
+Define em quais produtos o cupom pode ser aplicado.
+
+| Opção | Efeito |
+|---|---|
+| **Aplicar a todos os produtos** *(ativado)* | O cupom é aceito em qualquer checkout da plataforma. |
+| **Aplicar a todos os produtos** *(desativado)* | Exibe a lista de produtos para seleção manual. O cupom só funciona nos produtos marcados. |
+
+## Passo 7: Escassez
+
+| Campo | Descrição |
+|---|---|
+| **Tempo de urgência (minutos)** | Quando preenchido, exibe um timer regressivo no checkout após o comprador aplicar o cupom. |
+
+O contador cria senso de urgência visual, incentivando o comprador a concluir a compra antes que o tempo se esgote. Deixe vazio para não exibir o contador.
+
+<Note>O timer é apenas visual — o cupom não é invalidado automaticamente quando o contador zera.</Note>
+
+## Passo 8: Status
+
+| Opção | Efeito |
+|---|---|
+| **Cupom ativo** *(ativado)* | O cupom pode ser aplicado no checkout. |
+| **Cupom ativo** *(desativado)* | O cupom existe mas é recusado ao tentar usar. |
+
+Use esta opção para pausar temporariamente um cupom sem precisar excluí-lo.
+
+## Finalizando
+
+Clique em **Criar Cupom**. O cupom estará disponível imediatamente para uso nos checkouts elegíveis.
+
+## Histórico de Uso
+
+Na tela de edição de um cupom existente, o **Histórico de Uso** aparece automaticamente quando há registros de uso.
+
+A tabela exibe:
+
+| Coluna | Descrição |
+|---|---|
+| **Email** | E-mail do comprador que usou o cupom |
+| **Checkout** | Nome do checkout em que o cupom foi aplicado |
+| **Original** | Valor total antes do desconto |
+| **Desconto** | Valor descontado |
+| **Final** | Valor efetivamente pago |
+| **Data** | Data e hora do uso |
+
+## Artigos relacionados
+
+- [Criando um Checkout](/help-center/pt/checkout/criando-um-checkout) — Como configurar a página de compra onde o cupom é aplicado
+- [Produtos e Ofertas](/help-center/pt/checkout/produtos-e-ofertas) — Como criar os produtos que podem ser vinculados a cupons

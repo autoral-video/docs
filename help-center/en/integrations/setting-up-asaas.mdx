@@ -1,0 +1,82 @@
+---
+title: "Setting Up Asaas"
+description: "Configure Asaas via API key to accept credit card, PIX, bank slip and recurring subscriptions."
+---
+
+Asaas is a Brazilian gateway that offers a wide range of payment methods, including credit card, PIX, bank slip (boleto), and recurring subscriptions. It is a great option to diversify the payment methods accepted by your students.
+
+The Asaas integration is set up via **API key**, requiring you to copy two credentials from the Asaas dashboard: the API key and the webhook token.
+
+## Available payment methods
+
+- **Credit card** — with installments
+- **PIX** — instant payment
+- **Bank slip (boleto)** — with configurable due date
+- **Recurring subscriptions** — credit card, PIX, and boleto
+
+## What you'll need
+
+Before you begin, make sure you have:
+
+- An Asaas account — sign up at [asaas.com](https://www.asaas.com)
+- Access to the Asaas dashboard to generate credentials
+
+## Step 1: Generate the API key in Asaas
+
+1. Log in to the Asaas dashboard
+2. Go to **Settings → Integrations → API**
+3. Generate a new **API key**
+4. Copy the generated key — you will use it in the next step
+
+<Note>For testing, generate the key in the **Sandbox** environment. To receive real payments, use the **Production** environment.</Note>
+
+## Step 2: Configure Asaas on the platform
+
+1. Go to **Admin → Settings → Asaas**
+2. Under **General settings**, select the **Environment** that matches the key you generated:
+   - **Sandbox (testing)** — to validate the integration without real charges
+   - **Production** — to receive real payments
+3. Set the **Default bank slip due days** between 1 and 30 days
+4. Under **API credentials**, paste your key into the **API key** field
+5. Click **Save**
+
+<Note>The API key field shows only dots when a key is already configured. To replace it, just paste the new key and save. To keep the existing key, leave the field blank.</Note>
+
+## Step 3: Configure the webhook in Asaas
+
+The webhook is how Asaas notifies the platform about payment status updates (approved, rejected, refunded, etc.).
+
+1. On the Asaas configuration screen in the platform, **copy the webhook URL** displayed (something like `https://your-domain.com/webhook/asaas`)
+2. Go to the Asaas dashboard at **Settings → Integrations → Webhook**
+3. Register the copied URL as the webhook endpoint
+4. Set an **authentication token** in Asaas and copy it
+5. Return to the platform and paste the token into the **Webhook Token** field
+6. Click **Save**
+
+<Warning>The webhook token secures the communication between Asaas and the platform. Without it, events sent by Asaas will be rejected.</Warning>
+
+## Step 4: Enable Asaas
+
+After registering the API key and the webhook token, toggle **Enable Asaas** to activate it as a payment method in your checkouts.
+
+<Note>Asaas will only be available at checkout after it is configured and enabled.</Note>
+
+## Updating credentials
+
+To replace the API key or the webhook token:
+
+1. Go to **Admin → Settings → Asaas**
+2. Paste the new credential into the corresponding field
+3. Click **Save**
+
+The fields display dots when a credential is already saved. Leave the field blank to keep the existing value, or paste a new value to replace it.
+
+## Quick reference
+
+| Action | Where |
+|---|---|
+| Generate API key | Asaas dashboard → Settings → Integrations → API |
+| Register webhook | Asaas dashboard → Settings → Integrations → Webhook |
+| Configure credentials | Admin → Settings → Asaas → **API credentials** |
+| Set environment and boleto | Admin → Settings → Asaas → **General settings** |
+| Enable / disable at checkout | Admin → Settings → Asaas → **Enable Asaas** toggle |

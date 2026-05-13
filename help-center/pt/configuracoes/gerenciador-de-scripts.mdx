@@ -1,0 +1,178 @@
+---
+title: "Gerenciador de Scripts"
+description: "Insira pixels de rastreamento, analytics e scripts externos em posições específicas das páginas sem editar o tema."
+---
+
+O Gerenciador de Scripts permite inserir códigos externos (pixels de rastreamento, analytics, chat, etc.) em posições específicas das páginas da plataforma, sem precisar editar arquivos de tema.
+
+## Acessando o gerenciador
+
+Acesse **Admin → Configurações → Scripts**.
+
+## Adicionando um script
+
+1. Clique em **Novo script**
+2. Preencha os campos do formulário
+3. Clique em **Salvar**
+
+### Campos do formulário
+
+| Campo | Descrição |
+|---|---|
+| **Nome** | Identificação interna do script. Ex: "Google Analytics", "Meta Pixel". Não é exibido para os alunos. |
+| **Posição** | Onde o script será injetado na página (ver seção abaixo). |
+| **Ordem** | Número que define a prioridade de execução quando há mais de um script na mesma posição. Menor número = executado primeiro. Padrão: 0. |
+| **Ativo** | Controla se o script está sendo injetado ou não. Pode ser alternado sem excluir o script. |
+| **Código do script** | O código HTML/JS completo, incluindo as tags `<script>` ou `<noscript>`. |
+
+## Posições disponíveis
+
+Os scripts são organizados por grupo e posição. Cada posição corresponde a um ponto específico do HTML da página.
+
+### Global
+
+| Posição | Onde é inserido |
+|---|---|
+| **Cabeçalho Global** | Dentro do `<head>` de **todas** as páginas da plataforma |
+| **Rodapé Global** | Antes do `</body>` de **todas** as páginas da plataforma |
+
+### Área de Membros
+
+| Posição | Onde é inserido |
+|---|---|
+| **Cabeçalho da Área de Membros** | Dentro do `<head>` das páginas da área de membros |
+| **Rodapé da Área de Membros** | Antes do `</body>` das páginas da área de membros |
+
+### Aulas
+
+| Posição | Onde é inserido |
+|---|---|
+| **Cabeçalho das Páginas de Aula** | Dentro do `<head>` das páginas de aula |
+| **Rodapé das Páginas de Aula** | Antes do `</body>` das páginas de aula |
+
+### Checkout
+
+| Posição | Onde é inserido |
+|---|---|
+| **Cabeçalho do Checkout** | Dentro do `<head>` da página de checkout |
+| **Rodapé do Checkout** | Antes do `</body>` da página de checkout |
+| **Cabeçalho da Confirmação de Compra** | Dentro do `<head>` da página de confirmação de compra |
+| **Rodapé da Confirmação de Compra** | Antes do `</body>` da página de confirmação de compra |
+
+<Note>Use **Rodapé** para a maioria dos scripts de rastreamento — é a posição recomendada para não bloquear o carregamento da página. Use **Cabeçalho** quando o script exige ser carregado antes do conteúdo (ex: alguns scripts de A/B testing).</Note>
+
+## Variáveis dinâmicas
+
+Ao selecionar uma posição, o formulário exibe os **placeholders disponíveis** para aquela posição. Eles são substituídos automaticamente pelo valor real no momento em que a página é carregada.
+
+Clique em qualquer variável para copiá-la e cole diretamente no código do script.
+
+### Variáveis globais (disponíveis em todas as posições)
+
+| Variável | Valor substituído |
+|---|---|
+| `{{site_name}}` | Nome da plataforma |
+| `{{user_id}}` | ID do usuário logado (vazio se não logado) |
+| `{{user_email}}` | E-mail do usuário logado |
+| `{{user_name}}` | Nome do usuário logado |
+
+### Variáveis de aula (posições de Aula)
+
+Além das globais:
+
+| Variável | Valor substituído |
+|---|---|
+| `{{course_id}}` | ID do curso |
+| `{{course_name}}` | Nome do curso |
+| `{{module_id}}` | ID do módulo atual |
+| `{{module_name}}` | Nome do módulo atual |
+| `{{lesson_id}}` | ID da aula atual |
+| `{{lesson_name}}` | Título da aula atual |
+
+### Variáveis de checkout (posições de Checkout)
+
+Além das globais:
+
+| Variável | Valor substituído |
+|---|---|
+| `{{checkout_id}}` | ID do checkout |
+| `{{product_name}}` | Nome do produto/checkout |
+| `{{product_price}}` | Preço do produto |
+| `{{course_id}}` | ID do curso |
+| `{{course_name}}` | Nome do curso |
+
+## Ativando e desativando scripts
+
+Na listagem, clique no status (**Ativo** ou **Inativo**) de qualquer script para alternar sem abrir o formulário. Útil para desativar temporariamente um pixel durante testes.
+
+## Editando um script
+
+1. Na listagem, clique no ícone de lápis na linha do script
+2. O formulário é preenchido com os dados atuais
+3. Faça as alterações e clique em **Salvar**
+
+## Excluindo um script
+
+1. Na listagem, clique no ícone de lixeira na linha do script
+2. Confirme a exclusão no modal — **esta ação não pode ser desfeita**
+
+## Exemplos de uso
+
+### Google Analytics 4
+
+Posição: **Cabeçalho Global**
+
+```html
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX', {
+    'user_id': '{{user_id}}'
+  });
+</script>
+```
+
+### Meta Pixel (Facebook)
+
+Posição: **Cabeçalho Global**
+
+```html
+<script>
+  !function(f,b,e,v,n,t,s){...}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', 'SEU_PIXEL_ID');
+  fbq('track', 'PageView');
+</script>
+<noscript>
+  <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=SEU_PIXEL_ID&ev=PageView&noscript=1"/>
+</noscript>
+```
+
+### Evento de conversão na confirmação de compra
+
+Posição: **Rodapé da Confirmação de Compra**
+
+```html
+<script>
+  gtag('event', 'purchase', {
+    'transaction_id': '{{checkout_id}}',
+    'value': '{{product_price}}',
+    'currency': 'BRL',
+    'items': [{
+      'item_name': '{{product_name}}'
+    }]
+  });
+</script>
+```
+
+## Perguntas frequentes
+
+**O script aparece em todas as páginas do checkout ou só em algumas?**
+Depende da posição escolhida. As posições de "Checkout" são exclusivas da página de pagamento; as de "Confirmação de Compra" são exclusivas da página de sucesso após o pagamento.
+
+**Posso ter vários scripts na mesma posição?**
+Sim. Use o campo **Ordem** para controlar a sequência de injeção.
+
+**Como testar se o script está sendo injetado?**
+Acesse a página correspondente, abra o DevTools do navegador (F12) e inspecione o código-fonte ou a aba **Network** para verificar se o script está sendo carregado.
