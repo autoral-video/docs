@@ -1,0 +1,189 @@
+---
+title: "Setting Up Artificial Intelligence"
+description: "Connect an AI provider (OpenAI, Anthropic or Google) with your own key to unlock quiz generation, descriptions, summaries and automatic answers."
+---
+
+The AI integration speeds up administrative tasks using the provider of your choice. The **BYOK (Bring Your Own Key)** model means you use your own API key — the platform does not charge for AI usage, you pay the provider directly based on consumption.
+
+## Available features
+
+- **Automatic quiz generation** from lesson content
+- **Suggested replies** for student questions
+- **Description generation** for courses and lessons
+- **Automatic lesson summary** for students
+- **Page generation** with full HTML (see [Page Manager](/help-center/en/settings/page-manager))
+
+## Accessing settings
+
+Go to **Admin → Settings → Artificial Intelligence**.
+
+The screen is divided into three blocks:
+
+| Block | Content |
+|---|---|
+| **Usage this month** | Monthly request quota based on your plan |
+| **General settings** | Provider, model, token limit and activation |
+| **Credentials** | API key for the chosen provider |
+
+## Prerequisites
+
+Before configuring, you need:
+
+- A plan with AI enabled — the **Free** plan does not allow enabling AI
+- An account with the chosen provider (OpenAI, Anthropic or Google)
+- A valid API key from the provider
+
+## Step 1: Choose a provider
+
+The platform supports three providers:
+
+| Provider | When to choose | Available models |
+|---|---|---|
+| **OpenAI (GPT)** | Market familiarity, broad ecosystem | GPT-5.4 nano · GPT-5.4 · GPT-5.4 pro · GPT-4o mini · GPT-4o |
+| **Anthropic (Claude)** | Excellent at long texts and reasoning | Claude Haiku 4.5 · Claude Sonnet 4.6 · Claude Opus 4.7 |
+| **Google (Gemini)** | Competitive cost, Google integration | Gemini 3.1 Flash Lite · Gemini 3 Flash · Gemini 3.1 Pro · Gemini 2.5 Flash · Gemini 1.5 Pro |
+
+<Note>You can switch providers at any time. When you change the provider, the default model resets automatically to the first model in the new provider's list.</Note>
+
+## Step 2: Get the API key
+
+Each provider has its own dashboard for generating keys.
+
+### OpenAI
+
+1. Go to [platform.openai.com/api-keys](https://platform.openai.com/api-keys)
+2. Log in to your OpenAI account
+3. Click **Create new secret key**
+4. Give it a descriptive name (e.g. `autoral.me`) and click **Create secret key**
+5. **Copy the key immediately** — it will not be displayed again
+
+### Anthropic
+
+1. Go to [console.anthropic.com](https://console.anthropic.com)
+2. Log in to your Anthropic account
+3. Navigate to **Settings → API Keys**
+4. Click **Create Key**
+5. Give it a descriptive name and copy the generated key
+
+### Google (Gemini)
+
+1. Go to [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)
+2. Log in with your Google account
+3. Click **Create API key**
+4. Select an existing project or create a new one
+5. Copy the generated key
+
+<Warning>**Security:** treat your API key as a password. Do not share it publicly, do not commit it to code repositories and revoke it immediately if you suspect exposure.</Warning>
+
+## Step 3: Configure on the platform
+
+With the key in hand:
+
+1. Go to **Admin → Settings → Artificial Intelligence**
+2. Under **General settings**, adjust the fields below
+3. Under **Credentials**, paste your API key
+4. Click **Save**
+
+### Configuration fields
+
+| Field | Description |
+|---|---|
+| **Enable Artificial Intelligence** | Turns on or off all AI features on the platform. |
+| **Enable AI features in the admin area** | When off, the key remains saved but the AI buttons are hidden from the team. Useful for temporary pauses. |
+| **Provider** | OpenAI, Anthropic or Google. Determines which models appear in the field below. |
+| **Default model** | Model used in every generation. See [Choosing the model](#choosing-the-model). |
+| **Token limit per request** | Output cap per call. Between 128 and 32000. Lower it to keep costs down. Default: 2000. |
+| **API key** | Provider credential. Stored encrypted and never displayed after saving. |
+
+<Note>The API key field shows only dots when a key is already configured. To replace it, just paste the new key and save. To keep the existing one, leave the field blank.</Note>
+
+## Monthly quota
+
+The badge at the top of the screen shows how many requests remain this month based on your plan:
+
+| State | What it means |
+|---|---|
+| **Blocked by plan** | Free plan or no AI. Upgrade to unlock. |
+| **Unlimited usage** | Plan with no monthly cap. Only provider consumption is charged. |
+| **X of Y requests remaining** | You've consumed part of the quota. The bar turns amber at 70%+ and red at 90%+. |
+
+The quota **resets automatically on the first day of each month**. When exhausted, the AI buttons are disabled across the platform until the next cycle.
+
+## Choosing the model
+
+Each provider offers models with different trade-offs between cost, speed and quality.
+
+### For volume and speed
+
+Use fast, cheap models for high-volume tasks (day-to-day Q&A, occasional suggestions):
+
+- **OpenAI:** GPT-5.4 nano
+- **Anthropic:** Claude Haiku 4.5
+- **Google:** Gemini 3.1 Flash Lite or Gemini 3 Flash
+
+### For strategic tasks
+
+Use more capable models for strategic tasks (full page generation, long quiz, sales copy):
+
+- **OpenAI:** GPT-5.4 or GPT-5.4 pro
+- **Anthropic:** Claude Sonnet 4.6 or Claude Opus 4.7
+- **Google:** Gemini 3.1 Pro
+
+<Note>More capable models consume more tokens and cost more per call. Weigh the trade-off based on your volume.</Note>
+
+## Best practices for quality AI
+
+The AI is only as good as the context you provide. Empty lessons produce poor results; well-described lessons produce quizzes, summaries and answers that feel like you wrote them.
+
+### Fill in lesson description and content
+
+Auto-quiz, automatic summary and Q&A suggestion read the lesson's `description` and `content` fields. The more contextual text, the better the result. **A lesson with no content = generic or empty output.**
+
+### Use descriptive titles
+
+Description generation starts from the lesson title.
+
+- ❌ "Lesson 1" → produces generic copy
+- ✅ "Sales funnel for B2B SaaS" → produces targeted, relevant copy
+
+### Always review before publishing
+
+AI output is a draft, not absolute truth. Verify facts, adjust the tone to your brand and edit anything that doesn't sound like your voice. **You are the author — the AI is the intern.**
+
+### Be careful with sensitive data
+
+Prompts sent to the AI include the lesson content and the student's question. Avoid generating content about confidential information or personal data — the retention policy is defined by the provider (OpenAI/Anthropic/Google), not by the platform.
+
+### Quick checklist before generating
+
+- ✅ Lesson title explains the topic in one clear sentence
+- ✅ Description has at least 2-3 sentences about what the student will learn
+- ✅ Lesson content is present (text or transcript) — a video without a transcript is a black box to the AI
+- ✅ Chosen model fits the task type (fast for volume, capable for strategy)
+- ✅ The team using AI has the `ai:use` permission
+
+## Team permissions
+
+Only team members with the `ai:use` permission can trigger AI generations. Configure under **Admin → Settings → Team**, editing the role and checking the corresponding permission.
+
+Even with AI enabled on the platform, users without `ai:use` will not see the generation buttons.
+
+## Frequently asked questions
+
+**Does the platform charge for AI usage?**
+No. In the BYOK model, you pay the provider (OpenAI, Anthropic or Google) directly based on consumption. The platform only applies your plan's monthly quota to control the total volume of calls.
+
+**Can I switch providers without losing configuration?**
+Yes. When you switch providers in the selector, the default model adjusts automatically. The previous API key is kept in the database but you'll need to register the new provider's key before saving.
+
+**What happens if the key is invalid?**
+Calls fail with an error. You'll see the message in the AI components. Verify the key in the provider's dashboard and paste it again under **Credentials → API key**.
+
+**How do I temporarily pause AI without deleting the key?**
+Turn off the **Enable AI features in the admin area** toggle. The key stays saved and the buttons disappear for the team. To re-enable, switch the toggle back on.
+
+**Why isn't my quota resetting at the start of the month?**
+The quota resets automatically. If the badge doesn't update, refresh the page. If the issue persists, open a ticket via the **Help Center** with your account number.
+
+**Do the legacy models (GPT-4o, Gemini 1.5 Pro) still work?**
+Yes, they're available in the selector marked as "(legacy)". Keep them only if you have a specific reason — newer models are typically cheaper and better.

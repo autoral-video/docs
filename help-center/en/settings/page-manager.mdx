@@ -1,0 +1,223 @@
+---
+title: "Page Manager"
+description: "Create public pages with custom HTML — terms, policies, landing pages, FAQs. Includes AI generation, SEO, dynamic variables and tracking."
+---
+
+The Page Manager lets you create public pages with custom HTML — terms of use, privacy policies, sales landing pages, FAQs and any other static content. Pages are accessible at `https://yourdomain.com/p/{slug}` and can be published, set as the domain's homepage and have configurable tracking.
+
+## Accessing the manager
+
+Go to **Admin → Settings → Pages**.
+
+## Creating a page
+
+There are two ways to create a page: **manually** (you write the HTML) or **with AI** (you describe the intent and the platform generates the full HTML).
+
+### Manually
+
+1. Click **New Page**
+2. Fill in the form fields
+3. Edit the HTML in the editor
+4. Click **Save**
+
+### With AI
+
+1. Click **New Page**
+2. Click **Generate with AI**
+3. Fill in the brief (see [Generating with AI](#generating-with-ai))
+4. Click **Generate page**
+5. Review the generated HTML, adjust if needed and click **Save**
+
+<Warning>AI generation replaces the editor's current content with the new HTML. If there is important content already, save a copy before generating.</Warning>
+
+## Form fields
+
+### Identification
+
+| Field | Description |
+|---|---|
+| **Title** | Internal name and page title. Used as the browser tab title if no Meta Title is set. Required. |
+| **Slug** | Identifier in the public URL. The page lives at `/p/{slug}`. Accepts letters, numbers and hyphens. |
+
+<Note>The slug is auto-generated from the title as you type, but it can be edited manually.</Note>
+
+### Options
+
+| Option | Effect |
+|---|---|
+| **Published** | When enabled, the page is accessible at its public URL. Disabled keeps it as a draft. |
+| **Set as homepage** | Replaces the domain's default homepage with this page. Only one page can be the homepage at a time. |
+| **Disable tracking** | When enabled, the page does not capture UTMs or tracking cookies. Use for institutional pages (terms, privacy). |
+
+### SEO (optional)
+
+| Field | Description |
+|---|---|
+| **Meta Title** | Title shown in search engines. Falls back to **Title** if empty. |
+| **Meta Description** | Summary shown in search engines. Limit: 500 characters. |
+
+## Dynamic variables
+
+The **Available variables** section shows placeholders that are automatically replaced with real values when the page loads. Click any variable to copy it to the clipboard.
+
+**How to use:** paste the variable directly into the HTML, in attributes or in the text. For example:
+
+```html
+<p>Welcome to {{site_name}}</p>
+<a href="mailto:{{support_email}}">Contact support</a>
+<footer>© {{year}} {{site_name}}</footer>
+```
+
+<Note>Hover over each variable in the form to see its description.</Note>
+
+## Tracking attributes
+
+To capture custom events on HTML elements, add the `data-track` attribute with the event name.
+
+### Custom events
+
+```html
+<a href="/checkout/my-product" data-track="redirect_to_checkout">Buy now</a>
+<button data-track="click_cta">I want to start</button>
+```
+
+| Attribute | When to use |
+|---|---|
+| `data-track="click_cta"` | Click on a call-to-action button |
+| `data-track="redirect_to_checkout"` | Click on a checkout link (auto-detected on hrefs containing `/checkout`) |
+
+### Automatic events
+
+The events below are captured automatically on every page with tracking enabled:
+
+| Event | When it fires |
+|---|---|
+| `page_view` | On page load |
+| `view_content` | After 5 seconds or 20% scroll |
+| `scroll_depth` | At 25%, 50%, 75% and 100% scroll |
+| `time_on_page` | At 10s, 30s and 60s on the page |
+
+<Note>Pages with **Disable tracking** enabled do not fire any of these events nor capture UTMs.</Note>
+
+## HTML editor
+
+The page content is edited in a code editor with HTML syntax highlighting. You can use HTML, inline CSS (`<style>`) and JavaScript (`<script>`) directly in the editor.
+
+**Suggestions:**
+
+- Use Tailwind CSS in the HTML — the platform already loads the framework on the public front-end
+- For images, host them on Bunny.net or another CDN and reference them via URL
+- For custom fonts, include the `<link>` or `@import` inside a `<style>` tag at the top of the HTML
+
+## Generating with AI
+
+AI generation produces the full page HTML based on the brief you fill in. The more detailed the brief, the better the generated page.
+
+### Brief fields
+
+| Field | Required | Description |
+|---|---|---|
+| **Page goal** | Required | What the page should accomplish. Include product, audience and desired action. |
+| **Page type** | Optional | Sales landing, lead capture, institutional, terms, FAQ, etc. |
+| **Target audience** | Optional | Who will read the page (profile, age range, interests). |
+| **Tone of voice** | Optional | How the text should sound (direct, warm, technical, etc.). Use the presets or describe. |
+| **Visual style** | Optional | Aesthetic direction (minimalist, brutalist, retro, etc.). Use the presets or describe. |
+| **Color palette** | Optional | Preferred colors. E.g. "Sand base with terracotta accent and moss-green details". |
+| **Desired sections** | Optional | Ordered list of sections (hero, social proof, features, FAQ, CTA, etc.). |
+| **Primary CTA — text** | Optional | Main button text. E.g. "Reserve my spot". |
+| **Primary CTA — URL** | Optional | Destination URL. Use a real URL (e.g. `/checkout/my-product`) so the AI adds tracking. |
+| **Secondary CTAs** | Optional | Other buttons on the page with text and destination. |
+| **Differentiators and key points** | Optional | What makes the offer unique (guarantees, numbers, methods). |
+| **Social proof** | Optional | Testimonials, numbers, mentioned brands. |
+| **Required information** | Optional | Legal text, guarantee, business ID — anything that must appear on the page. |
+| **Extra instructions** | Optional | Any additional information for the AI to consider. |
+
+### Tips for an excellent page
+
+- **Be specific in the goal.** "Sell course X to audience Y, driving to checkout at /checkout/x" works better than "Sales page".
+- **List sections in the desired order.** Define the structure in the **Sections** field instead of letting the AI decide.
+- **Use real URLs in CTAs.** The AI applies `data-track="redirect_to_checkout"` automatically on links containing `/checkout`.
+- **Mention numbers and names.** Concrete data (4,700 students, 4.9★ rating, testimonial from Ana Lima) is used as evidence on the page.
+- **Pick an off-the-beaten-path accent color.** "Ochre", "moss green" or "petrol blue" produce more distinctive results than "blue" or "purple".
+- **Use variables in the brief.** You can ask for `{{site_name}}` or `{{year}}` and the AI inserts the correct placeholders.
+
+### Automatic tracking on generation
+
+If the page has **Disable tracking** turned off (default), the AI automatically applies:
+
+- `data-track="click_cta"` on call-to-action buttons
+- `data-track="redirect_to_checkout"` on links containing `/checkout`
+
+If you enabled **Disable tracking**, no `data-track` attribute is included in the generated HTML.
+
+## Managing existing pages
+
+The list shows all created pages with columns:
+
+| Column | Content |
+|---|---|
+| **Title** | Page name. "Home" badge when the page is set as the domain homepage. |
+| **Slug** | Public URL in the format `/p/{slug}`. |
+| **Status** | **Published** (visible to the public) or **Draft** (hidden). Click to toggle. |
+| **Tracking** | **Active** (captures events and UTMs) or **Disabled**. |
+| **Actions** | View page · Edit · Delete |
+
+### Toggling status without editing
+
+Click directly on the **Status** column to toggle between **Published** and **Draft** without opening the form. Useful to take a page offline quickly.
+
+### Viewing the public page
+
+Click the external link icon in the **Actions** column to open the page in a new tab. Pages in draft return a 404 — only published pages are accessible.
+
+### Deleting a page
+
+1. Click the trash icon in the **Actions** column
+2. Confirm the deletion in the modal — **this action cannot be undone**
+
+<Warning>Deleting a page permanently removes the HTML, SEO and settings. If visitors are accessing the URL externally, they will start receiving 404 errors.</Warning>
+
+## Common use cases
+
+### Terms of Use and Privacy Policy
+
+- Create as **Published** but **with tracking disabled**
+- Do not set as homepage
+- Use slugs `terms-of-use` and `privacy-policy`
+- Fill in **Meta Title** and **Meta Description** for SEO
+
+### Sales landing page
+
+- Mark as **Published** with **tracking active**
+- Set the **Primary CTA** pointing to a real checkout (`/checkout/my-product`)
+- Configure `data-track` events to measure conversions
+- Ideal for AI generation with a detailed brief
+
+### Custom domain homepage
+
+- Enable **Set as homepage**
+- Only one page can have this flag — enabling it on another page automatically clears it from the previous one
+- Useful when you want a custom home instead of the platform's default home
+
+### Internal FAQ or Help Center
+
+- Create a page with `<details>` and `<summary>` for native accordions
+- Keep tracking active to understand which questions generate the most engagement
+- Include the `{{support_email}}` variable in the footer
+
+## Frequently asked questions
+
+**Can I use external JavaScript on the pages?**
+Yes. Include `<script src="...">` in the HTML. Third-party tracking pixels (Google Analytics, Meta Pixel) can also be inserted via the [Script Manager](/help-center/en/settings/script-manager) in global positions.
+
+**Can an AI-generated page be edited afterwards?**
+Yes. The generated HTML stays in the editor and can be freely adjusted. You can also run the AI again with a different brief to overwrite the content.
+
+**Is there a page limit?**
+No technical limit. Draft pages do not count for the public area.
+
+**Can the slug contain slashes (`/`)?**
+No. The slug is a single URL segment. The page is always served at `/p/{slug}`.
+
+**How do I make a page available in another language?**
+Create separate pages with distinct slugs (e.g. `about-pt` and `about-en`) and point the platform links to the corresponding version. The platform does not automatically version custom pages by language.

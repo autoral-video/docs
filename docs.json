@@ -67,6 +67,8 @@
               {
                 "group": "Configurações",
                 "pages": [
+                  "help-center/pt/configuracoes/configurando-ia",
+                  "help-center/pt/configuracoes/gerenciador-de-paginas",
                   "help-center/pt/configuracoes/gerenciador-de-scripts"
                 ]
               }
@@ -277,6 +279,8 @@
               {
                 "group": "Settings",
                 "pages": [
+                  "help-center/en/settings/setting-up-ai",
+                  "help-center/en/settings/page-manager",
                   "help-center/en/settings/script-manager"
                 ]
               }

@@ -1,0 +1,189 @@
+---
+title: "Configurando a Inteligência Artificial"
+description: "Conecte um provedor de IA (OpenAI, Anthropic ou Google) com sua própria chave para liberar geração de quiz, descrições, resumos e respostas automáticas."
+---
+
+A integração com Inteligência Artificial acelera tarefas administrativas usando o provedor de sua escolha. O modelo **BYOK (Bring Your Own Key)** garante que você usa sua própria chave de API — a plataforma não cobra pelo consumo de IA, você paga direto ao provedor conforme o uso.
+
+## Recursos disponíveis
+
+- **Geração automática de quiz** a partir do conteúdo da aula
+- **Sugestão de resposta** para perguntas dos alunos
+- **Geração de descrição** de curso e aula
+- **Resumo automático** de aula para o aluno
+- **Geração de páginas** com HTML completo (ver [Gerenciador de Páginas](/help-center/pt/configuracoes/gerenciador-de-paginas))
+
+## Acessando as configurações
+
+Acesse **Admin → Configurações → Inteligência Artificial**.
+
+A tela está dividida em três blocos:
+
+| Bloco | Conteúdo |
+|---|---|
+| **Uso este mês** | Quota mensal de requisições conforme o seu plano |
+| **Configurações gerais** | Provedor, modelo, limite de tokens e ativação |
+| **Credenciais** | Chave de API do provedor escolhido |
+
+## Pré-requisitos
+
+Antes de configurar, você precisa de:
+
+- Um plano com IA habilitada — o plano **Free** não permite ativar IA
+- Uma conta no provedor escolhido (OpenAI, Anthropic ou Google)
+- Uma chave de API válida do provedor
+
+## Passo 1: Escolha um provedor
+
+A plataforma suporta três provedores:
+
+| Provedor | Quando escolher | Modelos disponíveis |
+|---|---|---|
+| **OpenAI (GPT)** | Familiaridade do mercado, ecossistema amplo | GPT-5.4 nano · GPT-5.4 · GPT-5.4 pro · GPT-4o mini · GPT-4o |
+| **Anthropic (Claude)** | Excelente em textos longos e raciocínio | Claude Haiku 4.5 · Claude Sonnet 4.6 · Claude Opus 4.7 |
+| **Google (Gemini)** | Custo competitivo, integração com Google | Gemini 3.1 Flash Lite · Gemini 3 Flash · Gemini 3.1 Pro · Gemini 2.5 Flash · Gemini 1.5 Pro |
+
+<Note>Você pode trocar de provedor a qualquer momento. Ao alterar o provedor, o modelo padrão é redefinido automaticamente para o primeiro modelo da lista do novo provedor.</Note>
+
+## Passo 2: Obtenha a chave de API
+
+Cada provedor tem seu próprio painel para gerar chaves.
+
+### OpenAI
+
+1. Acesse [platform.openai.com/api-keys](https://platform.openai.com/api-keys)
+2. Faça login na sua conta OpenAI
+3. Clique em **Create new secret key**
+4. Dê um nome descritivo (ex: `autoral.me`) e clique em **Create secret key**
+5. **Copie a chave imediatamente** — ela não será exibida novamente
+
+### Anthropic
+
+1. Acesse [console.anthropic.com](https://console.anthropic.com)
+2. Faça login na sua conta Anthropic
+3. Vá em **Settings → API Keys**
+4. Clique em **Create Key**
+5. Dê um nome descritivo e copie a chave gerada
+
+### Google (Gemini)
+
+1. Acesse [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)
+2. Faça login com sua conta Google
+3. Clique em **Create API key**
+4. Selecione um projeto existente ou crie um novo
+5. Copie a chave gerada
+
+<Warning>**Segurança:** trate sua chave de API como uma senha. Não compartilhe publicamente, não inclua em repositórios de código e revogue imediatamente se suspeitar de exposição.</Warning>
+
+## Passo 3: Configure na plataforma
+
+Com a chave em mãos:
+
+1. Acesse **Admin → Configurações → Inteligência Artificial**
+2. Em **Configurações gerais**, ajuste os campos abaixo
+3. Em **Credenciais**, cole sua chave de API
+4. Clique em **Salvar**
+
+### Campos de configuração
+
+| Campo | Descrição |
+|---|---|
+| **Ativar Inteligência Artificial** | Liga ou desliga todos os recursos de IA na plataforma. |
+| **Liberar recursos de IA na área administrativa** | Quando desligado, a chave continua salva mas os botões de IA ficam ocultos para a equipe. Útil para pausar temporariamente. |
+| **Provedor** | OpenAI, Anthropic ou Google. Define quais modelos aparecem no campo abaixo. |
+| **Modelo padrão** | Modelo usado em todas as gerações. Veja [Escolhendo o modelo](#escolhendo-o-modelo). |
+| **Limite de tokens por requisição** | Teto de saída por chamada. Entre 128 e 32000. Reduza para conter custos. Padrão: 2000. |
+| **Chave de API** | Credencial do provedor. Fica criptografada e nunca é exibida após salva. |
+
+<Note>O campo de chave de API mostra apenas pontos quando uma chave já está configurada. Para substituí-la, basta colar a nova chave e salvar. Para mantê-la, deixe o campo em branco.</Note>
+
+## Quota mensal
+
+O badge no topo da tela exibe quantas requisições restam no mês conforme seu plano:
+
+| Estado | O que significa |
+|---|---|
+| **Bloqueado pelo plano** | Plano Free ou sem IA. Faça upgrade para liberar. |
+| **Uso ilimitado** | Plano sem teto mensal. Apenas o consumo no provedor é cobrado. |
+| **X de Y requisições restantes** | Você consumiu parte da quota. A barra fica amarela em 70%+ e vermelha em 90%+. |
+
+A quota **reinicia automaticamente no primeiro dia de cada mês**. Quando esgotada, os botões de IA são desativados em toda a plataforma até o próximo ciclo.
+
+## Escolhendo o modelo
+
+Cada provedor oferece modelos com diferentes equilíbrios entre custo, velocidade e qualidade.
+
+### Para volume e velocidade
+
+Use modelos rápidos e baratos em tarefas de alto volume (Q&A do dia-a-dia, sugestões pontuais):
+
+- **OpenAI:** GPT-5.4 nano
+- **Anthropic:** Claude Haiku 4.5
+- **Google:** Gemini 3.1 Flash Lite ou Gemini 3 Flash
+
+### Para tarefas estratégicas
+
+Use modelos mais capazes em tarefas estratégicas (geração de página completa, quiz longo, copy de vendas):
+
+- **OpenAI:** GPT-5.4 ou GPT-5.4 pro
+- **Anthropic:** Claude Sonnet 4.6 ou Claude Opus 4.7
+- **Google:** Gemini 3.1 Pro
+
+<Note>Modelos mais capazes consomem mais tokens e custam mais por chamada. Avalie o trade-off conforme o seu volume.</Note>
+
+## Boas práticas para IA de qualidade
+
+A IA é tão boa quanto o contexto que você fornece. Aulas vazias geram resultados ruins; aulas bem descritas geram quiz, resumos e respostas que parecem feitos por você.
+
+### Preencha descrição e conteúdo das aulas
+
+Auto-quiz, resumo automático e sugestão de Q&A leem os campos `description` e `content` da aula. Quanto mais texto contextual, melhor o resultado. **Aula sem conteúdo = saída genérica ou vazia.**
+
+### Use títulos descritivos
+
+A geração de descrição parte do título da aula.
+
+- ❌ "Aula 1" → produz copy genérico
+- ✅ "Funil de vendas para SaaS B2B" → produz copy direcionado e relevante
+
+### Sempre revise antes de publicar
+
+A saída da IA é rascunho, não verdade absoluta. Confira fatos, ajuste o tom para a sua marca e edite tudo que não soar com a sua voz. **Você é o autor — a IA é o estagiário.**
+
+### Cuidado com dados sensíveis
+
+Os prompts enviados à IA incluem o conteúdo da aula e a pergunta do aluno. Evite gerar sobre conteúdo confidencial ou dados pessoais — a política de retenção é definida pelo provedor (OpenAI/Anthropic/Google), não pela plataforma.
+
+### Checklist rápido antes de gerar
+
+- ✅ Título da aula explica o tema em uma frase clara
+- ✅ Descrição com pelo menos 2-3 frases sobre o que o aluno vai aprender
+- ✅ Conteúdo da aula presente (texto ou transcrição) — vídeo sem transcrição é caixa-preta para a IA
+- ✅ Modelo escolhido compatível com o tipo de tarefa (rápido para volume, capaz para estratégia)
+- ✅ Equipe que vai usar a IA tem permissão `ai:use`
+
+## Permissões da equipe
+
+Apenas membros da equipe com a permissão `ai:use` podem disparar gerações de IA. Configure em **Admin → Configurações → Equipe**, editando a função (role) e marcando a permissão correspondente.
+
+Mesmo com a IA ativada na plataforma, usuários sem `ai:use` não verão os botões de geração.
+
+## Perguntas frequentes
+
+**A plataforma cobra pelo consumo de IA?**
+Não. No modelo BYOK, você paga diretamente ao provedor (OpenAI, Anthropic ou Google) conforme o uso. A plataforma apenas aplica a quota mensal do seu plano para controlar o volume total de chamadas.
+
+**Posso trocar de provedor sem perder configuração?**
+Sim. Ao trocar de provedor no seletor, o modelo padrão é ajustado automaticamente. A chave de API anterior é mantida no banco mas você precisará cadastrar a chave do novo provedor antes de salvar.
+
+**O que acontece se a chave for inválida?**
+As chamadas falham com erro. Você verá a mensagem nos componentes de IA. Verifique a chave no painel do provedor e cole novamente em **Credenciais → Chave de API**.
+
+**Como pausar a IA temporariamente sem apagar a chave?**
+Desligue o toggle **Liberar recursos de IA na área administrativa**. A chave permanece salva e os botões somem para a equipe. Para reativar, ligue o toggle novamente.
+
+**Por que minha quota não está zerando no início do mês?**
+A quota reinicia automaticamente. Se o badge não atualizar, recarregue a página. Caso persista, abra um ticket pela **Central de Ajuda** com o número da sua conta.
+
+**Os modelos legados (GPT-4o, Gemini 1.5 Pro) ainda funcionam?**
+Sim, estão disponíveis no seletor marcados como "(legado)". Mantenha-os apenas se tiver razão específica — os modelos novos costumam ser mais baratos e melhores.

@@ -1,0 +1,220 @@
+---
+title: "Gerenciador de Páginas"
+description: "Crie páginas públicas com HTML personalizado — termos, políticas, landing pages, FAQ. Inclui geração por IA, SEO, variáveis dinâmicas e rastreamento."
+---
+
+O Gerenciador de Páginas permite criar páginas públicas com HTML personalizado — termos de uso, políticas de privacidade, landing pages de venda, FAQs e qualquer outro conteúdo estático. As páginas ficam acessíveis em `https://seudominio.com/p/{slug}` e podem ser publicadas, definidas como página inicial do domínio e ter rastreamento configurável.
+
+## Acessando o gerenciador
+
+Acesse **Admin → Configurações → Páginas**.
+
+## Criando uma página
+
+Há duas formas de criar uma página: **manualmente** (você escreve o HTML) ou **com IA** (você descreve a intenção e a plataforma gera o HTML completo).
+
+### Manualmente
+
+1. Clique em **Nova Página**
+2. Preencha os campos do formulário
+3. Edite o HTML no editor
+4. Clique em **Salvar**
+
+### Com IA
+
+1. Clique em **Nova Página**
+2. Clique em **Gerar com IA**
+3. Preencha o briefing (veja [Gerando com IA](#gerando-com-ia))
+4. Clique em **Gerar página**
+5. Revise o HTML gerado, ajuste se necessário, e clique em **Salvar**
+
+<Warning>A geração por IA substitui o conteúdo atual do editor pelo HTML novo. Se já houver conteúdo importante, salve uma cópia antes de gerar.</Warning>
+
+## Campos do formulário
+
+### Identificação
+
+| Campo | Descrição |
+|---|---|
+| **Título** | Nome interno e título da página. Aparece como título da aba do navegador se não houver Meta Título. Obrigatório. |
+| **Slug** | Identificador na URL pública. A página fica em `/p/{slug}`. Aceita letras, números e hífen. |
+
+<Note>O slug é gerado automaticamente a partir do título conforme você digita, mas pode ser editado manualmente.</Note>
+
+### Opções
+
+| Opção | Efeito |
+|---|---|
+| **Publicado** | Quando ativado, a página fica acessível na URL pública. Desativado mantém como rascunho. |
+| **Definir como página inicial** | Substitui a página inicial padrão do domínio por esta página. Apenas uma página pode ser inicial por vez. |
+| **Desabilitar rastreamento** | Quando ativado, a página não captura UTMs nem cookies de tracking. Use para páginas institucionais (termos, privacidade). |
+
+### SEO (opcional)
+
+| Campo | Descrição |
+|---|---|
+| **Meta Título** | Título exibido nos mecanismos de busca. Se vazio, usa o **Título** da página. |
+| **Meta Descrição** | Resumo exibido nos mecanismos de busca. Limite de 500 caracteres. |
+
+## Variáveis dinâmicas
+
+A seção **Variáveis disponíveis** exibe placeholders que são substituídos automaticamente pelos valores reais quando a página é carregada. Clique em qualquer variável para copiá-la para o clipboard.
+
+**Como usar:** cole a variável diretamente no HTML, em atributos ou no texto. Por exemplo:
+
+```html
+<p>Bem-vindo à {{site_name}}</p>
+<a href="mailto:{{support_email}}">Falar com suporte</a>
+<footer>© {{year}} {{site_name}}</footer>
+```
+
+<Note>Passe o mouse sobre cada variável no formulário para ver sua descrição.</Note>
+
+## Atributos de rastreamento
+
+Para capturar eventos personalizados em elementos HTML, adicione o atributo `data-track` com o nome do evento.
+
+### Eventos personalizados
+
+```html
+<a href="/checkout/meu-produto" data-track="redirect_to_checkout">Comprar agora</a>
+<button data-track="click_cta">Quero começar</button>
+```
+
+| Atributo | Quando usar |
+|---|---|
+| `data-track="click_cta"` | Clique em botão de chamada para ação |
+| `data-track="redirect_to_checkout"` | Clique em link de checkout (detectado automaticamente em hrefs com `/checkout`) |
+
+### Eventos automáticos
+
+Os eventos abaixo são capturados automaticamente em todas as páginas com rastreamento ativo:
+
+| Evento | Quando dispara |
+|---|---|
+| `page_view` | Ao carregar a página |
+| `view_content` | Após 5 segundos ou 20% de scroll |
+| `scroll_depth` | Em 25%, 50%, 75% e 100% de scroll |
+| `time_on_page` | Em 10s, 30s e 60s de permanência |
+
+<Note>Páginas com **Desabilitar rastreamento** ativado não disparam nenhum desses eventos nem capturam UTMs.</Note>
+
+## Editor de HTML
+
+O conteúdo da página é editado em um editor de código com destaque de sintaxe HTML. Você pode usar HTML, CSS inline (`<style>`) e JavaScript (`<script>`) diretamente no editor.
+
+**Sugestões:**
+
+- Use Tailwind CSS no HTML — a plataforma já carrega o framework no front-end público
+- Para imagens, hospede no Bunny.net ou em outro CDN e referencie via URL
+- Para fontes customizadas, inclua o `<link>` ou `@import` dentro de uma tag `<style>` no início do HTML
+
+## Gerando com IA
+
+A geração por IA produz o HTML completo da página com base no briefing preenchido. Quanto mais detalhado o briefing, melhor a página gerada.
+
+### Campos do briefing
+
+| Campo | Obrigatoriedade | Descrição |
+|---|---|---|
+| **Objetivo da página** | Obrigatório | O que a página deve fazer. Inclua o produto, público e ação desejada. |
+| **Tipo de página** | Opcional | Landing de venda, captura de leads, institucional, termos, FAQ, etc. |
+| **Público-alvo** | Opcional | Quem vai ler a página (perfil, faixa etária, interesses). |
+| **Tom de voz** | Opcional | Como o texto deve soar (direto, caloroso, técnico, etc.). Use os presets ou descreva. |
+| **Estilo visual** | Opcional | Direção estética (minimalista, brutalist, retrô, etc.). Use os presets ou descreva. |
+| **Paleta de cores** | Opcional | Cores preferidas. Ex: "Base areia com acento terracota e detalhes verde-musgo". |
+| **Seções desejadas** | Opcional | Lista ordenada das seções (hero, prova social, features, FAQ, CTA, etc.). |
+| **CTA principal — texto** | Opcional | Texto do botão principal. Ex: "Quero garantir minha vaga". |
+| **CTA principal — URL** | Opcional | URL de destino. Use uma URL real (ex: `/checkout/meu-produto`) para que a IA adicione rastreamento. |
+| **CTAs secundários** | Opcional | Outros botões da página com texto e destino. |
+| **Diferenciais e pontos-chave** | Opcional | O que torna a oferta única (garantias, números, métodos). |
+| **Prova social** | Opcional | Depoimentos, números, marcas mencionadas. |
+| **Informações obrigatórias** | Opcional | Texto legal, garantia, CNPJ — tudo que deve aparecer na página. |
+| **Instruções extras** | Opcional | Qualquer informação adicional para a IA considerar. |
+
+### Dicas para uma página excelente
+
+- **Seja específico no objetivo.** "Vender o curso X para público Y, levando ao checkout em /checkout/x" funciona melhor do que "Página de venda".
+- **Liste as seções na ordem desejada.** Defina a estrutura no campo **Seções** em vez de deixar a IA decidir.
+- **Use URLs reais nos CTAs.** A IA aplica `data-track="redirect_to_checkout"` automaticamente em links com `/checkout`.
+- **Mencione números e nomes.** Dados concretos (4.700 alunos, nota 4.9★, depoimento da Ana Lima) são usados como evidência na página.
+- **Indique uma cor de acento fora do óbvio.** "Ocre", "verde-musgo" ou "azul-petróleo" produzem resultados mais distintivos que "azul" ou "roxo".
+- **Use variáveis no briefing.** Você pode pedir `{{site_name}}` ou `{{year}}` e a IA insere os placeholders corretos.
+
+### Tracking automático na geração
+
+Se a página tiver **Desabilitar rastreamento** desativado (padrão), a IA aplica automaticamente:
+
+- `data-track="click_cta"` em botões de chamada para ação
+- `data-track="redirect_to_checkout"` em links com `/checkout`
+
+Se você ativou **Desabilitar rastreamento**, nenhum atributo `data-track` é incluído no HTML gerado.
+
+## Gerenciando páginas existentes
+
+A lista exibe todas as páginas criadas com colunas:
+
+| Coluna | Conteúdo |
+|---|---|
+| **Título** | Nome da página. Badge "Inicial" quando definida como página inicial do domínio. |
+| **Slug** | URL pública no formato `/p/{slug}`. |
+| **Status** | **Publicado** (visível ao público) ou **Rascunho** (oculto). Clique para alternar. |
+| **Rastreamento** | **Ativo** (captura eventos e UTMs) ou **Desabilitado**. |
+| **Ações** | Ver página · Editar · Excluir |
+
+### Alternando status sem editar
+
+Clique direto na coluna **Status** para alternar entre **Publicado** e **Rascunho** sem abrir o formulário. Útil para tirar uma página do ar rapidamente.
+
+### Visualizando a página pública
+
+Clique no ícone de link externo na coluna **Ações** para abrir a página em uma nova aba. Páginas em rascunho retornam erro 404 — apenas páginas publicadas são acessíveis.
+
+### Excluindo uma página
+
+1. Clique no ícone de lixeira na coluna **Ações**
+2. Confirme a exclusão no modal — **esta ação não pode ser desfeita**
+
+<Warning>Excluir uma página remove permanentemente o HTML, SEO e configurações. Se houver visitantes acessando a URL externamente, eles passarão a receber erro 404.</Warning>
+
+## Casos de uso comuns
+
+### Termos de Uso e Política de Privacidade
+
+- Crie como **Publicado** mas **com rastreamento desabilitado**
+- Não marque como página inicial
+- Use slugs `termos-de-uso` e `politica-de-privacidade`
+- Preencha **Meta Título** e **Meta Descrição** para SEO
+
+### Landing page de venda
+
+- Marque como **Publicado** com **rastreamento ativo**
+- Use o **CTA principal** apontando para um checkout real (`/checkout/meu-produto`)
+- Configure eventos `data-track` para medir conversões
+- Ideal para gerar via IA com briefing detalhado
+
+### Página inicial customizada do domínio
+
+- Marque **Definir como página inicial**
+- Apenas uma página pode ter essa flag — ao ativá-la em outra, a anterior perde a flag
+- Útil quando você quer uma home personalizada em vez da home padrão da plataforma
+
+### FAQ ou Central de Ajuda interna
+
+- Crie uma página com `<details>` e `<summary>` para acordeões nativos
+- Mantenha rastreamento ativo para entender quais perguntas geram mais leitura
+- Inclua a variável `{{support_email}}` no rodapé
+
+## Perguntas frequentes
+
+**Posso usar JavaScript externo nas páginas?**
+Sim. Inclua `<script src="...">` no HTML. Pixels de rastreamento de terceiros (Google Analytics, Meta Pixel) também podem ser inseridos pelo [Gerenciador de Scripts](/help-center/pt/configuracoes/gerenciador-de-scripts) em posições globais.
+
+**A página gerada por IA pode ser editada depois?**
+Sim. O HTML gerado fica no editor e pode ser ajustado livremente. Você também pode rodar a IA novamente com um briefing diferente para sobrescrever o conteúdo.
+
+**O slug pode ter barras (`/`)?**
+Não. O slug é uma única segmento de URL. A página é sempre servida em `/p/{slug}`.
+
+**Como faço uma página ficar em outro idioma?**
+Crie páginas separadas com slugs distintos (ex: `sobre-pt` e `about-en`) e direcione os links da plataforma para a versão correspondente. A plataforma não tem versionamento de idioma automático para páginas customizadas.
