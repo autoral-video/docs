@@ -1,0 +1,147 @@
+---
+title: "Available events"
+description: "Reference for the webhook events the platform sends — payments, subscriptions, access, and refunds — with the payload format of each one."
+---
+
+This is the list of events you can subscribe to when [setting up a webhook](/help-center/en/webhooks/setting-up-webhooks), with the content sent in each one.
+
+## Delivery format
+
+Every event is sent via **POST** with a JSON body in this format:
+
+```json
+{
+  "id": "evt_01hj8q1k2t3r5v7x9z2b4d6f_12",
+  "event": "payment.approved",
+  "created_at": "2026-06-16T12:00:00Z",
+  "data": { }
+}
+```
+
+| Field | What it is |
+|---|---|
+| **id** | Unique identifier of the delivery (`evt_...`). Use it to [avoid processing duplicates](/help-center/en/webhooks/security-and-deliveries#idempotency). |
+| **event** | Name of the event (see the table below). |
+| **created_at** | Date/time of the event (ISO 8601). |
+| **data** | Event-specific data. |
+
+## List of events
+
+| Event | Category | When it fires |
+|---|---|---|
+| `payment.approved` | Payments | Single payment approved, or subscription renewal approved. |
+| `payment.failed` | Payments | Payment declined or errored. |
+| `subscription.created` | Subscriptions | First subscription charge approved. |
+| `subscription.updated` | Subscriptions | Subscription status change (active, past due, canceled, etc.). |
+| `subscription.canceled` | Subscriptions | Subscription canceled. |
+| `student.enrolled` | Access | New access granted to a student. |
+| `access.revoked` | Access | A student's access revoked. |
+| `refund.created` | Refunds | Refund processed. |
+
+## Content (`data`) of each event
+
+### `payment.approved`
+
+```json
+{
+  "payment_id": "...",
+  "user": { "id": "...", "email": "...", "name": "..." },
+  "amount": 497.00,
+  "currency": "BRL",
+  "gateway": "pagarme",
+  "type": "subscription_renewal"
+}
+```
+
+`type` appears only when it is a subscription renewal.
+
+### `payment.failed`
+
+```json
+{
+  "gateway_payment_id": "...",
+  "checkout_id": "...",
+  "customer_email": "...",
+  "amount": 497.00,
+  "currency": "BRL",
+  "gateway": "pagarme"
+}
+```
+
+### `subscription.created`
+
+```json
+{
+  "subscription_id": "...",
+  "user": { "id": "...", "email": "...", "name": "...", "class_id": "..." },
+  "checkout_id": "...",
+  "amount": 497.00,
+  "currency": "BRL",
+  "gateway": "pagarme"
+}
+```
+
+### `subscription.updated`
+
+```json
+{
+  "subscription_id": "...",
+  "user": { "id": "..." },
+  "status": "active",
+  "previous_status": "past_due",
+  "gateway": "pagarme"
+}
+```
+
+### `subscription.canceled`
+
+```json
+{
+  "subscription_id": "...",
+  "user": { "id": "..." },
+  "gateway": "pagarme"
+}
+```
+
+### `student.enrolled`
+
+```json
+{
+  "access_id": "...",
+  "user": { "id": "...", "email": "...", "name": "..." },
+  "course": { "id": "...", "name": "..." },
+  "type": "lifetime",
+  "granted_by": "payment"
+}
+```
+
+`type`: `lifetime`, `temporary`, `subscription`, or `trial`. `granted_by`: source of the access (e.g.: `payment`, `admin`, `import`).
+
+### `access.revoked`
+
+```json
+{
+  "access_id": "...",
+  "user": { "id": "..." },
+  "course_id": "...",
+  "reason": "..."
+}
+```
+
+### `refund.created`
+
+```json
+{
+  "refund_request_id": "...",
+  "payment_id": "...",
+  "user": { "id": "..." },
+  "amount": 497.00,
+  "external_refund_id": "...",
+  "gateway": "pagarme"
+}
+```
+
+## Related articles
+
+- [Setting up webhooks](/help-center/en/webhooks/setting-up-webhooks)
+- [Security and deliveries](/help-center/en/webhooks/security-and-deliveries)

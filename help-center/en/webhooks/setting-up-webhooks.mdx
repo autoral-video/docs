@@ -1,0 +1,55 @@
+---
+title: "Setting up webhooks"
+description: "Register an external endpoint to receive platform events in real time — sales, subscriptions, enrollments, and refunds."
+---
+
+**Webhooks** send your platform's events (approved purchase, enrolled student, refund, etc.) to an **external URL** of yours — ideal for integrating with a CRM, automations, or your own systems.
+
+## Where to find it
+
+Go to **Admin → Settings → Webhooks**.
+
+```
+/admin/settings/webhooks
+```
+
+<Note>
+Outgoing webhooks depend on your plan. If the feature is not included, the screen shows a notice to upgrade.
+</Note>
+
+## Creating a webhook
+
+Click **New webhook** and fill in:
+
+| Field | Description |
+|---|---|
+| **Name** | Internal identification for the webhook. Required. |
+| **URL** | Endpoint that will receive the events. Must be **HTTPS** and public (private IPs are blocked). Required. |
+| **Events** | Check one or more events you want to receive. At least one. See [Available events](/help-center/en/webhooks/available-events). |
+| **Secret** | Key used to sign the deliveries. Generated automatically if you don't provide one. |
+| **Active** | Turns sending on/off. Inactive webhooks do not fire. |
+
+The events appear grouped by category (Payments, Subscriptions, Access, Refunds) to make selection easier.
+
+## The secret
+
+The **secret** is what allows your system to confirm that the delivery really came from the platform.
+
+- If you don't provide one, it is generated automatically in the `whsec_...` format.
+- When editing, it appears **masked** for security (e.g.: `whsec_ab...••••`).
+- Use **Regenerate** to create a new secret. When you regenerate, update the key in your system.
+
+See how to validate the signature in [Security and deliveries](/help-center/en/webhooks/security-and-deliveries).
+
+## Multiple webhooks
+
+You can register **more than one webhook** — for example, one for the CRM and another for an automation — each with its own events and secret. The maximum number depends on your plan.
+
+## Enable and disable
+
+Use the **enable/disable** button in the list to pause a webhook without deleting it. While inactive, it does not receive events.
+
+## Related articles
+
+- [Available events](/help-center/en/webhooks/available-events)
+- [Security and deliveries](/help-center/en/webhooks/security-and-deliveries)

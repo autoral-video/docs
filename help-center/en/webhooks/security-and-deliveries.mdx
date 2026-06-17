@@ -1,0 +1,89 @@
+---
+title: "Security and deliveries"
+description: "Validate the HMAC signature of webhooks, understand the retry attempts, and track the delivery history with manual reprocessing."
+---
+
+This page explains how to **make sure the delivery is legitimate** and how to track the **deliveries** of your webhooks.
+
+## Headers sent
+
+Each POST request includes:
+
+| Header | Content |
+|---|---|
+| `Content-Type` | `application/json` |
+| `X-Webhook-Event` | Name of the event (e.g.: `payment.approved`). |
+| `X-Webhook-Id` | Identifier of the delivery (`evt_...`). |
+| `X-Webhook-Signature` | HMAC signature of the body (see below). |
+
+## Validating the signature
+
+The signature is an **HMAC-SHA256** of the exact JSON body received, using your **secret**. On your endpoint:
+
+1. Read the `X-Webhook-Signature` header.
+2. Compute the HMAC-SHA256 of the raw request body with your secret.
+3. Compare the values (use constant-time comparison).
+
+Example in PHP:
+
+```php
+$payload = file_get_contents('php://input');
+$expected = hash_hmac('sha256', $payload, $yourSecret);
+
+if (! hash_equals($expected, $_SERVER['HTTP_X_WEBHOOK_SIGNATURE'] ?? '')) {
+    http_response_code(401);
+    exit;
+}
+```
+
+<Warning>
+Compute the HMAC over the **body exactly as received**, before any reserialization. Reordering or reformatting the JSON breaks the signature.
+</Warning>
+
+## Receipt confirmation
+
+Respond with an **HTTP 2xx** status for the platform to consider the delivery successful. Any other code (or a timeout) is treated as a failure and enters retry.
+
+## Attempts and retries
+
+| Item | Behavior |
+|---|---|
+| **Timeout** | 10 seconds per attempt. |
+| **Attempts** | Up to 5. |
+| **Interval** | Exponential: ~30s, 2min, 8min, 32min, ~2.6h. |
+
+If all attempts fail, the delivery is marked as **Discarded**.
+
+## Delivery history
+
+In the **deliveries** tab under **Admin → Settings → Webhooks**, you track each delivery:
+
+- Statistics: total, delivered, failed, and **success rate**
+- Filters by webhook, event, and status
+- Per delivery: event ID, event, webhook, **status**, attempts, HTTP response code, and date
+
+### Delivery status
+
+| Status | Meaning |
+|---|---|
+| **Pending** | Awaiting sending or a new attempt. |
+| **Delivered** | Received successfully (HTTP 2xx). |
+| **Failed** | Failed and will be retried. |
+| **Discarded** | Exhausted the attempts. |
+
+### View and reprocess
+
+For each delivery you can:
+
+- **View payload** — the JSON sent
+- **View response** — the body returned by your server (truncated and with sensitive data hidden)
+- **Reprocess** — manually resend deliveries that failed or were discarded
+
+## Idempotency
+
+Each event has a **unique id** (`evt_...`). Since a failure generates retries of the **same** event, store the ids already processed and **ignore repeats** — that way you never process the same sale twice.
+
+## Related articles
+
+- [Setting up webhooks](/help-center/en/webhooks/setting-up-webhooks)
+- [Available events](/help-center/en/webhooks/available-events)

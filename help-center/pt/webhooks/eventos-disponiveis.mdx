@@ -1,0 +1,147 @@
+---
+title: "Eventos disponíveis"
+description: "Referência dos eventos de webhook que a plataforma envia — pagamentos, assinaturas, acesso e reembolsos — com o formato do payload de cada um."
+---
+
+Esta é a lista dos eventos que você pode assinar ao [configurar um webhook](/help-center/pt/webhooks/configurando-webhooks), com o conteúdo enviado em cada um.
+
+## Formato do envio
+
+Todo evento é enviado via **POST** com um corpo JSON neste formato:
+
+```json
+{
+  "id": "evt_01hj8q1k2t3r5v7x9z2b4d6f_12",
+  "event": "payment.approved",
+  "created_at": "2026-06-16T12:00:00Z",
+  "data": { }
+}
+```
+
+| Campo | O que é |
+|---|---|
+| **id** | Identificador único do envio (`evt_...`). Use para [evitar processar duplicado](/help-center/pt/webhooks/seguranca-e-entregas#idempotencia). |
+| **event** | Nome do evento (veja a tabela abaixo). |
+| **created_at** | Data/hora do evento (ISO 8601). |
+| **data** | Dados específicos do evento. |
+
+## Lista de eventos
+
+| Evento | Categoria | Quando dispara |
+|---|---|---|
+| `payment.approved` | Pagamentos | Pagamento único aprovado, ou renovação de assinatura aprovada. |
+| `payment.failed` | Pagamentos | Pagamento recusado ou com erro. |
+| `subscription.created` | Assinaturas | Primeira cobrança da assinatura aprovada. |
+| `subscription.updated` | Assinaturas | Mudança de status da assinatura (ativa, inadimplente, cancelada etc.). |
+| `subscription.canceled` | Assinaturas | Assinatura cancelada. |
+| `student.enrolled` | Acesso | Novo acesso concedido a um aluno. |
+| `access.revoked` | Acesso | Acesso de um aluno revogado. |
+| `refund.created` | Reembolsos | Reembolso processado. |
+
+## Conteúdo (`data`) de cada evento
+
+### `payment.approved`
+
+```json
+{
+  "payment_id": "...",
+  "user": { "id": "...", "email": "...", "name": "..." },
+  "amount": 497.00,
+  "currency": "BRL",
+  "gateway": "pagarme",
+  "type": "subscription_renewal"
+}
+```
+
+`type` aparece apenas quando é renovação de assinatura.
+
+### `payment.failed`
+
+```json
+{
+  "gateway_payment_id": "...",
+  "checkout_id": "...",
+  "customer_email": "...",
+  "amount": 497.00,
+  "currency": "BRL",
+  "gateway": "pagarme"
+}
+```
+
+### `subscription.created`
+
+```json
+{
+  "subscription_id": "...",
+  "user": { "id": "...", "email": "...", "name": "...", "class_id": "..." },
+  "checkout_id": "...",
+  "amount": 497.00,
+  "currency": "BRL",
+  "gateway": "pagarme"
+}
+```
+
+### `subscription.updated`
+
+```json
+{
+  "subscription_id": "...",
+  "user": { "id": "..." },
+  "status": "active",
+  "previous_status": "past_due",
+  "gateway": "pagarme"
+}
+```
+
+### `subscription.canceled`
+
+```json
+{
+  "subscription_id": "...",
+  "user": { "id": "..." },
+  "gateway": "pagarme"
+}
+```
+
+### `student.enrolled`
+
+```json
+{
+  "access_id": "...",
+  "user": { "id": "...", "email": "...", "name": "..." },
+  "course": { "id": "...", "name": "..." },
+  "type": "lifetime",
+  "granted_by": "payment"
+}
+```
+
+`type`: `lifetime`, `temporary`, `subscription` ou `trial`. `granted_by`: origem do acesso (ex: `payment`, `admin`, `import`).
+
+### `access.revoked`
+
+```json
+{
+  "access_id": "...",
+  "user": { "id": "..." },
+  "course_id": "...",
+  "reason": "..."
+}
+```
+
+### `refund.created`
+
+```json
+{
+  "refund_request_id": "...",
+  "payment_id": "...",
+  "user": { "id": "..." },
+  "amount": 497.00,
+  "external_refund_id": "...",
+  "gateway": "pagarme"
+}
+```
+
+## Artigos relacionados
+
+- [Configurando webhooks](/help-center/pt/webhooks/configurando-webhooks)
+- [Segurança e entregas](/help-center/pt/webhooks/seguranca-e-entregas)

@@ -1,0 +1,55 @@
+---
+title: "Configurando webhooks"
+description: "Cadastre um endpoint externo para receber eventos da plataforma em tempo real — vendas, assinaturas, matrículas e reembolsos."
+---
+
+Os **webhooks** enviam os eventos da sua plataforma (compra aprovada, aluno matriculado, reembolso etc.) para uma **URL externa** sua — ideal para integrar com CRM, automações ou sistemas próprios.
+
+## Onde encontrar
+
+Acesse **Admin → Configurações → Webhooks**.
+
+```
+/admin/settings/webhooks
+```
+
+<Note>
+Webhooks outgoing dependem do seu plano. Se o recurso não estiver incluído, a tela exibe um aviso para fazer upgrade.
+</Note>
+
+## Criando um webhook
+
+Clique em **Novo webhook** e preencha:
+
+| Campo | Descrição |
+|---|---|
+| **Nome** | Identificação interna do webhook. Obrigatório. |
+| **URL** | Endpoint que receberá os eventos. Deve ser **HTTPS** e público (IPs privados são bloqueados). Obrigatório. |
+| **Eventos** | Marque um ou mais eventos que deseja receber. Pelo menos um. Veja [Eventos disponíveis](/help-center/pt/webhooks/eventos-disponiveis). |
+| **Secret** | Chave usada para assinar os envios. Gerada automaticamente se você não informar. |
+| **Ativo** | Liga/desliga o envio. Webhooks inativos não disparam. |
+
+Os eventos aparecem agrupados por categoria (Pagamentos, Assinaturas, Acesso, Reembolsos) para facilitar a seleção.
+
+## O secret
+
+O **secret** é o que permite ao seu sistema confirmar que o envio veio realmente da plataforma.
+
+- Se você não informar, é gerado automaticamente no formato `whsec_...`.
+- Na edição, ele aparece **mascarado** por segurança (ex: `whsec_ab...••••`).
+- Use **Regenerar** para criar um novo secret. Ao regenerar, atualize a chave no seu sistema.
+
+Veja como validar a assinatura em [Segurança e entregas](/help-center/pt/webhooks/seguranca-e-entregas).
+
+## Vários webhooks
+
+Você pode cadastrar **mais de um webhook** — por exemplo, um para o CRM e outro para uma automação — cada um com seus próprios eventos e secret. O número máximo depende do seu plano.
+
+## Ativar e desativar
+
+Use o botão de **ativar/desativar** na lista para pausar um webhook sem apagá-lo. Enquanto inativo, ele não recebe eventos.
+
+## Artigos relacionados
+
+- [Eventos disponíveis](/help-center/pt/webhooks/eventos-disponiveis)
+- [Segurança e entregas](/help-center/pt/webhooks/seguranca-e-entregas)

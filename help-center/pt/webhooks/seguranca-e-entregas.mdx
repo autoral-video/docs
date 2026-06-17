@@ -1,0 +1,89 @@
+---
+title: "Segurança e entregas"
+description: "Valide a assinatura HMAC dos webhooks, entenda as tentativas de reenvio e acompanhe o histórico de entregas com reprocessamento manual."
+---
+
+Esta página explica como **garantir que o envio é legítimo** e como acompanhar as **entregas** dos seus webhooks.
+
+## Cabeçalhos enviados
+
+Cada requisição POST inclui:
+
+| Cabeçalho | Conteúdo |
+|---|---|
+| `Content-Type` | `application/json` |
+| `X-Webhook-Event` | Nome do evento (ex: `payment.approved`). |
+| `X-Webhook-Id` | Identificador do envio (`evt_...`). |
+| `X-Webhook-Signature` | Assinatura HMAC do corpo (veja abaixo). |
+
+## Validando a assinatura
+
+A assinatura é um **HMAC-SHA256** do corpo JSON exato recebido, usando o seu **secret**. No seu endpoint:
+
+1. Leia o cabeçalho `X-Webhook-Signature`.
+2. Calcule o HMAC-SHA256 do corpo bruto da requisição com o seu secret.
+3. Compare os valores (use comparação de tempo constante).
+
+Exemplo em PHP:
+
+```php
+$payload = file_get_contents('php://input');
+$expected = hash_hmac('sha256', $payload, $seuSecret);
+
+if (! hash_equals($expected, $_SERVER['HTTP_X_WEBHOOK_SIGNATURE'] ?? '')) {
+    http_response_code(401);
+    exit;
+}
+```
+
+<Warning>
+Calcule o HMAC sobre o **corpo exatamente como recebido**, antes de qualquer reserialização. Reordenar ou reformatar o JSON quebra a assinatura.
+</Warning>
+
+## Confirmação de recebimento
+
+Responda com um status **HTTP 2xx** para a plataforma considerar a entrega bem-sucedida. Qualquer outro código (ou timeout) é tratado como falha e entra em reenvio.
+
+## Tentativas e reenvio
+
+| Item | Comportamento |
+|---|---|
+| **Timeout** | 10 segundos por tentativa. |
+| **Tentativas** | Até 5. |
+| **Intervalo** | Exponencial: ~30s, 2min, 8min, 32min, ~2,6h. |
+
+Se todas as tentativas falharem, o envio é marcado como **Descartado**.
+
+## Histórico de entregas
+
+Na aba de **entregas** em **Admin → Configurações → Webhooks**, você acompanha cada envio:
+
+- Estatísticas: total, entregues, falhas e **taxa de sucesso**
+- Filtros por webhook, evento e status
+- Por envio: ID do evento, evento, webhook, **status**, tentativas, código HTTP de resposta e data
+
+### Status de entrega
+
+| Status | Significado |
+|---|---|
+| **Pendente** | Aguardando envio ou nova tentativa. |
+| **Entregue** | Recebido com sucesso (HTTP 2xx). |
+| **Falhou** | Falhou e será reenviado. |
+| **Descartado** | Esgotou as tentativas. |
+
+### Ver e reprocessar
+
+Para cada envio você pode:
+
+- **Ver payload** — o JSON enviado
+- **Ver resposta** — o corpo retornado pelo seu servidor (truncado e com dados sensíveis ocultados)
+- **Reprocessar** — reenvia manualmente envios que falharam ou foram descartados
+
+## Idempotência
+
+Cada evento tem um **id único** (`evt_...`). Como uma falha gera reenvios do **mesmo** evento, guarde os ids já processados e **ignore repetidos** — assim você nunca processa a mesma venda duas vezes.
+
+## Artigos relacionados
+
+- [Configurando webhooks](/help-center/pt/webhooks/configurando-webhooks)
+- [Eventos disponíveis](/help-center/pt/webhooks/eventos-disponiveis)
