@@ -1,0 +1,126 @@
+---
+title: "Setting up payouts (Pagar.me)"
+description: "Register your recipient on Pagar.me with your account details — individual or company — to receive the payments from your cohorts and courses."
+---
+
+Payments on the platform are processed by **Pagar.me**. To receive the money from your sales, you create a **recipient** (a payout account in the marketplace model) by providing your personal or company details and the destination bank account.
+
+<Note>
+You don't need to create an account directly on the Pagar.me website. The entire recipient registration is done right here, in the autoral.me admin panel — the details you fill in are sent to Pagar.me automatically.
+</Note>
+
+## Where to find it
+
+Go to **Admin → Settings → Payout Details**.
+
+```
+/admin/settings/pagarme
+```
+
+The screen is split into tabs: **Registration**, **KYC Status**, **Bank account**, **Transfers**, **Balance**, **Receivables** and **Fees**. Start with the **Registration** tab.
+
+## Step 1: Registration type
+
+At the top of the form, choose the **type**:
+
+| Type | For whom |
+|---|---|
+| **Individual** | You receive as a CPF holder. |
+| **Company** | You receive as a company (CNPJ). |
+
+This choice changes the fields shown below.
+
+## Step 2: Identity
+
+### Individual
+
+| Field | Description |
+|---|---|
+| **Full name** | Your name. Required. |
+| **Mother's name** | Required (Pagar.me requirement). |
+| **CPF** | Formatted automatically. Required. |
+| **Contact email** | Recipient's email. Required. |
+| **Date of birth** | Required. |
+| **Monthly income (R$)** | Required. |
+| **Profession / activity** | Required. |
+
+### Company
+
+| Field | Description |
+|---|---|
+| **Legal name** | The company's legal name. Required. |
+| **Trade name** | Optional. |
+| **CNPJ** | Formatted automatically. Required. |
+| **Contact email** | Required. |
+| **Founding date** | Required. |
+| **Monthly revenue (R$)** | Required. |
+
+#### Managing partner (Company only)
+
+Pagar.me requires the details of the company's managing partner:
+
+| Field | Description |
+|---|---|
+| **Managing partner's full name** | Required. |
+| **Mother's name** | Required. |
+| **Managing partner's CPF** | Required. |
+| **Managing partner's email** | Required. |
+| **Date of birth** | Required. |
+| **Monthly income (R$)** | Required. |
+| **Profession / activity** | Required. |
+
+<Note>
+The managing partner automatically reuses the company's address and phone — you don't need to fill them in again.
+</Note>
+
+## Step 3: Phone
+
+| Field | Description |
+|---|---|
+| **Area code** | 2 digits. |
+| **Number** | Formatted automatically. |
+
+## Step 4: Address
+
+| Field | Description |
+|---|---|
+| **ZIP code** | When you leave the field, street, neighborhood, city and state are filled in automatically. |
+| **Street** | Required. |
+| **Number** | Required. |
+| **Complement** | Optional. |
+| **Neighborhood** | Required. |
+| **City** | Required. |
+| **State** | 2 letters. Required. |
+| **Landmark** | Required. |
+
+## Step 5: Bank account
+
+This is the account the money will be transferred to.
+
+Check **"Use the same details as the account holder"** to copy the name and document from the identity section. Otherwise, fill in:
+
+| Field | Description |
+|---|---|
+| **Account holder name** | The account holder. |
+| **Account holder's CPF/CNPJ** | The holder's document. |
+| **Bank** | Select from the list. |
+| **Account type** | Checking or savings account. |
+| **Branch** | Branch number. |
+| **Digit** (branch) | Optional, if applicable. |
+| **Account number** | Required. |
+| **Digit** (account) | Required. |
+
+## Finishing up
+
+Click **Register recipient**. The data is sent to Pagar.me, which begins the review (KYC). After submission, the screen starts showing the **recipient ID** and the **status**.
+
+<Warning>
+The registration can only receive and withdraw funds after it is approved. Track the review in [Recipient status](/help-center/en/payments/recipient-status).
+</Warning>
+
+## Next steps
+
+- [Recipient status (KYC)](/help-center/en/payments/recipient-status)
+- [Balance and withdrawals](/help-center/en/payments/balance-and-withdrawals)
+- [Setting up transfers](/help-center/en/payments/transfers)
+- [Fees and MDR](/help-center/en/payments/fees-and-mdr)

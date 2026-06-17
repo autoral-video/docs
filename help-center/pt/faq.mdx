@@ -1,6 +1,6 @@
 ---
 title: "Perguntas Frequentes"
-description: "Respostas rápidas para as dúvidas mais comuns sobre cursos, checkout, pagamentos, integrações e marketing."
+description: "Respostas rápidas para as dúvidas mais comuns sobre cursos, links de venda, turmas, pagamentos via Pagar.me e marketing."
 ---
 
 Respostas para as dúvidas mais comuns. Não achou o que procura? Abra um ticket pela área administrativa em **Admin → Central de Ajuda**.
@@ -32,48 +32,56 @@ Respostas para as dúvidas mais comuns. Não achou o que procura? Abra um ticket
 ## Checkout e Vendas
 
 <AccordionGroup>
-  <Accordion title="Qual a diferença entre Produto, Oferta e Checkout?">
-    **Produto** representa o que você vende (vinculado a um curso). **Oferta** é um plano de preço dentro do produto (ex: pagamento único, mensal, anual). **Checkout** é a página pública de compra que apresenta uma oferta específica. Fluxo: `Produto → Ofertas → Checkout`.
+  <Accordion title="Como crio uma página de compra?">
+    Use o **Link Builder** em **Admin → Link Builder → Novo link**. Em um único formulário você escolhe o curso, define preço e formas de pagamento — o produto e a oferta são criados automaticamente. Veja [Criando um link de venda](/help-center/pt/checkout/criando-um-link).
   </Accordion>
 
-  <Accordion title="Posso vender em mais de uma moeda?">
-    Sim. Cada oferta pode ter preços em até **27 moedas**. O Stripe exibe automaticamente o preço na moeda do país do comprador quando disponível. Use o botão **Gerar em outras moedas** para calcular preços via cotação com margem de proteção.
+  <Accordion title="Preciso criar produto e oferta separadamente?">
+    Não. O fluxo antigo de Produto → Oferta → Checkout foi descontinuado. Ao escolher o curso no Link Builder, o produto e a oferta são gerados nos bastidores. Você só pensa no link que quer vender.
+  </Accordion>
+
+  <Accordion title="Em quais moedas posso vender?">
+    Em **Real (BRL)**. Os pagamentos são processados pela Pagar.me. As formas disponíveis são cartão (à vista ou parcelado), PIX e boleto.
   </Accordion>
 
   <Accordion title="Qual a diferença entre up-sell e cross-sell?">
-    **Up-sell** substitui o produto principal por uma oferta superior antes de finalizar a compra (não soma). **Cross-sell** adiciona produtos complementares à compra atual (soma ao total). O acesso é concedido individualmente para cada cross-sell aceito.
+    **Up-sell** substitui o produto principal por uma oferta superior antes de finalizar a compra (não soma). **Cross-sell** adiciona produtos complementares à compra atual (soma ao total). O acesso é concedido individualmente para cada cross-sell aceito. Configure em [Configurações avançadas do link](/help-center/pt/checkout/configuracoes-avancadas).
   </Accordion>
 
-  <Accordion title="Como compartilho a página de checkout?">
-    Após criar o checkout, a URL pública é `https://seudominio.com/checkout/{slug}`. Compartilhe-a diretamente ou ative **Exibir checkouts na página do curso** para que apareça automaticamente na página pública do curso.
+  <Accordion title="Como compartilho o link de venda?">
+    Após salvar, a URL pública é `https://seudominio.com/checkout/{slug}`. Compartilhe-a diretamente ou vincule-a à página do curso em **Admin → Cursos → [Curso] → Configurações**.
   </Accordion>
 
   <Accordion title="Como configuro reembolso?">
-    Em cada checkout, na seção **Política de Reembolso**, ative **Permitir Reembolso** e defina o **Prazo para Reembolso (dias)**. As solicitações são revisadas manualmente em **Admin → Financeiro → Solicitações de Reembolso**.
+    Em cada link, nas **Configurações avançadas**, ative **Permitir reembolso** e defina o **Prazo para reembolso (dias)**. As solicitações são revisadas em **Admin → Financeiro → Solicitações de reembolso**.
   </Accordion>
 </AccordionGroup>
 
-## Pagamentos e Integrações
+## Pagamentos
 
 <AccordionGroup>
-  <Accordion title="Quais gateways de pagamento são suportados?">
-    A plataforma suporta **Stripe** (cartão internacional + assinaturas), **Mercado Pago** (PIX + cartão parcelado em até 12x) e **Asaas** (cartão, PIX, boleto e assinaturas recorrentes). Cada um é configurado independentemente em **Admin → Configurações**.
+  <Accordion title="Como recebo os pagamentos das minhas vendas?">
+    Os pagamentos são processados pela **Pagar.me**. Você cria um **recebedor** (modelo marketplace) informando seus dados — pessoa física ou jurídica — e a conta bancária de destino, em **Admin → Configurações → Dados de Recebimento**. Veja [Configurando o recebimento](/help-center/pt/pagamentos/configurando-pagarme).
   </Accordion>
 
-  <Accordion title="Preciso copiar chaves de API do Stripe ou Mercado Pago?">
-    Não. Ambos usam **OAuth** — você conecta com um clique e a plataforma configura credenciais e webhooks automaticamente. Apenas o **Asaas** exige inserir manualmente a chave de API e o token do webhook.
+  <Accordion title="Quais formas de pagamento posso aceitar?">
+    **Cartão de crédito** (à vista ou parcelado em até 12x), **PIX** e **boleto** — todas pela Pagar.me. PIX confirma em segundos; cartão e boleto seguem seus prazos de liberação.
   </Accordion>
 
-  <Accordion title="Posso aceitar PIX e cartão parcelado?">
-    Sim, via Mercado Pago. PIX confirma em segundos; cartão parcelado vai até 12x com ou sem juros. Configure em **Admin → Configurações → Mercado Pago**.
+  <Accordion title="Quando o dinheiro fica disponível e como saco?">
+    Cada venda fica como **a liberar** até o prazo de recebimento (crédito normalmente em D+30; PIX no mesmo dia) e depois vira **saldo disponível**. Com o recebedor **Ativo**, solicite o saque para sua conta na aba **Saldo**, ou programe [transferências automáticas](/help-center/pt/pagamentos/transferencias). Veja [Saldo e saques](/help-center/pt/pagamentos/saldo-e-saques).
+  </Accordion>
+
+  <Accordion title="Quanto a plataforma cobra?">
+    Uma **taxa de plataforma** (split de 0,5%) aplicada de forma transparente sobre a venda, além das taxas da própria Pagar.me (MDR do cartão, PIX, boleto e custos fixos). Não há comissão escondida. Veja a tabela completa em [Taxas e MDR](/help-center/pt/pagamentos/taxas-e-mdr).
+  </Accordion>
+
+  <Accordion title="Meu recebedor está 'em análise' ou foi recusado. O que fazer?">
+    A Pagar.me faz a análise de credenciamento (**KYC**). Você pode vender já nos status iniciais, mas só saca quando estiver **Ativo**. Acompanhe pendências, mensagens e o link de **prova de vida** em [Status do recebedor](/help-center/pt/pagamentos/status-do-recebedor).
   </Accordion>
 
   <Accordion title="Como recebo notificação de novas vendas?">
     Após cada venda confirmada, o admin recebe um e-mail de alerta automaticamente. Webhooks outgoing também podem ser configurados em **Admin → Configurações → Webhooks** para integração com sistemas externos.
-  </Accordion>
-
-  <Accordion title="O que fazer quando o token do Mercado Pago expira?">
-    A renovação é automática. Caso falhe, um aviso aparecerá no painel. Basta **desconectar e reconectar** sua conta em **Admin → Configurações → Mercado Pago**.
   </Accordion>
 </AccordionGroup>
 
@@ -89,11 +97,19 @@ Respostas para as dúvidas mais comuns. Não achou o que procura? Abra um ticket
   </Accordion>
 
   <Accordion title="Como funciona o acesso temporário?">
-    Defina **Tipo: Temporário** e selecione a duração (30, 90, 180, 365 dias ou personalizado). O acesso expira automaticamente na data calculada. Para assinaturas, o acesso é gerenciado pelo ciclo do Stripe — ativo enquanto a assinatura estiver ativa.
+    Defina **Tipo: Temporário** e selecione a duração (30, 90, 180, 365 dias ou personalizado). O acesso expira automaticamente na data calculada. Para assinaturas, o acesso é gerenciado pelo ciclo de cobrança — ativo enquanto a assinatura estiver ativa.
   </Accordion>
 
   <Accordion title="O que são Turmas?">
-    **Turmas** agrupam alunos com vagas e período de inscrição. Ao vincular uma turma a um checkout, todos os compradores entram automaticamente nela. Útil para mentorias com data de início ou cursos com limite de alunos.
+    **Turmas** transformam um curso em uma experiência com **data de início, vagas limitadas, comunidade própria e acompanhamento ativo** (formato cohort). Ao vincular uma turma a um link de venda, todos os compradores entram automaticamente nela. Veja [O que são turmas](/help-center/pt/turmas/o-que-sao-turmas).
+  </Accordion>
+
+  <Accordion title="O que dá para fazer dentro de uma turma?">
+    Liberar conteúdo por cronograma ([drip](/help-center/pt/turmas/liberacao-de-conteudo)), criar [eventos e lives com lembretes](/help-center/pt/turmas/calendario-e-eventos), pedir [tarefas e revisar entregas](/help-center/pt/turmas/tarefas-e-entregas), emitir [certificados automáticos](/help-center/pt/turmas/certificados), [acompanhar o engajamento](/help-center/pt/turmas/acompanhando-engajamento) e atribuir [mentores e tutores](/help-center/pt/turmas/mentores-e-tutores).
+  </Accordion>
+
+  <Accordion title="Como funciona a lista de espera quando a turma lota?">
+    Turmas com vagas limitadas podem capturar interessados em uma **lista de espera**. Quando abre uma vaga, você promove alguém da fila, que recebe um link de confirmação com prazo. Veja [Lista de espera](/help-center/pt/turmas/lista-de-espera).
   </Accordion>
 </AccordionGroup>
 
@@ -105,7 +121,7 @@ Respostas para as dúvidas mais comuns. Não achou o que procura? Abra um ticket
   </Accordion>
 
   <Accordion title="Posso oferecer descontos diferentes por número de parcelas?">
-    Sim, quando o Mercado Pago está habilitado. No cupom, configure **Desconto por Parcela** com faixas (ex: 1 parcela = 25%, 2-6 = 15%, 7-12 = 10%) para incentivar pagamentos à vista.
+    Sim, quando o parcelamento no cartão está habilitado. No cupom, configure **Desconto por Parcela** com faixas (ex: 1 parcela = 25%, 2-6 = 15%, 7-12 = 10%) para incentivar pagamentos à vista.
   </Accordion>
 
   <Accordion title="O que é abandono de carrinho?">

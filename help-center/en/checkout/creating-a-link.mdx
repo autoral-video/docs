@@ -1,0 +1,101 @@
+---
+title: "Creating a sales link"
+description: "Use the Link Builder to create a complete checkout link in a single form — the product and offer are generated automatically from the course."
+---
+
+The **Link Builder** is how you create a purchase page on autoral.me. In a single form you choose the course, set the price and payment methods, and the system automatically generates the product, the offer, and the checkout — all at once.
+
+<Note>
+You no longer need to create a product and then an offer separately. When you pick the course, the Link Builder creates those items behind the scenes. You only think about the link you want to sell.
+</Note>
+
+## Where to find it
+
+Go to **Admin → Link Builder → New link**.
+
+```
+/admin/link-builder/create
+```
+
+## Step 1: What you're selling
+
+| Field | Description |
+|---|---|
+| **Course** | The course this link grants access to. Required. The product is created automatically from it. |
+
+When you select the course, a notice confirms the product will be created automatically. You don't need to name the product manually.
+
+## Step 2: Price and billing type
+
+| Field | Description |
+|---|---|
+| **Billing type** | How the student pays. **One-time payment** or **Recurring subscription**. |
+| **Price** | Offer amount. Minimum: R$ 0.01. |
+| **Currency** | Brazilian Real (BRL). |
+
+### One-time payment
+
+The student pays once and receives access according to the rules set in advanced settings (lifetime or temporary).
+
+### Recurring subscription
+
+The student is charged periodically while the subscription is active. When choosing this type, set the **Billing period**:
+
+| Period | Charge |
+|---|---|
+| Monthly | every month |
+| Quarterly | every 3 months |
+| Semiannual | every 6 months |
+| Annual | every 12 months |
+
+<Note>
+Access for subscriptions is managed automatically by the billing cycle: while the subscription is active, the student keeps access.
+</Note>
+
+## Step 3: Link page
+
+These fields define how the public page appears to the buyer.
+
+| Field | Description |
+|---|---|
+| **Link name** | Text shown on the purchase page and in the confirmation email. Required. |
+| **Custom URL (slug)** | Final part of the URL: `/checkout/{slug}`. If left blank, it's generated from the name. |
+| **Description** | Short text shown below the name on checkout. Use it to reinforce value or list bonuses. |
+
+## Step 4: Payment methods
+
+Check one or more payment methods. **The available options depend on completing your [Pagar.me recipient setup](/help-center/en/payments/setting-up-pagarme)** — the gateway that processes all payments on the platform.
+
+| Method | When to use |
+|---|---|
+| **Credit card** | Single card payment. |
+| **Card installments** | Card installments (configurable up to 12x — see [Advanced settings](/help-center/en/checkout/advanced-settings)). |
+| **PIX** | Brazilian instant payment. |
+| **Boleto** | Bank slip. |
+
+<Note>
+Only the methods enabled for your account appear as options. For subscriptions, the method is credit card.
+</Note>
+
+## Advanced settings
+
+Below the payment methods is the collapsible **Advanced settings** section. There you bind the class, set the access type, up-sell, cross-sell, installments and refunds. See the dedicated guide:
+
+➡️ [Advanced link settings](/help-center/en/checkout/advanced-settings)
+
+## Finishing
+
+Click **Save**. The system creates the product, the offer and the checkout, and the link becomes available at:
+
+```
+https://yourdomain.com/checkout/{slug}
+```
+
+Share this URL directly, or link it on the course page under **Admin → Courses → [Course] → Settings**.
+
+## Related articles
+
+- [Advanced link settings](/help-center/en/checkout/advanced-settings) — class, access, up-sell, cross-sell, installments and refunds
+- [Setting up payments (Pagar.me)](/help-center/en/payments/setting-up-pagarme) — prerequisite for receiving payments
+- [Creating a course](/help-center/en/courses/creating-a-course) — prerequisite for selling
+- [What are classes (turmas)](/help-center/en/turmas/what-are-classes) — selling with dates, seats and cohorts

@@ -1,0 +1,70 @@
+---
+title: "Fees and MDR"
+description: "Understand Pagar.me's fees (MDR per installment, fixed costs, PIX and boleto), the platform fee, and how interest-free or with-interest installments affect what you receive."
+---
+
+The **Fees** tab transparently shows all the fees that apply to your sales and the **settlement periods**.
+
+```
+/admin/settings/pagarme
+```
+
+<Note>
+The amounts shown on this page are always the ones **currently in effect** for your account. The figures below are examples to explain the structure — check the screen for the current values.
+</Note>
+
+## Fixed costs per transaction
+
+| Cost | When it applies | Example |
+|---|---|---|
+| **Processing** | Per approved transaction | R$ 0.55 |
+| **Antifraud** | Per credit card transaction | R$ 0.44 |
+| **Transfer** | Per withdrawal/transfer | R$ 3.67 |
+
+## Credit card MDR
+
+The **MDR** is the percentage charged on the sale amount paid by card, and it grows with the number of installments. The screen shows the full table from **1x to 12x**. Examples:
+
+| Installments | MDR (example) |
+|---|---|
+| 1x (single payment) | 3.89% |
+| 6x | 12.36% |
+| 12x | 21.24% |
+
+## PIX and boleto
+
+| Method | Fee (example) | Settlement |
+|---|---|---|
+| **PIX** | 1.09% of the amount | same day |
+| **Boleto** | R$ 3.19 per transaction (+ refund fee) | on business days |
+
+## Platform fee
+
+In addition to Pagar.me's fees, the platform applies a **platform fee** (split) on the sale — shown on the screen when applicable, with the note "Applied in the split". It is autoral.me's transparent way of charging, with no hidden commission.
+
+## Installments: interest-free vs with interest
+
+The installment mode defines **who pays the interest** on the installments:
+
+| Mode | The customer pays | You absorb | Highlight on screen |
+|---|---|---|---|
+| **Interest-free** | total amount ÷ installments | MDR + fixed costs + platform fee | **You receive** (net amount) |
+| **With interest** | amount plus the interest | only the platform fee | **Customer pays** (final amount) |
+
+The installment table shows, for each option: the MDR (plus the platform fee), the total cost and — depending on the mode — **how much you receive** or **how much the customer pays**.
+
+## Settlement periods
+
+| Method | Period (example) |
+|---|---|
+| **Credit card** | settles in D+30 (automatic anticipation may apply) |
+| **Boleto** | a few business days |
+| **PIX** | same day |
+
+The expected receivables appear in the [receivables schedule](/help-center/en/payments/balance-and-withdrawals).
+
+## Related articles
+
+- [Balance and withdrawals](/help-center/en/payments/balance-and-withdrawals)
+- [Setting up transfers](/help-center/en/payments/transfers)
+- [Advanced link settings](/help-center/en/checkout/advanced-settings) — set installments per link

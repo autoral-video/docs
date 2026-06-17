@@ -1,0 +1,51 @@
+---
+title: "Certificates"
+description: "Set up rules for automatic certificate issuance based on completion of modules, lessons, assignments and live attendance."
+---
+
+A class can issue **certificates automatically** when the student meets the criteria you define.
+
+Set it up in **Admin → Classes → [Class] → Certificate rules**.
+
+```
+/admin/classes/{class}/certificate-rules
+```
+
+## General settings
+
+| Field | Description |
+|---|---|
+| **Enable certificate** | Turns on automatic issuance for the class. |
+| **Logical operator** | **All rules** (AND) or **any rule** (OR). |
+
+## Criteria types
+
+Each rule is a percentage to be reached:
+
+| Criterion | Measures |
+|---|---|
+| **% of modules completed** | Module completion. |
+| **% of lessons completed** | Lesson completion. |
+| **% of assignments approved** | Assignments approved in review. |
+| **% of live attendance** | Attendance at live events. |
+
+## Example
+
+| Rule | Threshold |
+|---|---|
+| % of modules completed | 80% |
+| % of assignments approved | 90% |
+
+With the **All (AND)** operator, the certificate is issued when **both** are reached.
+
+## Issuance and verification
+
+When the student meets the rules, the certificate is generated as a PDF with a unique **number** and **verification code**. The student is notified and can download it. Each certificate stores the completion percentage and a record of the criteria met.
+
+The student can also check eligibility at any time — see [My certificate (student)](/help-center/en/turmas/student/my-certificate).
+
+## Related articles
+
+- [My certificate (student)](/help-center/en/turmas/student/my-certificate)
+- [Assignments and submissions](/help-center/en/turmas/assignments)
+- [Calendar and events](/help-center/en/turmas/calendar-and-events) — live attendance

@@ -1,0 +1,43 @@
+---
+title: "Mentores e tutores"
+description: "Monte a equipe da turma atribuindo mentores, co-mentores e tutores, com controle de acesso restrito às turmas de cada um."
+---
+
+Uma turma pode ter uma equipe que acompanha os alunos: **mentores, co-mentores e tutores**.
+
+Gerencie em **Admin → Turmas → [Turma] → Mentores**.
+
+```
+/admin/classes/{turma}/mentors
+```
+
+## Papéis
+
+| Papel | Função |
+|---|---|
+| **Mentor** | Instrutor principal da turma. |
+| **Co-mentor** | Co-instrutor. |
+| **Tutor** | Apoio adicional. |
+
+## Adicionando um membro à equipe
+
+| Campo | Descrição |
+|---|---|
+| **E-mail do mentor** | E-mail de um usuário já cadastrado. |
+| **Papel** | Mentor, co-mentor ou tutor. |
+| **Notas** | Observações sobre as responsabilidades (opcional). |
+
+Clique para adicionar. A data de entrada é registrada automaticamente.
+
+## Removendo um membro
+
+Remover um mentor registra a **data de saída** — ele deixa de aparecer como ativo, mas o histórico é preservado.
+
+## Acesso dos mentores ao painel
+
+Mentores com permissão adequada acessam o painel administrativo, mas **veem apenas as turmas às quais estão atribuídos** — incluindo alunos, calendário, tarefas e revisões daquela turma. É a forma de delegar o acompanhamento sem dar acesso total à plataforma.
+
+## Artigos relacionados
+
+- [Revisando entregas](/help-center/pt/turmas/revisando-entregas)
+- [Acompanhando o engajamento](/help-center/pt/turmas/acompanhando-engajamento)

@@ -1,0 +1,101 @@
+---
+title: "Criando um link de venda"
+description: "Use o Link Builder para criar um link de checkout completo em um único formulário — produto e oferta são gerados automaticamente a partir do curso."
+---
+
+O **Link Builder** é a forma de criar uma página de compra na autoral.me. Em um único formulário você escolhe o curso, define o preço e as formas de pagamento, e o sistema gera automaticamente o produto, a oferta e o checkout — tudo de uma vez.
+
+<Note>
+Não é mais necessário criar um produto e depois uma oferta separadamente. Ao escolher o curso, o Link Builder cria esses itens nos bastidores para você. Você só pensa no link que quer vender.
+</Note>
+
+## Onde encontrar
+
+Acesse **Admin → Link Builder → Novo link**.
+
+```
+/admin/link-builder/create
+```
+
+## Passo 1: O que você está vendendo
+
+| Campo | Descrição |
+|---|---|
+| **Curso** | O curso ao qual este link dá acesso. Obrigatório. A partir dele, o produto é criado automaticamente. |
+
+Ao selecionar o curso, um aviso confirma que o produto será criado automaticamente. Você não precisa nomear o produto manualmente.
+
+## Passo 2: Preço e tipo de cobrança
+
+| Campo | Descrição |
+|---|---|
+| **Tipo de cobrança** | Define como o aluno paga. **Pagamento único** (uma vez) ou **Assinatura recorrente** (cobrança periódica). |
+| **Preço** | Valor da oferta. Mínimo: R$ 0,01. |
+| **Moeda** | Real brasileiro (BRL). |
+
+### Pagamento único
+
+O aluno paga uma vez e recebe acesso conforme as regras definidas nas configurações avançadas (vitalício ou temporário).
+
+### Assinatura recorrente
+
+O aluno é cobrado periodicamente enquanto a assinatura estiver ativa. Ao escolher esse tipo, defina o **Período de cobrança**:
+
+| Período | Cobrança |
+|---|---|
+| Mensal | a cada mês |
+| Trimestral | a cada 3 meses |
+| Semestral | a cada 6 meses |
+| Anual | a cada 12 meses |
+
+<Note>
+O acesso em assinaturas é gerenciado automaticamente pelo ciclo de cobrança: enquanto a assinatura estiver ativa, o aluno mantém o acesso.
+</Note>
+
+## Passo 3: Página do link
+
+Estes campos definem como a página pública aparece para o comprador.
+
+| Campo | Descrição |
+|---|---|
+| **Nome do link** | Texto exibido na página de compra e no e-mail de confirmação. Obrigatório. |
+| **URL personalizada (slug)** | Trecho final da URL: `/checkout/{slug}`. Se deixado vazio, é gerado a partir do nome. |
+| **Descrição** | Texto curto exibido abaixo do nome no checkout. Use para reforçar o valor ou listar bônus. |
+
+## Passo 4: Formas de pagamento
+
+Marque uma ou mais formas de pagamento. **As formas disponíveis dependem da conclusão do [cadastro do recebedor Pagar.me](/help-center/pt/pagamentos/configurando-pagarme)** — o gateway que processa todos os pagamentos da plataforma.
+
+| Forma | Quando usar |
+|---|---|
+| **Cartão de crédito** | Pagamento à vista no cartão. |
+| **Cartão parcelado** | Parcelamento no cartão (configurável em até 12x — veja [Configurações avançadas](/help-center/pt/checkout/configuracoes-avancadas)). |
+| **PIX** | Pagamento instantâneo brasileiro. |
+| **Boleto** | Boleto bancário. |
+
+<Note>
+Apenas as formas habilitadas para a sua conta aparecem como opção. Para assinaturas, o método é cartão de crédito.
+</Note>
+
+## Configurações avançadas
+
+Abaixo das formas de pagamento há a seção **Configurações avançadas** (recolhível). Lá você vincula a turma, define o tipo de acesso, up-sell, cross-sell, parcelamento e reembolso. Veja o guia dedicado:
+
+➡️ [Configurações avançadas do link](/help-center/pt/checkout/configuracoes-avancadas)
+
+## Finalizando
+
+Clique em **Salvar**. O sistema cria o produto, a oferta e o checkout, e o link fica acessível em:
+
+```
+https://seudominio.com/checkout/{slug}
+```
+
+Compartilhe essa URL diretamente, ou vincule-a à página do curso em **Admin → Cursos → [Curso] → Configurações**.
+
+## Artigos relacionados
+
+- [Configurações avançadas do link](/help-center/pt/checkout/configuracoes-avancadas) — turma, acesso, up-sell, cross-sell, parcelamento e reembolso
+- [Configurando o recebimento (Pagar.me)](/help-center/pt/pagamentos/configurando-pagarme) — pré-requisito para receber os pagamentos
+- [Criando um curso](/help-center/pt/cursos/criando-um-curso) — pré-requisito para vender
+- [O que são turmas](/help-center/pt/turmas/o-que-sao-turmas) — venda com data, vagas e cohort

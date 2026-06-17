@@ -1,0 +1,61 @@
+---
+title: "Calendário e eventos"
+description: "Crie lives, prazos e encontros para a turma, com lembretes automáticos, recorrência e sincronização via iCal."
+---
+
+O calendário da turma reúne **lives, prazos e encontros** em um só lugar, com lembretes automáticos para os alunos.
+
+Gerencie em **Admin → Turmas → [Turma] → Calendário**.
+
+```
+/admin/classes/{turma}/calendar
+```
+
+## Criando um evento
+
+| Campo | Descrição |
+|---|---|
+| **Título** | Nome do evento. Obrigatório. |
+| **Descrição** | Detalhes (aceita formatação). |
+| **Tipo** | Veja a tabela de tipos abaixo. |
+| **Data inicial** | Data e hora de início. Obrigatório. |
+| **Data final** | Opcional; deve ser posterior ao início. |
+| **URL do local** | Link do Zoom/transmissão. |
+| **Local (texto)** | Endereço ou descrição do local. |
+| **Recorrência** | Repetição do evento (diária, semanal etc.). |
+
+### Tipos de evento
+
+| Tipo | Uso |
+|---|---|
+| **Live** | Sessão ao vivo. |
+| **Prazo** | Prazo de entrega. |
+| **Encontro presencial** | Reunião presencial. |
+| **Aula extra** | Sessão bônus. |
+| **Prazo de bônus** | Prazo opcional. |
+
+## Lembretes automáticos
+
+Ative os lembretes desejados para o evento:
+
+| Lembrete | Quando dispara |
+|---|---|
+| **1 dia antes** | 24h antes do início |
+| **1 hora antes** | 1h antes |
+| **15 minutos antes** | 15 min antes |
+
+Os lembretes são enviados aos alunos por e-mail, notificação no app e push. Os horários respeitam o **fuso da turma**.
+
+## Recorrência e cancelamento
+
+- Eventos recorrentes geram ocorrências; cada uma pode ser **cancelada** individualmente.
+- Cancelar um evento o marca como cancelado, sem apagar o histórico.
+
+## Sincronização externa (iCal)
+
+Os alunos podem assinar o **feed iCal** da turma e ver os eventos no Google Agenda, Outlook ou Apple Calendar. Veja [Calendário do aluno](/help-center/pt/turmas/aluno/calendario).
+
+## Artigos relacionados
+
+- [Calendário do aluno](/help-center/pt/turmas/aluno/calendario)
+- [Criando uma turma](/help-center/pt/turmas/criando-uma-turma) — define o fuso horário

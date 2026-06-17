@@ -1,0 +1,53 @@
+---
+title: "Matriculando alunos"
+description: "Adicione alunos a uma turma manualmente ou via checkout, defina tipos de acesso, acompanhe a capacidade e revogue ou reative acessos."
+---
+
+Gerencie os alunos de uma turma em **Admin → Turmas → [Turma] → Alunos**.
+
+```
+/admin/classes/{turma}/students
+```
+
+Um aluno pode entrar na turma de duas formas: **automaticamente via checkout** ou **manualmente** por você.
+
+## Matrícula via checkout
+
+Quando um link de venda tem uma [turma vinculada](/help-center/pt/checkout/configuracoes-avancadas), o aluno é matriculado automaticamente naquela turma assim que o pagamento é confirmado. Se nenhuma turma estiver fixada no link, o sistema procura uma turma ativa com vagas disponíveis.
+
+## Matrícula manual
+
+Na tela de alunos, preencha:
+
+| Campo | Descrição |
+|---|---|
+| **E-mail do aluno** | E-mail de um usuário já cadastrado na plataforma. |
+| **Tipo de acesso** | **Vitalício** ou **Temporário**. |
+| **Dias de acesso** | Quando temporário, número de dias (1 a 3650). Padrão: 30. |
+
+Clique em **Matricular aluno**.
+
+### Tipos de acesso
+
+| Tipo | Comportamento |
+|---|---|
+| **Vitalício** | Acesso permanente. |
+| **Temporário** | Expira automaticamente após o número de dias. |
+| **Assinatura** | Gerenciado pelo ciclo de cobrança (atribuído via checkout de assinatura). |
+
+## Capacidade e vagas
+
+A tela mostra **alunos ativos vs. limite** com um indicador de preenchimento (verde → âmbar → vermelho) e as **vagas livres**. Quando a turma atinge o limite, novas matrículas são bloqueadas — clientes interessados podem entrar na [lista de espera](/help-center/pt/turmas/lista-de-espera).
+
+## Gerenciando a lista de alunos
+
+- **Filtrar** por status (ativos / inativos)
+- **Buscar** por nome ou e-mail
+- **Revogar acesso**: desativa o aluno na turma (não exclui o histórico)
+- **Reativar**: restaura um acesso revogado
+
+## Artigos relacionados
+
+- [Lista de espera](/help-center/pt/turmas/lista-de-espera)
+- [Acompanhando o engajamento](/help-center/pt/turmas/acompanhando-engajamento)
+- [Configurações avançadas do link](/help-center/pt/checkout/configuracoes-avancadas)

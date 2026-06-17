@@ -1,6 +1,6 @@
 ---
 title: "Frequently Asked Questions"
-description: "Quick answers to the most common questions about courses, checkout, payments, integrations and marketing."
+description: "Quick answers to the most common questions about courses, sales links, classes, Pagar.me payments and marketing."
 ---
 
 Answers to the most common questions. Didn't find what you were looking for? Open a ticket through the admin area at **Admin → Help Center**.
@@ -32,48 +32,56 @@ Answers to the most common questions. Didn't find what you were looking for? Ope
 ## Checkout and Sales
 
 <AccordionGroup>
-  <Accordion title="What's the difference between Product, Offer and Checkout?">
-    **Product** represents what you sell (linked to a course). **Offer** is a pricing plan inside the product (e.g., one-time, monthly, annual). **Checkout** is the public purchase page that presents a specific offer. Flow: `Product → Offers → Checkout`.
+  <Accordion title="How do I create a purchase page?">
+    Use the **Link Builder** under **Admin → Link Builder → New link**. In a single form you choose the course, set the price and payment methods — the product and offer are created automatically. See [Creating a sales link](/help-center/en/checkout/creating-a-link).
   </Accordion>
 
-  <Accordion title="Can I sell in multiple currencies?">
-    Yes. Each offer can have prices in up to **27 currencies**. Stripe automatically displays the price in the buyer's country currency when available. Use the **Generate in other currencies** button to calculate prices from exchange rates with a protection margin.
+  <Accordion title="Do I need to create a product and offer separately?">
+    No. The old Product → Offer → Checkout flow is deprecated. When you pick the course in the Link Builder, the product and offer are generated behind the scenes. You only think about the link you want to sell.
+  </Accordion>
+
+  <Accordion title="Which currencies can I sell in?">
+    In **Brazilian Real (BRL)**. Payments are processed by Pagar.me. The available methods are card (single or installments), PIX and boleto.
   </Accordion>
 
   <Accordion title="What's the difference between up-sell and cross-sell?">
-    **Up-sell** replaces the main product with a superior offer before completing the purchase (does not add). **Cross-sell** adds complementary products to the current purchase (sums to the total). Access is granted individually for each accepted cross-sell.
+    **Up-sell** replaces the main product with a superior offer before completing the purchase (does not add). **Cross-sell** adds complementary products to the current purchase (sums to the total). Access is granted individually for each accepted cross-sell. Configure under [Advanced link settings](/help-center/en/checkout/advanced-settings).
   </Accordion>
 
-  <Accordion title="How do I share the checkout page?">
-    After creating the checkout, the public URL is `https://yourdomain.com/checkout/{slug}`. Share it directly or enable **Show checkouts on the course page** so it appears automatically on the course's public page.
+  <Accordion title="How do I share the sales link?">
+    After saving, the public URL is `https://yourdomain.com/checkout/{slug}`. Share it directly or link it on the course page under **Admin → Courses → [Course] → Settings**.
   </Accordion>
 
   <Accordion title="How do I configure refunds?">
-    On each checkout, in the **Refund Policy** section, enable **Allow Refund** and set the **Refund Period (days)**. Requests are reviewed manually under **Admin → Finance → Refund Requests**.
+    On each link, under **Advanced settings**, enable **Allow refund** and set the **Refund deadline (days)**. Requests are reviewed under **Admin → Finance → Refund requests**.
   </Accordion>
 </AccordionGroup>
 
-## Payments and Integrations
+## Payments
 
 <AccordionGroup>
-  <Accordion title="Which payment gateways are supported?">
-    The platform supports **Stripe** (international card + subscriptions), **Mercado Pago** (PIX + up to 12x installment card) and **Asaas** (card, PIX, boleto and recurring subscriptions). Each one is configured independently under **Admin → Settings**.
+  <Accordion title="How do I receive payments from my sales?">
+    Payments are processed by **Pagar.me**. You create a **recipient** (marketplace model) by providing your details — individual or company — and the destination bank account, under **Admin → Settings → Payout Details**. See [Setting up payments](/help-center/en/payments/setting-up-pagarme).
   </Accordion>
 
-  <Accordion title="Do I need to copy API keys from Stripe or Mercado Pago?">
-    No. Both use **OAuth** — you connect with one click and the platform automatically configures credentials and webhooks. Only **Asaas** requires you to manually enter the API key and webhook token.
+  <Accordion title="Which payment methods can I accept?">
+    **Credit card** (single or up to 12x installments), **PIX** and **boleto** — all via Pagar.me. PIX confirms in seconds; card and boleto follow their settlement timelines.
   </Accordion>
 
-  <Accordion title="Can I accept PIX and installment cards?">
-    Yes, via Mercado Pago. PIX is confirmed in seconds; installment card goes up to 12x with or without interest. Configure under **Admin → Settings → Mercado Pago**.
+  <Accordion title="When are funds available and how do I withdraw?">
+    Each sale stays as **pending** until the settlement period (credit usually D+30; PIX same day), then becomes **available balance**. With the recipient **Active**, request a withdrawal to your account on the **Balance** tab, or schedule [automatic transfers](/help-center/en/payments/transfers). See [Balance and withdrawals](/help-center/en/payments/balance-and-withdrawals).
+  </Accordion>
+
+  <Accordion title="How much does the platform charge?">
+    A **platform fee** (a 0.5% split) applied transparently to the sale, on top of Pagar.me's own fees (card MDR, PIX, boleto and fixed costs). No hidden commission. See the full table under [Fees and MDR](/help-center/en/payments/fees-and-mdr).
+  </Accordion>
+
+  <Accordion title="My recipient is 'under review' or was refused. What do I do?">
+    Pagar.me runs a credentialing review (**KYC**). You can sell during the initial statuses, but you can only withdraw once **Active**. Track pending items, messages and the **liveness verification** link under [Recipient status](/help-center/en/payments/recipient-status).
   </Accordion>
 
   <Accordion title="How do I get notified of new sales?">
     After each confirmed sale, the admin automatically receives an alert email. Outgoing webhooks can also be configured under **Admin → Settings → Webhooks** for integration with external systems.
-  </Accordion>
-
-  <Accordion title="What should I do when the Mercado Pago token expires?">
-    Renewal is automatic. If it fails, a warning appears on the panel. Just **disconnect and reconnect** your account under **Admin → Settings → Mercado Pago**.
   </Accordion>
 </AccordionGroup>
 
@@ -89,11 +97,19 @@ Answers to the most common questions. Didn't find what you were looking for? Ope
   </Accordion>
 
   <Accordion title="How does temporary access work?">
-    Set **Type: Temporary** and select the duration (30, 90, 180, 365 days, or custom). Access expires automatically on the calculated date. For subscriptions, access is managed by the Stripe cycle — active while the subscription is active.
+    Set **Type: Temporary** and select the duration (30, 90, 180, 365 days, or custom). Access expires automatically on the calculated date. For subscriptions, access is managed by the billing cycle — active while the subscription is active.
   </Accordion>
 
-  <Accordion title="What are Classes?">
-    **Classes** group students with spots and enrollment periods. By linking a class to a checkout, all buyers are automatically enrolled in it. Useful for mentorships with a start date or courses with student caps.
+  <Accordion title="What are Classes (turmas)?">
+    **Classes** turn a course into an experience with a **start date, limited seats, its own community and active accompaniment** (cohort model). By linking a class to a sales link, all buyers are automatically enrolled in it. See [What are classes](/help-center/en/turmas/what-are-classes).
+  </Accordion>
+
+  <Accordion title="What can I do inside a class?">
+    Release content on a schedule ([drip](/help-center/en/turmas/content-release-drip)), create [events and live sessions with reminders](/help-center/en/turmas/calendar-and-events), assign [assignments and review submissions](/help-center/en/turmas/assignments), issue [automatic certificates](/help-center/en/turmas/certificates), [track engagement](/help-center/en/turmas/tracking-engagement) and assign [mentors and tutors](/help-center/en/turmas/mentors-and-tutors).
+  </Accordion>
+
+  <Accordion title="How does the waitlist work when a class is full?">
+    Limited-seat classes can capture interested people in a **waitlist**. When a spot opens, you promote someone from the queue, who receives a confirmation link with a deadline. See [Waitlist](/help-center/en/turmas/waitlist).
   </Accordion>
 </AccordionGroup>
 
@@ -105,7 +121,7 @@ Answers to the most common questions. Didn't find what you were looking for? Ope
   </Accordion>
 
   <Accordion title="Can I offer different discounts per number of installments?">
-    Yes, when Mercado Pago is enabled. On the coupon, configure **Installment Discount** with ranges (e.g., 1 installment = 25%, 2-6 = 15%, 7-12 = 10%) to incentivize upfront payments.
+    Yes, when card installments are enabled. On the coupon, configure **Installment Discount** with ranges (e.g., 1 installment = 25%, 2-6 = 15%, 7-12 = 10%) to incentivize upfront payments.
   </Accordion>
 
   <Accordion title="What is cart abandonment?">

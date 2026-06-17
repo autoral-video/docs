@@ -1,0 +1,115 @@
+---
+title: "Configurações avançadas do link"
+description: "Vincule uma turma, defina o tipo de acesso, adicione up-sell e cross-sell, configure parcelamento e a política de reembolso do seu link de venda."
+---
+
+Ao criar um link no [Link Builder](/help-center/pt/checkout/criando-um-link), a seção **Configurações avançadas** reúne tudo que vai além do preço básico: vínculo com turma, tipo de acesso, estratégias de venda e regras de reembolso.
+
+Todas as configurações abaixo são **opcionais**. Expanda a seção **Configurações avançadas** no formulário do link.
+
+## Turma vinculada
+
+Se o curso tiver turmas, você pode fixar uma turma no link.
+
+| Campo | Descrição |
+|---|---|
+| **Turma vinculada** | Turma à qual o aluno será matriculado automaticamente ao comprar por este link. |
+
+Ao comprar, o aluno entra direto na turma escolhida — sem alocação manual.
+
+<Warning>
+**Turmas com vagas limitadas** só aceitam **pagamento único** e **cartão** (à vista ou parcelado). PIX, boleto e assinatura ficam bloqueados, pois dependem de confirmação assíncrona e podem gerar venda acima da capacidade.
+</Warning>
+
+Deixe em **Nenhuma** se não quiser vincular turma. Veja também [Matriculando alunos](/help-center/pt/turmas/matriculando-alunos).
+
+## Tipo de acesso
+
+Define por quanto tempo o aluno mantém o acesso após a compra.
+
+| Tipo | Descrição |
+|---|---|
+| **Vitalício** | Acesso permanente, sem expiração. |
+| **Temporário** | Acesso expira automaticamente após o período definido. |
+
+Para acesso **Temporário**, escolha a duração:
+
+| Opção | Duração |
+|---|---|
+| 30 dias / 90 dias / 180 dias / 365 dias | períodos prontos |
+| **Personalizado** | informe qualquer número de dias (mínimo: 1) |
+
+<Note>
+Em **assinaturas**, o acesso é controlado pelo ciclo de cobrança — enquanto a assinatura estiver ativa, o acesso é mantido, independentemente deste campo.
+</Note>
+
+## Up-sell (oferta de upgrade)
+
+Disponível apenas para **pagamento único**. Apresenta ao comprador uma oferta superior antes de concluir a compra.
+
+| Campo | Descrição |
+|---|---|
+| **Oferta de upgrade** | Oferta que substituirá o produto principal se aceita. Pode ser de qualquer produto ativo. |
+| **Texto de conversão** | Argumento exibido ao comprador explicando o benefício do upgrade. |
+
+<Warning>
+O up-sell **substitui**, não soma. Se o comprador aceitar, apenas o produto do upgrade é processado.
+</Warning>
+
+## Cross-sell (produtos adicionais)
+
+Disponível apenas para **pagamento único**. Oferece produtos complementares que o comprador pode **adicionar** à compra.
+
+Clique em **Adicionar produto adicional** para cada item:
+
+| Campo | Descrição |
+|---|---|
+| **Produto adicional** | Oferta do produto complementar. |
+| **Texto de conversão** | Descrição do benefício do produto adicional. |
+
+Ao contrário do up-sell, o produto principal não é substituído — o acesso a cada item é concedido individualmente após o pagamento. Remova um item pelo ícone ×.
+
+## Parcelamento
+
+Aparece quando **cartão parcelado** está selecionado.
+
+| Campo | Descrição |
+|---|---|
+| **Máximo de parcelas** | Número máximo de parcelas (1 a 12). |
+| **Valor mínimo da parcela (R$)** | Piso por parcela. Mínimo: R$ 5,00. |
+
+> Exemplo: R$ 100 com mínimo de R$ 20 por parcela oferece no máximo 5x.
+
+<Note>
+O número de parcelas exibido ao comprador também depende das regras do emissor do cartão.
+</Note>
+
+## Política de reembolso
+
+Disponível para **pagamento único**.
+
+| Campo | Descrição |
+|---|---|
+| **Permitir reembolso** | Habilita o botão de solicitação de reembolso na área do aluno. |
+| **Prazo para reembolso (dias)** | Dias após a compra em que o reembolso pode ser pedido (1 a 365). Vazio = sem limite. |
+
+O padrão sugerido é **7 dias**, alinhado ao mínimo do Código de Defesa do Consumidor. As solicitações são analisadas em **Admin → Financeiro → Solicitações de reembolso**.
+
+## Pixel e rastreamento (Facebook)
+
+Aparece se o rastreamento estiver habilitado nas configurações da plataforma. Permite sobrescrever o pixel global apenas para este link.
+
+| Campo | Descrição |
+|---|---|
+| **ID do Pixel do Facebook** | Apenas números. |
+| **Token de acesso do Pixel (CAPI)** | Token para conversões via servidor. |
+
+<Note>
+Para sobrescrever o padrão, informe **ID e token juntos**. Apenas um dos dois faz o sistema voltar para as configurações globais.
+</Note>
+
+## Artigos relacionados
+
+- [Criando um link de venda](/help-center/pt/checkout/criando-um-link) — formulário principal do Link Builder
+- [O que são turmas](/help-center/pt/turmas/o-que-sao-turmas)
+- [Matriculando alunos](/help-center/pt/turmas/matriculando-alunos)

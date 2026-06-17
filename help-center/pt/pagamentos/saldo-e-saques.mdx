@@ -1,0 +1,66 @@
+---
+title: "Saldo e saques"
+description: "Acompanhe o saldo disponível e a liberar, solicite saques para sua conta bancária e veja o calendário de recebíveis."
+---
+
+As abas **Saldo** e **Recebíveis** mostram quanto você tem para receber e permitem solicitar saques.
+
+```
+/admin/settings/pagarme
+```
+
+## Saldo
+
+A aba **Saldo** exibe:
+
+| Valor | O que é |
+|---|---|
+| **Disponível** | Valor liberado, pronto para saque. |
+| **A liberar** | Valor de vendas ainda no prazo de liberação (ex: crédito em D+30). |
+| **Transferido** | Total já transferido para sua conta (histórico). |
+
+<Note>
+Se aparecer um aviso de **saldo desatualizado**, significa que o valor mostrado veio do cache porque a Pagar.me ficou temporariamente indisponível. Use **Atualizar** para tentar buscar o valor mais recente.
+</Note>
+
+### Atualizar saldo
+
+O botão **Atualizar** busca o saldo mais recente, ignorando o cache. Há um intervalo mínimo entre atualizações.
+
+### Saldo indisponível
+
+Se você ainda não concluiu o cadastro ou o recebedor não está **Ativo**, o saldo aparece como indisponível. Veja [Status do recebedor](/help-center/pt/pagamentos/status-do-recebedor).
+
+## Solicitando um saque
+
+1. Na aba **Saldo**, clique em **Solicitar saque**.
+2. Informe o **valor** (mínimo R$ 0,01, até o disponível).
+3. Clique em **Confirmar saque**.
+
+O valor é transferido para a [conta bancária cadastrada](/help-center/pt/pagamentos/conta-bancaria). Cada saque tem uma taxa de transferência (veja [Taxas e MDR](/help-center/pt/pagamentos/taxas-e-mdr)).
+
+<Warning>
+O saque só fica disponível quando o recebedor está **Ativo** e há saldo **Disponível** maior que zero.
+</Warning>
+
+## Recebíveis
+
+A aba **Recebíveis** mostra um **calendário dos próximos 90 dias** com as liberações previstas — exigência de transparência da regulação do Banco Central.
+
+Para cada data:
+
+| Coluna | Conteúdo |
+|---|---|
+| **Data** | Quando o valor será liberado. |
+| **Tipo** | Origem (crédito, PIX, boleto...). |
+| **Status** | Situação da liberação. |
+| **Taxa (R$)** | Taxas descontadas. |
+| **Valor (R$)** | Valor a receber. |
+
+No rodapé: **Total a receber** e **Total de taxas**.
+
+## Artigos relacionados
+
+- [Configurando as transferências](/help-center/pt/pagamentos/transferencias) — agende transferências automáticas
+- [Taxas e MDR](/help-center/pt/pagamentos/taxas-e-mdr)
+- [Status do recebedor](/help-center/pt/pagamentos/status-do-recebedor)

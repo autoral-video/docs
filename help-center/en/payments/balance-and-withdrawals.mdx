@@ -1,0 +1,66 @@
+---
+title: "Balance and withdrawals"
+description: "Track your available and pending balance, request withdrawals to your bank account, and view the receivables schedule."
+---
+
+The **Balance** and **Receivables** tabs show how much you have to receive and let you request withdrawals.
+
+```
+/admin/settings/pagarme
+```
+
+## Balance
+
+The **Balance** tab shows:
+
+| Amount | What it is |
+|---|---|
+| **Available** | Released amount, ready for withdrawal. |
+| **Pending** | Amount from sales still within the release period (e.g. credit card in D+30). |
+| **Transferred** | Total already transferred to your account (history). |
+
+<Note>
+If a **stale balance** warning appears, it means the displayed amount came from the cache because Pagar.me was temporarily unavailable. Use **Refresh** to try fetching the most recent value.
+</Note>
+
+### Refresh balance
+
+The **Refresh** button fetches the most recent balance, bypassing the cache. There is a minimum interval between refreshes.
+
+### Balance unavailable
+
+If you haven't completed the registration yet or the recipient is not **Active**, the balance appears as unavailable. See [Recipient status](/help-center/en/payments/recipient-status).
+
+## Requesting a withdrawal
+
+1. In the **Balance** tab, click **Request withdrawal**.
+2. Enter the **amount** (minimum R$ 0.01, up to the available balance).
+3. Click **Confirm withdrawal**.
+
+The amount is transferred to the [registered bank account](/help-center/en/payments/bank-account). Each withdrawal has a transfer fee (see [Fees and MDR](/help-center/en/payments/fees-and-mdr)).
+
+<Warning>
+Withdrawals are only available when the recipient is **Active** and there is an **Available** balance greater than zero.
+</Warning>
+
+## Receivables
+
+The **Receivables** tab shows a **schedule for the next 90 days** with the expected releases — a transparency requirement of Central Bank regulation.
+
+For each date:
+
+| Column | Content |
+|---|---|
+| **Date** | When the amount will be released. |
+| **Type** | Origin (credit card, PIX, boleto...). |
+| **Status** | Status of the release. |
+| **Fee (R$)** | Fees deducted. |
+| **Amount (R$)** | Amount to receive. |
+
+In the footer: **Total to receive** and **Total fees**.
+
+## Related articles
+
+- [Setting up transfers](/help-center/en/payments/transfers) — schedule automatic transfers
+- [Fees and MDR](/help-center/en/payments/fees-and-mdr)
+- [Recipient status](/help-center/en/payments/recipient-status)

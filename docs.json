@@ -39,8 +39,51 @@
               {
                 "group": "Checkout",
                 "pages": [
-                  "help-center/pt/checkout/produtos-e-ofertas",
-                  "help-center/pt/checkout/criando-um-checkout"
+                  "help-center/pt/checkout/criando-um-link",
+                  "help-center/pt/checkout/configuracoes-avancadas"
+                ]
+              },
+              {
+                "group": "Turmas",
+                "pages": [
+                  "help-center/pt/turmas/o-que-sao-turmas",
+                  "help-center/pt/turmas/criando-uma-turma",
+                  "help-center/pt/turmas/matriculando-alunos",
+                  "help-center/pt/turmas/lista-de-espera",
+                  "help-center/pt/turmas/liberacao-de-conteudo",
+                  "help-center/pt/turmas/calendario-e-eventos",
+                  "help-center/pt/turmas/mentores-e-tutores",
+                  "help-center/pt/turmas/tarefas-e-entregas",
+                  "help-center/pt/turmas/revisando-entregas",
+                  "help-center/pt/turmas/certificados",
+                  "help-center/pt/turmas/acompanhando-engajamento",
+                  "help-center/pt/turmas/comunidade-da-turma"
+                ]
+              },
+              {
+                "group": "Turmas — Área do Aluno",
+                "pages": [
+                  "help-center/pt/turmas/aluno/minhas-turmas",
+                  "help-center/pt/turmas/aluno/roteiro-de-conteudo",
+                  "help-center/pt/turmas/aluno/calendario",
+                  "help-center/pt/turmas/aluno/enviando-tarefas",
+                  "help-center/pt/turmas/aluno/meu-certificado"
+                ]
+              },
+              {
+                "group": "Comunidade",
+                "pages": [
+                  "help-center/pt/comunidade/habilitando-a-comunidade",
+                  "help-center/pt/comunidade/criando-um-grupo",
+                  "help-center/pt/comunidade/membros-e-moderadores",
+                  "help-center/pt/comunidade/moderacao"
+                ]
+              },
+              {
+                "group": "Comunidade — Área do Aluno",
+                "pages": [
+                  "help-center/pt/comunidade/aluno/acessando-a-comunidade",
+                  "help-center/pt/comunidade/aluno/participando"
                 ]
               },
               {
@@ -56,12 +99,14 @@
                 ]
               },
               {
-                "group": "Integrações",
+                "group": "Pagamentos",
                 "pages": [
-                  "help-center/pt/integracoes/configurando-stripe",
-                  "help-center/pt/integracoes/configurando-mercadopago",
-                  "help-center/pt/integracoes/configurando-asaas",
-                  "help-center/pt/integracoes/configurando-bunnynet"
+                  "help-center/pt/pagamentos/configurando-pagarme",
+                  "help-center/pt/pagamentos/status-do-recebedor",
+                  "help-center/pt/pagamentos/conta-bancaria",
+                  "help-center/pt/pagamentos/saldo-e-saques",
+                  "help-center/pt/pagamentos/transferencias",
+                  "help-center/pt/pagamentos/taxas-e-mdr"
                 ]
               },
               {
@@ -251,8 +296,51 @@
               {
                 "group": "Checkout",
                 "pages": [
-                  "help-center/en/checkout/products-and-offers",
-                  "help-center/en/checkout/creating-a-checkout"
+                  "help-center/en/checkout/creating-a-link",
+                  "help-center/en/checkout/advanced-settings"
+                ]
+              },
+              {
+                "group": "Classes (Turmas)",
+                "pages": [
+                  "help-center/en/turmas/what-are-classes",
+                  "help-center/en/turmas/creating-a-class",
+                  "help-center/en/turmas/enrolling-students",
+                  "help-center/en/turmas/waitlist",
+                  "help-center/en/turmas/content-release-drip",
+                  "help-center/en/turmas/calendar-and-events",
+                  "help-center/en/turmas/mentors-and-tutors",
+                  "help-center/en/turmas/assignments",
+                  "help-center/en/turmas/reviewing-submissions",
+                  "help-center/en/turmas/certificates",
+                  "help-center/en/turmas/tracking-engagement",
+                  "help-center/en/turmas/class-community"
+                ]
+              },
+              {
+                "group": "Classes — Student Area",
+                "pages": [
+                  "help-center/en/turmas/student/my-classes",
+                  "help-center/en/turmas/student/content-roadmap",
+                  "help-center/en/turmas/student/calendar",
+                  "help-center/en/turmas/student/submitting-assignments",
+                  "help-center/en/turmas/student/my-certificate"
+                ]
+              },
+              {
+                "group": "Community",
+                "pages": [
+                  "help-center/en/community/enabling-community",
+                  "help-center/en/community/creating-a-group",
+                  "help-center/en/community/members-and-moderators",
+                  "help-center/en/community/moderation"
+                ]
+              },
+              {
+                "group": "Community — Student Area",
+                "pages": [
+                  "help-center/en/community/student/accessing-community",
+                  "help-center/en/community/student/participating"
                 ]
               },
               {
@@ -268,12 +356,14 @@
                 ]
               },
               {
-                "group": "Integrations",
+                "group": "Payments",
                 "pages": [
-                  "help-center/en/integrations/setting-up-stripe",
-                  "help-center/en/integrations/setting-up-mercadopago",
-                  "help-center/en/integrations/setting-up-asaas",
-                  "help-center/en/integrations/setting-up-bunnynet"
+                  "help-center/en/payments/setting-up-pagarme",
+                  "help-center/en/payments/recipient-status",
+                  "help-center/en/payments/bank-account",
+                  "help-center/en/payments/balance-and-withdrawals",
+                  "help-center/en/payments/transfers",
+                  "help-center/en/payments/fees-and-mdr"
                 ]
               },
               {
