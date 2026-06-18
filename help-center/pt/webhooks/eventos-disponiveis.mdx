@@ -1,6 +1,6 @@
 ---
 title: "Eventos disponíveis"
-description: "Referência dos eventos de webhook que a plataforma envia — pagamentos, assinaturas, acesso e reembolsos — com o formato do payload de cada um."
+description: "Referência dos eventos de webhook que a plataforma envia — pagamentos, assinaturas, acesso, reembolsos, certificados, lista de espera e engajamento — com o formato do payload de cada um."
 ---
 
 Esta é a lista dos eventos que você pode assinar ao [configurar um webhook](/help-center/pt/webhooks/configurando-webhooks), com o conteúdo enviado em cada um.
@@ -25,35 +25,95 @@ Todo evento é enviado via **POST** com um corpo JSON neste formato:
 | **created_at** | Data/hora do evento (ISO 8601). |
 | **data** | Dados específicos do evento. |
 
+## O objeto `user`
+
+A maioria dos eventos inclui um objeto `user` com a mesma estrutura, pensado para automações (inclusive disparo no WhatsApp a partir do `phone`):
+
+```json
+{
+  "id": 123,
+  "email": "joao@email.com",
+  "name": "João",
+  "phone": "11999998888",
+  "phone_country": "BR"
+}
+```
+
+- `phone` / `phone_country` vêm do cadastro do aluno e podem ser `null` se ele não informou o telefone.
+- Em eventos de checkout antes da conta existir (`payment.pending`, `payment.failed`), `user` é resolvido pelo e-mail e pode vir `null` para um lead anônimo — nesse caso use `customer_email`.
+
+## O contexto de turma (`class_id` / `class_name`)
+
+Eventos ligados a uma turma (cohort) carregam `class_id` e `class_name`, evitando um lookup do seu lado. `class_name` é `null` quando não há turma associada.
+
 ## Lista de eventos
 
 | Evento | Categoria | Quando dispara |
 |---|---|---|
-| `payment.approved` | Pagamentos | Pagamento único aprovado, ou renovação de assinatura aprovada. |
+| `payment.approved` | Pagamentos | Pagamento único aprovado. |
+| `payment.pending` | Pagamentos | Pagamento aguardando confirmação (PIX/boleto gerado). |
 | `payment.failed` | Pagamentos | Pagamento recusado ou com erro. |
+| `payment.chargeback` | Pagamentos | Chargeback recebido (contestação na operadora). |
 | `subscription.created` | Assinaturas | Primeira cobrança da assinatura aprovada. |
-| `subscription.updated` | Assinaturas | Mudança de status da assinatura (ativa, inadimplente, cancelada etc.). |
+| `subscription.updated` | Assinaturas | Mudança de status da assinatura. |
+| `subscription.renewed` | Assinaturas | Renovação da assinatura aprovada (ciclos seguintes). |
+| `subscription.past_due` | Assinaturas | Assinatura entrou em atraso (fatura não paga). |
+| `subscription.payment_failed` | Assinaturas | Falha na cobrança de uma fatura de renovação. |
 | `subscription.canceled` | Assinaturas | Assinatura cancelada. |
 | `student.enrolled` | Acesso | Novo acesso concedido a um aluno. |
 | `access.revoked` | Acesso | Acesso de um aluno revogado. |
+| `enrollment.expired` | Acesso | Acesso com prazo expirado e desativado automaticamente. |
 | `refund.created` | Reembolsos | Reembolso processado. |
+| `certificate.issued` | Certificados | Certificado emitido para um aluno. |
+| `waitlist.joined` | Lista de espera | Lead entrou na lista de espera de uma turma. |
+| `waitlist.promoted` | Lista de espera | Lead promovido da lista de espera (vaga liberada). |
+| `waitlist.expired` | Lista de espera | Prazo da promoção da lista de espera expirou. |
+| `lesson.completed` | Engajamento | Aluno concluiu uma aula. |
+| `course.completed` | Engajamento | Aluno concluiu 100% das aulas do curso. |
+| `assignment.submitted` | Engajamento | Aluno entregou uma atividade. |
+| `assignment.reviewed` | Engajamento | Atividade avaliada (aprovada, requer revisão ou rejeitada). |
+| `community.post_created` | Engajamento | Nova publicação na comunidade. |
 
 ## Conteúdo (`data`) de cada evento
+
+Nos exemplos abaixo, o objeto `user` segue o [formato padrão](#o-objeto-user).
 
 ### `payment.approved`
 
 ```json
 {
   "payment_id": "...",
-  "user": { "id": "...", "email": "...", "name": "..." },
+  "user": {
+    "id": 123,
+    "email": "joao@email.com",
+    "name": "João",
+    "phone": "11999998888",
+    "phone_country": "BR",
+    "class_id": 45,
+    "class_name": "Turma Cohort 2026"
+  },
   "amount": 497.00,
   "currency": "BRL",
-  "gateway": "pagarme",
-  "type": "subscription_renewal"
+  "gateway": "pagarme"
 }
 ```
 
-`type` aparece apenas quando é renovação de assinatura.
+### `payment.pending`
+
+```json
+{
+  "gateway_payment_id": "...",
+  "checkout_id": "...",
+  "customer_email": "joao@email.com",
+  "user": null,
+  "amount": 497.00,
+  "currency": "BRL",
+  "payment_method": "pix",
+  "gateway": "pagarme"
+}
+```
+
+`user` traz o objeto padrão quando o e-mail já tem conta; `null` para lead anônimo.
 
 ### `payment.failed`
 
@@ -61,7 +121,20 @@ Todo evento é enviado via **POST** com um corpo JSON neste formato:
 {
   "gateway_payment_id": "...",
   "checkout_id": "...",
-  "customer_email": "...",
+  "customer_email": "joao@email.com",
+  "user": null,
+  "amount": 497.00,
+  "currency": "BRL",
+  "gateway": "pagarme"
+}
+```
+
+### `payment.chargeback`
+
+```json
+{
+  "payment_id": "...",
+  "user": { "id": 123, "email": "...", "name": "...", "phone": "...", "phone_country": "..." },
   "amount": 497.00,
   "currency": "BRL",
   "gateway": "pagarme"
@@ -73,7 +146,15 @@ Todo evento é enviado via **POST** com um corpo JSON neste formato:
 ```json
 {
   "subscription_id": "...",
-  "user": { "id": "...", "email": "...", "name": "...", "class_id": "..." },
+  "user": {
+    "id": 123,
+    "email": "joao@email.com",
+    "name": "João",
+    "phone": "11999998888",
+    "phone_country": "BR",
+    "class_id": 45,
+    "class_name": "Turma Cohort 2026"
+  },
   "checkout_id": "...",
   "amount": 497.00,
   "currency": "BRL",
@@ -86,9 +167,47 @@ Todo evento é enviado via **POST** com um corpo JSON neste formato:
 ```json
 {
   "subscription_id": "...",
-  "user": { "id": "..." },
+  "user": { "id": 123, "email": "...", "name": "...", "phone": "...", "phone_country": "..." },
   "status": "active",
   "previous_status": "past_due",
+  "gateway": "pagarme"
+}
+```
+
+### `subscription.renewed`
+
+```json
+{
+  "subscription_id": "...",
+  "payment_id": "...",
+  "user": { "id": 123, "email": "...", "name": "...", "phone": "...", "phone_country": "..." },
+  "amount": 497.00,
+  "currency": "BRL",
+  "gateway": "pagarme"
+}
+```
+
+### `subscription.past_due`
+
+```json
+{
+  "subscription_id": "...",
+  "user": { "id": 123, "email": "...", "name": "...", "phone": "...", "phone_country": "..." },
+  "status": "past_due",
+  "previous_status": "active",
+  "gateway": "pagarme"
+}
+```
+
+### `subscription.payment_failed`
+
+```json
+{
+  "subscription_id": "...",
+  "user": { "id": 123, "email": "...", "name": "...", "phone": "...", "phone_country": "..." },
+  "invoice_id": "...",
+  "amount": 497.00,
+  "currency": "BRL",
   "gateway": "pagarme"
 }
 ```
@@ -98,7 +217,9 @@ Todo evento é enviado via **POST** com um corpo JSON neste formato:
 ```json
 {
   "subscription_id": "...",
-  "user": { "id": "..." },
+  "user": { "id": 123, "email": "...", "name": "...", "phone": "...", "phone_country": "..." },
+  "amount": 497.00,
+  "currency": "BRL",
   "gateway": "pagarme"
 }
 ```
@@ -108,23 +229,34 @@ Todo evento é enviado via **POST** com um corpo JSON neste formato:
 ```json
 {
   "access_id": "...",
-  "user": { "id": "...", "email": "...", "name": "..." },
+  "user": { "id": 123, "email": "...", "name": "...", "phone": "...", "phone_country": "..." },
   "course": { "id": "...", "name": "..." },
   "type": "lifetime",
   "granted_by": "payment"
 }
 ```
 
-`type`: `lifetime`, `temporary`, `subscription` ou `trial`. `granted_by`: origem do acesso (ex: `payment`, `admin`, `import`).
+`type`: `lifetime`, `temporary`, `subscription` ou `trial`. `granted_by`: origem do acesso (ex.: `payment`, `admin`, `import`).
 
 ### `access.revoked`
 
 ```json
 {
   "access_id": "...",
-  "user": { "id": "..." },
+  "user": { "id": 123, "email": "...", "name": "...", "phone": "...", "phone_country": "..." },
   "course_id": "...",
   "reason": "..."
+}
+```
+
+### `enrollment.expired`
+
+```json
+{
+  "access_id": "...",
+  "user": { "id": 123, "email": "...", "name": "...", "phone": "...", "phone_country": "..." },
+  "course": { "id": "...", "name": "..." },
+  "expired_at": "2026-06-16T12:00:00Z"
 }
 ```
 
@@ -134,10 +266,95 @@ Todo evento é enviado via **POST** com um corpo JSON neste formato:
 {
   "refund_request_id": "...",
   "payment_id": "...",
-  "user": { "id": "..." },
+  "user": { "id": 123, "email": "...", "name": "...", "phone": "...", "phone_country": "..." },
   "amount": 497.00,
   "external_refund_id": "...",
   "gateway": "pagarme"
+}
+```
+
+Reembolsos iniciados pela operadora (não pelo painel) trazem `amount_refunded` no lugar de `refund_request_id` / `external_refund_id`.
+
+### `certificate.issued`
+
+```json
+{
+  "certificate_id": "...",
+  "certificate_number": "...",
+  "verification_code": "...",
+  "user": { "id": 123, "email": "...", "name": "...", "phone": "...", "phone_country": "..." },
+  "course": { "id": "...", "name": "..." }
+}
+```
+
+### `waitlist.joined` · `waitlist.promoted` · `waitlist.expired`
+
+```json
+{
+  "waitlist_entry_id": "...",
+  "class_id": 45,
+  "class_name": "Turma Cohort 2026",
+  "position": 3,
+  "status": "waiting",
+  "user": { "id": 123, "email": "...", "name": "...", "phone": "...", "phone_country": "..." }
+}
+```
+
+`status`: `waiting`, `promoted` ou `expired`. Para um lead ainda sem conta, `user.id` é `null` e os dados vêm da inscrição na fila.
+
+### `lesson.completed`
+
+```json
+{
+  "lesson": { "id": "...", "title": "..." },
+  "course": { "id": "...", "name": "..." },
+  "user": { "id": 123, "email": "...", "name": "...", "phone": "...", "phone_country": "..." }
+}
+```
+
+### `course.completed`
+
+```json
+{
+  "course": { "id": "...", "name": "..." },
+  "user": { "id": 123, "email": "...", "name": "...", "phone": "...", "phone_country": "..." }
+}
+```
+
+### `assignment.submitted`
+
+```json
+{
+  "submission_id": "...",
+  "assignment": { "id": "...", "title": "...", "class_id": 45, "class_name": "Turma Cohort 2026" },
+  "user": { "id": 123, "email": "...", "name": "...", "phone": "...", "phone_country": "..." },
+  "is_late": false,
+  "submitted_at": "2026-06-16T12:00:00Z"
+}
+```
+
+### `assignment.reviewed`
+
+```json
+{
+  "review_id": "...",
+  "submission_id": "...",
+  "status": "approved",
+  "score": 90,
+  "assignment": { "id": "...", "title": "...", "class_id": 45, "class_name": "Turma Cohort 2026" },
+  "user": { "id": 123, "email": "...", "name": "...", "phone": "...", "phone_country": "..." }
+}
+```
+
+`status`: `approved`, `needs_revision` ou `rejected`. `user` é o aluno autor da entrega.
+
+### `community.post_created`
+
+```json
+{
+  "post_id": "...",
+  "group": { "id": "...", "class_id": 45, "class_name": "Turma Cohort 2026" },
+  "user": { "id": 123, "email": "...", "name": "...", "phone": "...", "phone_country": "..." }
 }
 ```
 
