@@ -1,0 +1,52 @@
+---
+title: "Content release (drip)"
+description: "Release modules, lessons, and assignments on a schedule: X days after the start, on a fixed date, or after completing a previous step."
+---
+
+**Scheduled release** (drip) controls **when** each part of the content becomes available to the class. Instead of unlocking everything at once, you guide students at the cohort's pace.
+
+Configure it in **Admin → Classes → [Class] → Release**.
+
+```
+/admin/classes/{class}/drip
+```
+
+<Note>
+Release rules are **specific to each class**. The same class can have multiple rules.
+</Note>
+
+## Release types
+
+| Type | How it works |
+|---|---|
+| **X days after start** | Releases N days after the **class start date**. |
+| **Fixed date** | Releases on a specific date, regardless of enrollment. |
+| **After completing lesson** | Releases when a defined lesson is completed. |
+| **After completing module** | Releases when a module is 100% complete. |
+| **After assignment approved** | Releases when an assignment is approved in review. |
+
+## What can be released
+
+Each rule points to a **target**:
+
+- **Module** — releases the entire module
+- **Lesson** — releases an individual lesson
+- **Assignment** — releases an assignment
+
+## Example schedule
+
+| Rule | Target |
+|---|---|
+| 0 days after start | Module 1 |
+| 7 days after start | Module 2 |
+| After completing Module 2 | Final assignment |
+
+## How the student sees it
+
+In the [content roadmap](/help-center/en/turmas/student/content-roadmap), the student sees what is **locked** or **available**, and when content that is still closed will be **released**.
+
+## Related articles
+
+- [Creating a class](/help-center/en/turmas/creating-a-class) — the start date anchors the drip
+- [Assignments](/help-center/en/turmas/assignments)
+- [Content roadmap (student)](/help-center/en/turmas/student/content-roadmap)

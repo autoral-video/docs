@@ -1,0 +1,70 @@
+---
+title: "Taxas e MDR"
+description: "Entenda as taxas da Pagar.me (MDR por parcela, custos fixos, PIX e boleto), a taxa da plataforma e como o parcelamento sem ou com juros afeta o que você recebe."
+---
+
+A aba **Taxas** mostra, de forma transparente, todas as taxas que incidem sobre as suas vendas e os **prazos de recebimento**.
+
+```
+/admin/settings/pagarme
+```
+
+<Note>
+Os valores exibidos nesta página são sempre os **vigentes** para a sua conta. Os números abaixo são exemplos para explicar a estrutura — confira a tela para os valores atuais.
+</Note>
+
+## Custos fixos por transação
+
+| Custo | Quando incide | Exemplo |
+|---|---|---|
+| **Processamento** | Por transação aprovada | R$ 0,55 |
+| **Antifraude** | Por transação no crédito | R$ 0,44 |
+| **Transferência** | Por saque/transferência | R$ 3,67 |
+
+## MDR do cartão de crédito
+
+O **MDR** é o percentual cobrado sobre o valor da venda no cartão, e cresce conforme o número de parcelas. A tela mostra a tabela completa de **1x a 12x**. Exemplos:
+
+| Parcelas | MDR (exemplo) |
+|---|---|
+| 1x (à vista) | 3,89% |
+| 6x | 12,36% |
+| 12x | 21,24% |
+
+## PIX e boleto
+
+| Método | Taxa (exemplo) | Liberação |
+|---|---|---|
+| **PIX** | 1,09% do valor | no mesmo dia |
+| **Boleto** | R$ 3,19 por transação (+ taxa de estorno) | em dias úteis |
+
+## Taxa da plataforma
+
+Além das taxas da Pagar.me, a plataforma aplica uma **taxa de plataforma** (split) sobre a venda — exibida na tela quando aplicável, com a observação "Aplicada no split". É a forma transparente de cobrança da autoral.me, sem comissão escondida.
+
+## Parcelamento: sem juros x com juros
+
+O modo de parcelamento define **quem paga os juros** das parcelas:
+
+| Modo | O cliente paga | Você absorve | Destaque na tela |
+|---|---|---|---|
+| **Sem juros** | valor total ÷ parcelas | MDR + custos fixos + taxa de plataforma | **Você recebe** (valor líquido) |
+| **Com juros** | valor acrescido dos juros | apenas a taxa de plataforma | **Cliente paga** (valor final) |
+
+A tabela de parcelas mostra, para cada opção: o MDR (mais a taxa de plataforma), o custo total e — conforme o modo — **quanto você recebe** ou **quanto o cliente paga**.
+
+## Prazos de recebimento
+
+| Método | Prazo (exemplo) |
+|---|---|
+| **Cartão de crédito** | liberação em D+30 (pode haver antecipação automática) |
+| **Boleto** | poucos dias úteis |
+| **PIX** | no mesmo dia |
+
+Os recebíveis previstos aparecem no [calendário de recebíveis](/help-center/pt/pagamentos/saldo-e-saques).
+
+## Artigos relacionados
+
+- [Saldo e saques](/help-center/pt/pagamentos/saldo-e-saques)
+- [Configurando as transferências](/help-center/pt/pagamentos/transferencias)
+- [Configurações avançadas do link](/help-center/pt/checkout/configuracoes-avancadas) — definir parcelamento por link

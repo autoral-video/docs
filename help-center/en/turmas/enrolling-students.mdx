@@ -1,0 +1,53 @@
+---
+title: "Enrolling students"
+description: "Add students to a class manually or via checkout, set access types, track capacity, and revoke or reactivate access."
+---
+
+Manage a class's students in **Admin → Classes → [Class] → Students**.
+
+```
+/admin/classes/{class}/students
+```
+
+A student can join a class in two ways: **automatically via checkout** or **manually** by you.
+
+## Enrollment via checkout
+
+When a sales link has a [linked class](/help-center/en/checkout/advanced-settings), the student is automatically enrolled in that class as soon as payment is confirmed. If no class is fixed on the link, the system looks for an active class with available seats.
+
+## Manual enrollment
+
+On the students screen, fill in:
+
+| Field | Description |
+|---|---|
+| **Student email** | Email of a user already registered on the platform. |
+| **Access type** | **Lifetime** or **Temporary**. |
+| **Access days** | When temporary, number of days (1 to 3650). Default: 30. |
+
+Click **Enroll student**.
+
+### Access types
+
+| Type | Behavior |
+|---|---|
+| **Lifetime** | Permanent access. |
+| **Temporary** | Expires automatically after the number of days. |
+| **Subscription** | Managed by the billing cycle (assigned via subscription checkout). |
+
+## Capacity and seats
+
+The screen shows **active students vs. limit** with a fill indicator (green → amber → red) and the **available seats**. When the class reaches its limit, new enrollments are blocked — interested customers can join the [waitlist](/help-center/en/turmas/waitlist).
+
+## Managing the student list
+
+- **Filter** by status (active / inactive)
+- **Search** by name or email
+- **Revoke access**: deactivates the student in the class (does not delete the history)
+- **Reactivate**: restores revoked access
+
+## Related articles
+
+- [Waitlist](/help-center/en/turmas/waitlist)
+- [Tracking engagement](/help-center/en/turmas/tracking-engagement)
+- [Advanced link settings](/help-center/en/checkout/advanced-settings)

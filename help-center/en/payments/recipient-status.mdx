@@ -1,0 +1,45 @@
+---
+title: "Recipient status (KYC)"
+description: "Understand the accreditation statuses of your Pagar.me recipient, what each one allows, and how to complete the verification (liveness check)."
+---
+
+After [registering the recipient](/help-center/en/payments/setting-up-pagarme), Pagar.me runs the accreditation review (**KYC**). Track it in **Admin → Settings → Payout Details → KYC Status**.
+
+```
+/admin/settings/pagarme
+```
+
+## The statuses
+
+| Status | What it means | Receives sales? | Can withdraw? |
+|---|---|---|---|
+| **Pre-accreditation** | Passed the initial step; self-accreditation pending. | Yes | No |
+| **Awaiting affiliation** | Self-accreditation completed; waiting on Pagar.me. | Yes | No |
+| **Active** | All steps completed. | Yes | Yes |
+| **Refused** | Refused during accreditation or affiliation. | No | No |
+| **Suspended** | Did not complete self-accreditation in time or there was a pending issue. | No | No |
+| **Blocked** | Suspicious behavior after activation. | No | No |
+| **Inactive** | Suspicion confirmed after monitoring. | No | No |
+
+<Note>
+You can start **selling** as early as the initial statuses, but you can only **withdraw** once the status is **Active**.
+</Note>
+
+## Liveness check and pending issues
+
+The screen shows the progress in steps (1 → 2 → 3) and, when applicable, the **list of pending items** required for approval.
+
+In the **Pre-accreditation**, **Awaiting affiliation**, **Refused** and **Suspended** statuses, a **Liveness Check** link (biometric verification) is shown. Complete this verification to move forward in the accreditation.
+
+## Message from Pagar.me
+
+If there is a refusal or pending issue, Pagar.me sends a **message** explaining the reason, shown in this tab. Fix what is indicated and the review is redone automatically.
+
+## Status updates
+
+The status is updated periodically and also via notifications from Pagar.me. The date of the last check appears on the screen.
+
+## Related articles
+
+- [Setting up payouts](/help-center/en/payments/setting-up-pagarme)
+- [Balance and withdrawals](/help-center/en/payments/balance-and-withdrawals)

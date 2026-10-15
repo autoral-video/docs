@@ -1,0 +1,61 @@
+---
+title: "Calendar and events"
+description: "Create live sessions, deadlines, and meetings for the class, with automatic reminders, recurrence, and iCal sync."
+---
+
+The class calendar brings together **live sessions, deadlines, and meetings** in one place, with automatic reminders for students.
+
+Manage it in **Admin → Classes → [Class] → Calendar**.
+
+```
+/admin/classes/{class}/calendar
+```
+
+## Creating an event
+
+| Field | Description |
+|---|---|
+| **Title** | Event name. Required. |
+| **Description** | Details (supports formatting). |
+| **Type** | See the type table below. |
+| **Start date** | Start date and time. Required. |
+| **End date** | Optional; must be later than the start. |
+| **Location URL** | Zoom/stream link. |
+| **Location (text)** | Address or location description. |
+| **Recurrence** | Event repetition (daily, weekly, etc.). |
+
+### Event types
+
+| Type | Use |
+|---|---|
+| **Live** | Live session. |
+| **Deadline** | Submission deadline. |
+| **In-person meeting** | In-person meeting. |
+| **Extra class** | Bonus session. |
+| **Bonus deadline** | Optional deadline. |
+
+## Automatic reminders
+
+Enable the reminders you want for the event:
+
+| Reminder | When it fires |
+|---|---|
+| **1 day before** | 24h before the start |
+| **1 hour before** | 1h before |
+| **15 minutes before** | 15 min before |
+
+Reminders are sent to students by email, in-app notification, and push. The times respect the **class time zone**.
+
+## Recurrence and cancellation
+
+- Recurring events generate occurrences; each one can be **cancelled** individually.
+- Cancelling an event marks it as cancelled, without deleting the history.
+
+## External sync (iCal)
+
+Students can subscribe to the class **iCal feed** and see events in Google Calendar, Outlook, or Apple Calendar. See [Student calendar](/help-center/en/turmas/student/calendar).
+
+## Related articles
+
+- [Student calendar](/help-center/en/turmas/student/calendar)
+- [Creating a class](/help-center/en/turmas/creating-a-class) — sets the time zone

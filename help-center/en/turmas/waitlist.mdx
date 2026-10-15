@@ -1,0 +1,52 @@
+---
+title: "Waitlist"
+description: "Capture interested people when a class runs out of seats and promote them to enrollment with an automatic link and acceptance deadline."
+---
+
+When a class with limited seats fills up, instead of simply turning away interested people, you can capture them on a **waitlist** and promote them when a seat opens.
+
+## Enabling the waitlist
+
+In the [class settings](/help-center/en/turmas/creating-a-class):
+
+| Field | Description |
+|---|---|
+| **Enable waitlist** | Turns on the waiting queue for the class. |
+| **Maximum capacity** | Limit of people in the queue. Empty = no limit. |
+| **Acceptance window (hours)** | Time the promoted person has to confirm (1 to 168 hours). |
+| **Promotion checkout** | Which sales link to use when promoting. If empty, uses the checkout the customer originally tried. |
+
+## How it works
+
+1. The class is full. The interested person joins the queue and receives the **waitlist entry** notification.
+2. When a seat opens, you **promote** someone from the queue in **Admin → Classes → [Class] → Waitlist**.
+
+```
+/admin/classes/{class}/waitlist
+```
+
+3. The promoted person receives an email with a **time-limited confirmation link** (the acceptance window).
+4. If they confirm in time, they enroll. If the deadline expires, the seat becomes available again.
+
+## Queue status
+
+| Status | Meaning |
+|---|---|
+| **Waiting** | In the queue. |
+| **Promoted** | Received the confirmation link; within the deadline. |
+| **Enrolled** | Confirmed and joined the class. |
+| **Declined** | Declined or missed the deadline. |
+
+The queue keeps each person's **position** and form data (e.g. phone number).
+
+## Notifications
+
+| Notification | When |
+|---|---|
+| Waitlist entry | when joining the queue |
+| Waitlist promotion | when promoted, with the acceptance deadline |
+
+## Related articles
+
+- [Enrolling students](/help-center/en/turmas/enrolling-students)
+- [Creating a class](/help-center/en/turmas/creating-a-class)

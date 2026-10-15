@@ -1,0 +1,52 @@
+---
+title: "Lista de espera"
+description: "Capture interessados quando a turma esgota as vagas e promova-os para a matrícula com link automático e prazo de aceite."
+---
+
+Quando uma turma com vagas limitadas lota, em vez de simplesmente recusar interessados, você pode capturá-los em uma **lista de espera** e promovê-los quando uma vaga abrir.
+
+## Ativando a lista de espera
+
+Na [configuração da turma](/help-center/pt/turmas/criando-uma-turma):
+
+| Campo | Descrição |
+|---|---|
+| **Ativar lista de espera** | Liga a fila de espera para a turma. |
+| **Capacidade máxima** | Limite de pessoas na fila. Vazio = sem limite. |
+| **Janela de aceite (horas)** | Tempo que o promovido tem para confirmar (1 a 168 horas). |
+| **Checkout da promoção** | Qual link de venda usar ao promover. Se vazio, usa o checkout que o cliente tentou originalmente. |
+
+## Como funciona
+
+1. A turma está cheia. O interessado entra na fila e recebe a notificação de **entrada na lista de espera**.
+2. Quando abre uma vaga, você **promove** alguém da fila em **Admin → Turmas → [Turma] → Lista de espera**.
+
+```
+/admin/classes/{turma}/waitlist
+```
+
+3. O promovido recebe um e-mail com um **link de confirmação com prazo** (a janela de aceite).
+4. Se confirmar a tempo, ele se matricula. Se o prazo expirar, a vaga volta a ficar disponível.
+
+## Status na fila
+
+| Status | Significado |
+|---|---|
+| **Aguardando** | Na fila. |
+| **Promovido** | Recebeu o link de confirmação; dentro do prazo. |
+| **Matriculado** | Confirmou e entrou na turma. |
+| **Recusado** | Declinou ou perdeu o prazo. |
+
+A fila mantém a **posição** de cada pessoa e dados do formulário (ex: telefone).
+
+## Notificações
+
+| Notificação | Quando |
+|---|---|
+| Entrada na lista de espera | ao entrar na fila |
+| Promoção da lista de espera | ao ser promovido, com o prazo de aceite |
+
+## Artigos relacionados
+
+- [Matriculando alunos](/help-center/pt/turmas/matriculando-alunos)
+- [Criando uma turma](/help-center/pt/turmas/criando-uma-turma)

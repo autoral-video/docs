@@ -1,0 +1,126 @@
+---
+title: "Configurando o recebimento (Pagar.me)"
+description: "Cadastre seu recebedor na Pagar.me com os dados da conta — pessoa física ou jurídica — para receber os pagamentos das suas turmas e cursos."
+---
+
+Os pagamentos da plataforma são processados pela **Pagar.me**. Para receber o dinheiro das suas vendas, você cria um **recebedor** (uma conta de recebimento no modelo marketplace) informando seus dados pessoais ou da empresa e a conta bancária de destino.
+
+<Note>
+Você não precisa criar uma conta diretamente no site da Pagar.me. Todo o cadastro do recebedor é feito aqui dentro, no painel administrativo da autoral.me — os dados que você preenche são enviados à Pagar.me automaticamente.
+</Note>
+
+## Onde encontrar
+
+Acesse **Admin → Configurações → Dados de Recebimento**.
+
+```
+/admin/settings/pagarme
+```
+
+A tela é dividida em abas: **Cadastro**, **Status KYC**, **Conta bancária**, **Transferências**, **Saldo**, **Recebíveis** e **Taxas**. Comece pela aba **Cadastro**.
+
+## Passo 1: Tipo de cadastro
+
+No topo do formulário, escolha o **tipo**:
+
+| Tipo | Para quem |
+|---|---|
+| **Pessoa Física** | Você recebe como CPF. |
+| **Pessoa Jurídica** | Você recebe como empresa (CNPJ). |
+
+A escolha muda os campos exibidos a seguir.
+
+## Passo 2: Identidade
+
+### Pessoa Física
+
+| Campo | Descrição |
+|---|---|
+| **Nome completo** | Seu nome. Obrigatório. |
+| **Nome da mãe** | Obrigatório (exigência da Pagar.me). |
+| **CPF** | Formatado automaticamente. Obrigatório. |
+| **E-mail de contato** | E-mail do recebedor. Obrigatório. |
+| **Data de nascimento** | Obrigatório. |
+| **Renda mensal (R$)** | Obrigatório. |
+| **Profissão / atividade** | Obrigatório. |
+
+### Pessoa Jurídica
+
+| Campo | Descrição |
+|---|---|
+| **Razão social** | Nome legal da empresa. Obrigatório. |
+| **Nome fantasia** | Opcional. |
+| **CNPJ** | Formatado automaticamente. Obrigatório. |
+| **E-mail de contato** | Obrigatório. |
+| **Data de fundação** | Obrigatório. |
+| **Faturamento mensal (R$)** | Obrigatório. |
+
+#### Sócio administrador (apenas Pessoa Jurídica)
+
+A Pagar.me exige os dados do sócio administrador da empresa:
+
+| Campo | Descrição |
+|---|---|
+| **Nome completo do sócio** | Obrigatório. |
+| **Nome da mãe** | Obrigatório. |
+| **CPF do sócio** | Obrigatório. |
+| **E-mail do sócio** | Obrigatório. |
+| **Data de nascimento** | Obrigatório. |
+| **Renda mensal (R$)** | Obrigatório. |
+| **Profissão / atividade** | Obrigatório. |
+
+<Note>
+O sócio reutiliza automaticamente o endereço e o telefone da empresa — você não precisa preencher de novo.
+</Note>
+
+## Passo 3: Telefone
+
+| Campo | Descrição |
+|---|---|
+| **DDD** | 2 dígitos. |
+| **Número** | Formatado automaticamente. |
+
+## Passo 4: Endereço
+
+| Campo | Descrição |
+|---|---|
+| **CEP** | Ao sair do campo, rua, bairro, cidade e UF são preenchidos automaticamente. |
+| **Rua** | Obrigatório. |
+| **Número** | Obrigatório. |
+| **Complemento** | Opcional. |
+| **Bairro** | Obrigatório. |
+| **Cidade** | Obrigatório. |
+| **UF** | 2 letras. Obrigatório. |
+| **Ponto de referência** | Obrigatório. |
+
+## Passo 5: Conta bancária
+
+Esta é a conta para onde o dinheiro será transferido.
+
+Marque **"Usar os mesmos dados do titular do cadastro"** para copiar o nome e o documento da identidade. Caso contrário, preencha:
+
+| Campo | Descrição |
+|---|---|
+| **Nome do titular** | Titular da conta. |
+| **CPF/CNPJ do titular** | Documento do titular. |
+| **Banco** | Selecione na lista. |
+| **Tipo de conta** | Conta corrente ou poupança. |
+| **Agência** | Número da agência. |
+| **Dígito** (agência) | Opcional, se houver. |
+| **Número da conta** | Obrigatório. |
+| **Dígito** (conta) | Obrigatório. |
+
+## Finalizando
+
+Clique em **Cadastrar recebedor**. Os dados são enviados à Pagar.me, que inicia a análise (KYC). Após o envio, a tela passa a mostrar o **ID do recebedor** e o **status**.
+
+<Warning>
+O cadastro só pode receber e sacar valores depois de aprovado. Acompanhe a análise em [Status do recebedor](/help-center/pt/pagamentos/status-do-recebedor).
+</Warning>
+
+## Próximos passos
+
+- [Status do recebedor (KYC)](/help-center/pt/pagamentos/status-do-recebedor)
+- [Saldo e saques](/help-center/pt/pagamentos/saldo-e-saques)
+- [Configurando as transferências](/help-center/pt/pagamentos/transferencias)
+- [Taxas e MDR](/help-center/pt/pagamentos/taxas-e-mdr)

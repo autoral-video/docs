@@ -1,0 +1,52 @@
+---
+title: "Liberação de conteúdo (drip)"
+description: "Libere módulos, aulas e tarefas por cronograma: após X dias do início, em data fixa ou após concluir uma etapa anterior."
+---
+
+A **liberação programada** (drip) controla **quando** cada parte do conteúdo fica disponível para a turma. Em vez de abrir tudo de uma vez, você guia os alunos no ritmo do cohort.
+
+Configure em **Admin → Turmas → [Turma] → Liberação**.
+
+```
+/admin/classes/{turma}/drip
+```
+
+<Note>
+As regras de liberação são **específicas de cada turma**. A mesma turma pode ter várias regras.
+</Note>
+
+## Tipos de liberação
+
+| Tipo | Como funciona |
+|---|---|
+| **Após X dias do início** | Libera N dias após a **data de início da turma**. |
+| **Data fixa** | Libera em uma data específica, independentemente da matrícula. |
+| **Após concluir lição** | Libera quando uma lição definida é concluída. |
+| **Após concluir módulo** | Libera quando um módulo é 100% concluído. |
+| **Após tarefa aprovada** | Libera quando uma tarefa é aprovada na revisão. |
+
+## O que pode ser liberado
+
+Cada regra aponta para um **alvo**:
+
+- **Módulo** — libera o módulo inteiro
+- **Lição** — libera uma aula individual
+- **Tarefa** — libera uma tarefa
+
+## Exemplo de cronograma
+
+| Regra | Alvo |
+|---|---|
+| Após 0 dias do início | Módulo 1 |
+| Após 7 dias do início | Módulo 2 |
+| Após concluir Módulo 2 | Tarefa final |
+
+## Como o aluno enxerga
+
+No [roteiro de conteúdo](/help-center/pt/turmas/aluno/roteiro-de-conteudo), o aluno vê o que está **bloqueado** ou **disponível**, e quando o conteúdo ainda fechado será **liberado**.
+
+## Artigos relacionados
+
+- [Criando uma turma](/help-center/pt/turmas/criando-uma-turma) — a data de início ancora o drip
+- [Tarefas e entregas](/help-center/pt/turmas/tarefas-e-entregas)
+- [Roteiro de conteúdo (aluno)](/help-center/pt/turmas/aluno/roteiro-de-conteudo)

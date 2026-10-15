@@ -16,7 +16,7 @@ description: "Registra um endpoint externo para receber eventos."
 </ParamField>
 
 <ParamField body="secret" type="string">
-  32-255 chars. Se omitido, é gerado automaticamente. Usado para assinar payloads (HMAC-SHA256 no header `X-Signature`).
+  32-255 chars. Se omitido, é gerado automaticamente. Usado para assinar payloads (HMAC-SHA256 no header `X-Webhook-Signature`). Veja [Segurança e entregas](/help-center/pt/webhooks/seguranca-e-entregas).
 </ParamField>
 
 <ParamField body="events" type="array<string>" required>
@@ -26,6 +26,8 @@ description: "Registra um endpoint externo para receber eventos."
 <ParamField body="is_active" type="boolean">Default `true`.</ParamField>
 
 ## Eventos disponíveis
+
+Veja o **payload de cada evento** na Central de Ajuda: [Eventos disponíveis](/help-center/pt/webhooks/eventos-disponiveis).
 
 | Evento | Disparo |
 |---|---|

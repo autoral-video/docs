@@ -1,0 +1,44 @@
+---
+title: "Revisando entregas"
+description: "Use a fila de revisão para avaliar as entregas dos alunos, dar feedback, atribuir notas e solicitar revisões."
+---
+
+A **fila de revisão** reúne todas as entregas dos alunos para você (ou os mentores) avaliarem em um só lugar.
+
+Acesse em **Admin → Turmas → [Turma] → Revisões**.
+
+```
+/admin/classes/{turma}/review-queue
+```
+
+## Avaliando uma entrega
+
+Ao abrir uma entrega, você vê o conteúdo enviado ao lado do formulário de avaliação:
+
+| Campo | Descrição |
+|---|---|
+| **Feedback** | Comentário para o aluno (opcional). |
+| **Status** | Resultado da avaliação (veja abaixo). |
+| **Nota** | Pontuação de 0 a 100 (opcional). |
+
+## Status de revisão
+
+| Status | Significado |
+|---|---|
+| **Pendente** | Aguardando avaliação. |
+| **Em revisão** | Sendo avaliada. |
+| **Aprovada** | Entrega aceita. |
+| **Precisa de revisão** | Requer ajustes; o aluno pode reenviar (se a reentrega estiver permitida). |
+| **Rejeitada** | Não aceita. |
+
+## Filtros e organização
+
+- Filtre por **tarefa** e por **status**
+- Contadores mostram quantas entregas estão pendentes, aprovadas, precisando de revisão etc.
+
+O aluno é notificado quando a avaliação é publicada e pode ver o feedback e a nota. Se o status for **precisa de revisão**, ele pode reenviar.
+
+## Artigos relacionados
+
+- [Tarefas e entregas](/help-center/pt/turmas/tarefas-e-entregas)
+- [Certificados](/help-center/pt/turmas/certificados) — aprovação de tarefas pode ser critério

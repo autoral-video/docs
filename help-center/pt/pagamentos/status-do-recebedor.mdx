@@ -1,0 +1,45 @@
+---
+title: "Status do recebedor (KYC)"
+description: "Entenda os status de credenciamento do seu recebedor Pagar.me, o que cada um permite e como concluir a verificação (prova de vida)."
+---
+
+Depois de [cadastrar o recebedor](/help-center/pt/pagamentos/configurando-pagarme), a Pagar.me faz a análise de credenciamento (**KYC**). Acompanhe em **Admin → Configurações → Dados de Recebimento → Status KYC**.
+
+```
+/admin/settings/pagarme
+```
+
+## Os status
+
+| Status | O que significa | Recebe vendas? | Pode sacar? |
+|---|---|---|---|
+| **Pré-credenciamento** | Passou na etapa inicial; falta o autocredenciamento. | Sim | Não |
+| **Aguardando afiliação** | Autocredenciamento concluído; aguardando a Pagar.me. | Sim | Não |
+| **Ativo** | Todas as etapas concluídas. | Sim | Sim |
+| **Recusado** | Recusado no credenciamento ou na afiliação. | Não | Não |
+| **Suspenso** | Não concluiu o autocredenciamento a tempo ou houve pendência. | Não | Não |
+| **Bloqueado** | Comportamento suspeito após ativação. | Não | Não |
+| **Inativo** | Suspeita confirmada após monitoramento. | Não | Não |
+
+<Note>
+Você pode começar a **vender** já nos status iniciais, mas só consegue **sacar** quando o status estiver **Ativo**.
+</Note>
+
+## Prova de vida e pendências
+
+A tela mostra o progresso em etapas (1 → 2 → 3) e, quando houver, a **lista de pendências** que faltam para a aprovação.
+
+Nos status **Pré-credenciamento**, **Aguardando afiliação**, **Recusado** e **Suspenso**, é exibido um link de **Prova de Vida** (verificação biométrica). Conclua essa verificação para avançar no credenciamento.
+
+## Mensagem da Pagar.me
+
+Se houver recusa ou pendência, a Pagar.me envia uma **mensagem** explicando o motivo, exibida nesta aba. Ajuste o que for indicado e a análise é refeita automaticamente.
+
+## Atualização do status
+
+O status é atualizado periodicamente e também via notificações da Pagar.me. A data da última verificação aparece na tela.
+
+## Artigos relacionados
+
+- [Configurando o recebimento](/help-center/pt/pagamentos/configurando-pagarme)
+- [Saldo e saques](/help-center/pt/pagamentos/saldo-e-saques)

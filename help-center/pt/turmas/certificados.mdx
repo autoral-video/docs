@@ -1,0 +1,51 @@
+---
+title: "Certificados"
+description: "Configure regras de emissão automática de certificados por conclusão de módulos, lições, tarefas e presença em lives."
+---
+
+A turma pode emitir **certificados automaticamente** quando o aluno cumpre os critérios que você definir.
+
+Configure em **Admin → Turmas → [Turma] → Regras de certificado**.
+
+```
+/admin/classes/{turma}/certificate-rules
+```
+
+## Configuração geral
+
+| Campo | Descrição |
+|---|---|
+| **Ativar certificado** | Liga a emissão automática para a turma. |
+| **Operador lógico** | **Todas as regras** (E) ou **qualquer regra** (OU). |
+
+## Tipos de critério
+
+Cada regra é um percentual a ser atingido:
+
+| Critério | Mede |
+|---|---|
+| **% de módulos concluídos** | Conclusão de módulos. |
+| **% de lições concluídas** | Conclusão de lições. |
+| **% de tarefas aprovadas** | Tarefas aprovadas na revisão. |
+| **% de presença em lives** | Presença em eventos ao vivo. |
+
+## Exemplo
+
+| Regra | Limite |
+|---|---|
+| % de módulos concluídos | 80% |
+| % de tarefas aprovadas | 90% |
+
+Com o operador **Todas (E)**, o certificado é emitido quando **ambos** forem atingidos.
+
+## Emissão e verificação
+
+Quando o aluno cumpre as regras, o certificado é gerado em PDF com **número** e **código de verificação** únicos. O aluno é notificado e pode baixá-lo. Cada certificado guarda o percentual de conclusão e um registro dos critérios atendidos.
+
+O aluno também pode checar a elegibilidade a qualquer momento — veja [Meu certificado (aluno)](/help-center/pt/turmas/aluno/meu-certificado).
+
+## Artigos relacionados
+
+- [Meu certificado (aluno)](/help-center/pt/turmas/aluno/meu-certificado)
+- [Tarefas e entregas](/help-center/pt/turmas/tarefas-e-entregas)
+- [Calendário e eventos](/help-center/pt/turmas/calendario-e-eventos) — presença em lives

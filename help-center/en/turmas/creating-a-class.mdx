@@ -1,0 +1,72 @@
+---
+title: "Creating a class"
+description: "Configure a new class: name, course, dates, seats, enrollment window, status, time zone, communication channel, and community groups."
+---
+
+Create classes in **Admin → Classes → New class**.
+
+```
+/admin/classes/create
+```
+
+## Class fields
+
+### Identification
+
+| Field | Description |
+|---|---|
+| **Class name** | Internal name, also shown to students. E.g. "March 2026 Class". Required. |
+| **Linked course** | The course the class delivers. Required. |
+
+### Seats and dates
+
+| Field | Description |
+|---|---|
+| **Student limit** | Maximum number of enrollments. Leave empty for unlimited seats. |
+| **Start date** | Marks the zero point for [content release](/help-center/en/turmas/content-release-drip). |
+| **End date** | Expected end. Must be equal to or later than the start. |
+
+### Enrollment window
+
+| Field | Description |
+|---|---|
+| **Opens on** | Date when enrollment opens. |
+| **Closes on** | Date when enrollment closes. |
+| **Strict window** | When enabled, blocks checkout outside the enrollment period. |
+
+<Note>
+Without the strict window, the dates serve only as a reference and do not block purchases.
+</Note>
+
+### Status
+
+| Status | When to use |
+|---|---|
+| **Draft** | Still preparing; hidden from the public. |
+| **Open** / **Enrollment open** | Accepting enrollments. |
+| **In progress** | Class running. |
+| **Closed** | No new enrollments. |
+| **Cancelled** | Class cancelled. |
+
+### General settings
+
+| Field | Description |
+|---|---|
+| **Time zone** | Used in events and reminders. Default: America/Sao_Paulo. |
+| **Communication channel** | Link (WhatsApp, Telegram, Discord, Slack) shown to students. Must start with `https://`. |
+| **Community groups** | Links [community groups](/help-center/en/turmas/class-community) that the student can access upon enrolling. |
+| **Use as template** | Marks the class as a **template**: it does not accept enrollments and serves as a base for cloning future classes. |
+
+## Template classes
+
+Check **Use as template** to create a blueprint with all drip rules, events, assignments, and mentors already configured. Then clone it for each new class and adjust only the dates — without redoing everything from scratch.
+
+## Limited seats and payment methods
+
+If you set a **student limit**, sales links tied to that class only accept **one-time payment** and **card** (full or installments). PIX, bank slip, and subscription are blocked to prevent selling beyond capacity. See [Advanced link settings](/help-center/en/checkout/advanced-settings).
+
+## Next steps
+
+- [Enroll students](/help-center/en/turmas/enrolling-students)
+- [Content release (drip)](/help-center/en/turmas/content-release-drip)
+- [Calendar and events](/help-center/en/turmas/calendar-and-events)

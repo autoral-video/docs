@@ -1,0 +1,72 @@
+---
+title: "Criando uma turma"
+description: "Configure uma nova turma: nome, curso, datas, vagas, janela de inscrição, status, fuso horário, canal de comunicação e grupos de comunidade."
+---
+
+Crie turmas em **Admin → Turmas → Nova turma**.
+
+```
+/admin/classes/create
+```
+
+## Campos da turma
+
+### Identificação
+
+| Campo | Descrição |
+|---|---|
+| **Nome da turma** | Nome interno e exibido aos alunos. Ex: "Turma Março 2026". Obrigatório. |
+| **Curso vinculado** | Curso que a turma entrega. Obrigatório. |
+
+### Vagas e datas
+
+| Campo | Descrição |
+|---|---|
+| **Limite de alunos** | Número máximo de matrículas. Deixe vazio para vagas ilimitadas. |
+| **Data de início** | Marca o ponto zero da [liberação de conteúdo](/help-center/pt/turmas/liberacao-de-conteudo). |
+| **Data de encerramento** | Fim previsto. Deve ser igual ou posterior ao início. |
+
+### Janela de inscrição
+
+| Campo | Descrição |
+|---|---|
+| **Abre em** | Data em que as inscrições abrem. |
+| **Fecha em** | Data em que as inscrições fecham. |
+| **Janela estrita** | Quando ativada, bloqueia o checkout fora do período de inscrição. |
+
+<Note>
+Sem a janela estrita, as datas servem apenas de referência e não bloqueiam compras.
+</Note>
+
+### Status
+
+| Status | Quando usar |
+|---|---|
+| **Rascunho** | Ainda preparando; invisível ao público. |
+| **Aberta** / **Inscrições abertas** | Recebendo matrículas. |
+| **Em andamento** | Turma rodando. |
+| **Encerrada** | Sem novas matrículas. |
+| **Cancelada** | Turma cancelada. |
+
+### Configurações gerais
+
+| Campo | Descrição |
+|---|---|
+| **Fuso horário** | Usado em eventos e lembretes. Padrão: America/Sao_Paulo. |
+| **Canal de comunicação** | Link (WhatsApp, Telegram, Discord, Slack) exibido aos alunos. Deve começar com `https://`. |
+| **Grupos da comunidade** | Vincula [grupos de comunidade](/help-center/pt/turmas/comunidade-da-turma) que o aluno acessa ao matricular. |
+| **Usar como modelo** | Marca a turma como **modelo**: não recebe matrículas, serve de base para clonar futuras turmas. |
+
+## Turmas modelo
+
+Marque **Usar como modelo** para criar um molde com todas as regras de drip, eventos, tarefas e mentores já configurados. Depois, clone-o para cada nova turma e ajuste apenas as datas — sem refazer tudo do zero.
+
+## Vagas limitadas e formas de pagamento
+
+Se você definir um **limite de alunos**, os links de venda vinculados a essa turma só aceitam **pagamento único** e **cartão** (à vista ou parcelado). PIX, boleto e assinatura ficam bloqueados para evitar venda acima da capacidade. Veja [Configurações avançadas do link](/help-center/pt/checkout/configuracoes-avancadas).
+
+## Próximos passos
+
+- [Matricular alunos](/help-center/pt/turmas/matriculando-alunos)
+- [Liberação de conteúdo (drip)](/help-center/pt/turmas/liberacao-de-conteudo)
+- [Calendário e eventos](/help-center/pt/turmas/calendario-e-eventos)

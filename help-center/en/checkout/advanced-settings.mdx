@@ -1,0 +1,115 @@
+---
+title: "Advanced link settings"
+description: "Bind a class, set the access type, add up-sell and cross-sell, configure installments and the refund policy for your sales link."
+---
+
+When creating a link in the [Link Builder](/help-center/en/checkout/creating-a-link), the **Advanced settings** section gathers everything beyond the basic price: class binding, access type, sales strategies and refund rules.
+
+All settings below are **optional**. Expand the **Advanced settings** section in the link form.
+
+## Bound class
+
+If the course has classes (turmas), you can pin a class to the link.
+
+| Field | Description |
+|---|---|
+| **Bound class** | The class the student is automatically enrolled in when buying through this link. |
+
+On purchase, the student goes straight into the chosen class — no manual allocation.
+
+<Warning>
+**Limited-seat classes** only accept **one-time payment** and **card** (single or installments). PIX, boleto and subscriptions are blocked, since they rely on asynchronous confirmation and could oversell capacity.
+</Warning>
+
+Leave it at **None** if you don't want to bind a class. See also [Enrolling students](/help-center/en/turmas/enrolling-students).
+
+## Access type
+
+Defines how long the student keeps access after purchase.
+
+| Type | Description |
+|---|---|
+| **Lifetime** | Permanent access, no expiration. |
+| **Temporary** | Access expires automatically after the defined period. |
+
+For **Temporary** access, choose the duration:
+
+| Option | Duration |
+|---|---|
+| 30 / 90 / 180 / 365 days | preset periods |
+| **Custom** | enter any number of days (minimum: 1) |
+
+<Note>
+For **subscriptions**, access is controlled by the billing cycle — while the subscription is active, access is kept, regardless of this field.
+</Note>
+
+## Up-sell (upgrade offer)
+
+Available only for **one-time payment**. Presents the buyer a higher offer before completing the purchase.
+
+| Field | Description |
+|---|---|
+| **Upgrade offer** | Offer that replaces the main product if accepted. Can be from any active product. |
+| **Conversion copy** | Argument shown to the buyer explaining the upgrade benefit. |
+
+<Warning>
+The up-sell **replaces**, it doesn't add. If the buyer accepts, only the upgrade product is processed.
+</Warning>
+
+## Cross-sell (additional products)
+
+Available only for **one-time payment**. Offers complementary products the buyer can **add** to the purchase.
+
+Click **Add additional product** for each item:
+
+| Field | Description |
+|---|---|
+| **Additional product** | The complementary product's offer. |
+| **Conversion copy** | Description of the additional product's benefit. |
+
+Unlike the up-sell, the main product isn't replaced — access to each item is granted individually after payment. Remove an item via the × icon.
+
+## Installments
+
+Appears when **card installments** is selected.
+
+| Field | Description |
+|---|---|
+| **Maximum installments** | Maximum number of installments (1 to 12). |
+| **Minimum installment amount (R$)** | Floor per installment. Minimum: R$ 5.00. |
+
+> Example: R$ 100 with a R$ 20 minimum per installment offers at most 5x.
+
+<Note>
+The number of installments shown to the buyer also depends on the card issuer's rules.
+</Note>
+
+## Refund policy
+
+Available for **one-time payment**.
+
+| Field | Description |
+|---|---|
+| **Allow refund** | Enables the refund request button in the student area. |
+| **Refund deadline (days)** | Days after purchase in which a refund can be requested (1 to 365). Blank = no limit. |
+
+The suggested default is **7 days**, aligned with the Brazilian Consumer Code minimum. Requests are reviewed under **Admin → Finance → Refund requests**.
+
+## Pixel and tracking (Facebook)
+
+Appears if tracking is enabled in the platform settings. Lets you override the global pixel for this link only.
+
+| Field | Description |
+|---|---|
+| **Facebook Pixel ID** | Numbers only. |
+| **Pixel access token (CAPI)** | Token for server-side conversions. |
+
+<Note>
+To override the default, provide **ID and token together**. Just one of the two makes the system fall back to global settings.
+</Note>
+
+## Related articles
+
+- [Creating a sales link](/help-center/en/checkout/creating-a-link) — the main Link Builder form
+- [What are classes (turmas)](/help-center/en/turmas/what-are-classes)
+- [Enrolling students](/help-center/en/turmas/enrolling-students)
