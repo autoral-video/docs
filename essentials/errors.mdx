@@ -21,7 +21,7 @@ Toda resposta de erro segue o mesmo envelope JSON:
 ## Campos
 
 <ResponseField name="error.type" type="string">
-  Categoria do erro: `validation_error`, `authentication_error`, `authorization_error`, `not_found`, `rate_limited`, `plan_limit_exceeded`, etc.
+  Categoria do erro: `validation_error`, `authentication_error`, `authorization_error`, `not_found`, `rate_limited`, `plan_limit_exceeded`, `plan_feature_unavailable`, etc.
 </ResponseField>
 
 <ResponseField name="error.title" type="string">
@@ -54,8 +54,8 @@ Toda resposta de erro segue o mesmo envelope JSON:
 | 204 | No Content | Delete bem-sucedido |
 | 400 | Bad Request | Body malformado |
 | 401 | Unauthorized | Token ausente, inválido, revogado, expirado |
-| 402 | Payment Required | Plano não inclui o recurso |
-| 403 | Forbidden | Sem escopo, IP não permitido, tenant inativo |
+| 402 | Payment Required | Limite de uso do plano atingido (ex: máximo de produtos) |
+| 403 | Forbidden | Sem escopo, IP não permitido, tenant inativo, plano não inclui o recurso |
 | 404 | Not Found | Recurso inexistente ou de outro tenant |
 | 422 | Unprocessable Entity | Validação falhou |
 | 429 | Too Many Requests | Rate limit excedido |
@@ -92,7 +92,8 @@ Toda resposta de erro segue o mesmo envelope JSON:
 
 | Status | Code | Causa |
 |---|---|---|
-| 402 | `plan_limit_exceeded` | Recurso não incluso no plano. |
+| 402 | `plan_limit_exceeded` | Limite de uso do plano atingido (ex: máximo de produtos). |
+| 403 | `plan_feature_unavailable` | Plano não inclui o recurso (ex: Biblioteca de Mídia). |
 | 429 | `rate_limited` | Rate limit do plano excedido. |
 
 ## Exemplo: tratamento robusto
