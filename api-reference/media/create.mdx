@@ -1,0 +1,84 @@
+---
+title: "Enviar mídia"
+api: "POST /v1/media"
+description: "Faz upload de um arquivo para a Biblioteca de Mídia."
+---
+
+**Escopo:** `media-library:write`
+**Idempotency:** suportada
+**Content-Type:** `multipart/form-data`
+
+O arquivo conta no limite de armazenamento do plano. Dimensões de imagens são detectadas automaticamente.
+
+## Tipos aceitos
+
+| Tipo | Extensões | Tamanho máximo |
+|---|---|---|
+| `image` | jpg, jpeg, png, webp, gif | 5 MB |
+| `document` | pdf, docx, xlsx | 30 MB |
+| `audio` | mp3, wav | 30 MB |
+
+## Body params
+
+<ParamField body="file" type="file" required>Arquivo a enviar.</ParamField>
+<ParamField body="folder_id" type="integer">Pasta de destino (precisa existir no seu tenant).</ParamField>
+<ParamField body="alt_text" type="string">Texto alternativo (até 255 chars).</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://seu-dominio/api/v1/media \
+  -H "Authorization: Bearer aut_..." \
+  -H "Accept: application/json" \
+  -F "file=@capa-curso.png" \
+  -F "folder_id=3" \
+  -F "alt_text=Capa do curso"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 201
+{
+  "data": {
+    "id": 42,
+    "name": "capa-curso.png",
+    "kind": "image",
+    "mime_type": "image/png",
+    "size": 184320,
+    "url": "https://cdn.autoral.me/media/1/image/Xk2...png",
+    "folder_id": 3,
+    "alt_text": "Capa do curso",
+    "width": 1280,
+    "height": 720,
+    "duration": null,
+    "tags": [],
+    "created_at": "2026-10-15T14:02:11+00:00"
+  }
+}
+```
+
+```json 422 validação
+{
+  "error": {
+    "type": "validation_error",
+    "errors": {
+      "file": ["O campo file deve conter uma das seguintes extensões: jpg, jpeg, png, webp, gif, pdf, docx, xlsx, mp3, wav."]
+    },
+    "status": 422
+  }
+}
+```
+
+```json 422 recusado
+{
+  "error": {
+    "type": "upload_rejected",
+    "title": "Limite de armazenamento do plano atingido.",
+    "status": 422
+  }
+}
+```
+</ResponseExample>
+
+<Note>
+  `upload_rejected` cobre arquivo acima do limite do tipo, MIME real não suportado e armazenamento do plano esgotado. O motivo vem em `title`.
+</Note>

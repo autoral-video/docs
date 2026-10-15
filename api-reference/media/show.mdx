@@ -1,0 +1,38 @@
+---
+title: "Detalhes da mídia"
+api: "GET /v1/media/{media}"
+description: "Retorna um arquivo da Biblioteca de Mídia."
+---
+
+**Escopo:** `media-library:read`
+
+<ParamField path="media" type="integer" required>ID.</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://seu-dominio/api/v1/media/42 \
+  -H "Authorization: Bearer aut_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": {
+    "id": 42,
+    "name": "capa-curso.png",
+    "kind": "image",
+    "mime_type": "image/png",
+    "size": 184320,
+    "url": "https://cdn.autoral.me/media/1/image/Xk2...png",
+    "folder_id": 3,
+    "alt_text": "Capa do curso",
+    "width": 1280,
+    "height": 720,
+    "duration": null,
+    "tags": ["capas"],
+    "created_at": "2026-10-15T14:02:11+00:00"
+  }
+}
+```
+</ResponseExample>

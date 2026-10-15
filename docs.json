@@ -127,6 +127,15 @@
                 ]
               },
               {
+                "group": "Biblioteca de Mídia",
+                "pages": [
+                  "api-reference/media/list",
+                  "api-reference/media/show",
+                  "api-reference/media/create",
+                  "api-reference/media/delete"
+                ]
+              },
+              {
                 "group": "Alunos",
                 "pages": [
                   "api-reference/students/list",
