@@ -1,0 +1,95 @@
+---
+title: "Estatísticas do quiz de venda"
+api: "GET /v1/quiz-funnels/{quizFunnel}/stats"
+description: "Funil, respostas, resultados e origem — os mesmos números do painel."
+---
+
+**Escopo:** `quiz-funnels:read`
+
+Cada visitante que abre o quiz vira uma **sessão**. O período filtra pela data de abertura da sessão. Robôs de prévia de link (WhatsApp, Facebook etc.) e prefetch do navegador não contam.
+
+Uma venda é atribuída ao quiz quando o comprador chega ao checkout pelo botão do resultado.
+
+<ParamField path="quizFunnel" type="integer" required>ID do quiz.</ParamField>
+<ParamField query="from" type="string">Data inicial `Y-m-d`. Default: 29 dias antes de `to`.</ParamField>
+<ParamField query="to" type="string">Data final `Y-m-d`. Default: hoje. Período máximo: 1 ano.</ParamField>
+
+## Response
+
+<ResponseField name="data.totals" type="object">
+  <Expandable title="propriedades">
+    <ResponseField name="views" type="integer">Sessões abertas.</ResponseField>
+    <ResponseField name="started" type="integer">Clicaram em começar.</ResponseField>
+    <ResponseField name="completed" type="integer">Responderam todas as perguntas.</ResponseField>
+    <ResponseField name="leads" type="integer">Deixaram contato.</ResponseField>
+    <ResponseField name="clicks" type="integer">Clicaram para o checkout.</ResponseField>
+    <ResponseField name="purchases" type="integer">Compraram.</ResponseField>
+    <ResponseField name="revenue_cents" type="integer">Receita atribuída, em centavos.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="data.drop_off[]" type="object[]">
+  Por pergunta: `step` (posição), `question_id`, `title` e `reached` (quantas sessões responderam até ela).
+</ResponseField>
+
+<ResponseField name="data.answers[]" type="object[]">
+  Por pergunta: `question_id`, `title`, `answered` (sessões que responderam) e `options[]` com `option_id`, `label`, `count` e `percent` (sobre `answered`; em múltipla escolha a soma passa de 100).
+</ResponseField>
+
+<ResponseField name="data.outcomes[]" type="object[]">
+  Por resultado: `outcome_id`, `title`, `completed` (quantos receberam), `clicks`, `purchases`, `revenue_cents`.
+</ResponseField>
+
+<ResponseField name="data.sources[]" type="object[]">
+  Top 10 `utm_source` (`null` = direto/sem UTM): `views`, `completed`, `purchases`, `revenue_cents`.
+</ResponseField>
+
+<RequestExample>
+```bash cURL
+curl 'https://seu-dominio/api/v1/quiz-funnels/7/stats?from=2026-10-01&to=2026-10-18' \
+  -H "Authorization: Bearer aut_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": {
+    "from": "2026-10-01",
+    "to": "2026-10-18",
+    "totals": {
+      "views": 1240,
+      "started": 806,
+      "completed": 590,
+      "leads": 512,
+      "clicks": 233,
+      "purchases": 41,
+      "revenue_cents": 807700
+    },
+    "drop_off": [
+      { "step": 1, "question_id": 90, "title": "Você já vende online?", "reached": 771 },
+      { "step": 2, "question_id": 91, "title": "O que você quer agora?", "reached": 590 }
+    ],
+    "answers": [
+      {
+        "question_id": 90,
+        "title": "Você já vende online?",
+        "answered": 771,
+        "options": [
+          { "option_id": 401, "label": "Ainda não", "count": 498, "percent": 64.6 },
+          { "option_id": 402, "label": "Sim, todo mês", "count": 273, "percent": 35.4 }
+        ]
+      }
+    ],
+    "outcomes": [
+      { "outcome_id": 31, "title": "Comece pelo básico", "completed": 402, "clicks": 160, "purchases": 33, "revenue_cents": 650100 },
+      { "outcome_id": 32, "title": "Mentoria individual", "completed": 188, "clicks": 73, "purchases": 8, "revenue_cents": 157600 }
+    ],
+    "sources": [
+      { "source": "instagram", "views": 880, "completed": 431, "purchases": 30, "revenue_cents": 591000 },
+      { "source": null, "views": 360, "completed": 159, "purchases": 11, "revenue_cents": 216700 }
+    ]
+  }
+}
+```
+</ResponseExample>

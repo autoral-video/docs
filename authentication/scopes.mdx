@@ -55,6 +55,8 @@ Cada token carrega uma lista fixa de escopos no formato `recurso:ação`. O serv
 | `leads:read` | Listar leads. |
 | `leads:write` | Criar leads (capturar de formulários externos). |
 | `checkouts:read` | Listar e ver checkouts (somente leitura). |
+| `quiz-funnels:read` | Listar e ver quizzes de venda e suas estatísticas. |
+| `quiz-funnels:write` | Criar, atualizar, publicar e remover quizzes de venda. |
 
 ### Conta & Integrações
 
@@ -82,6 +84,10 @@ Cada token carrega uma lista fixa de escopos no formato `recurso:ação`. O serv
 
   <Accordion title="Gestão financeira">
     `payments:read`, `payments:refund`, `subscriptions:read`, `subscriptions:cancel`
+  </Accordion>
+
+  <Accordion title="Gerar quizzes de venda (IA/automação)">
+    `quiz-funnels:write`, `quiz-funnels:read`, `checkouts:read`
   </Accordion>
 
   <Accordion title="Provisionar webhooks programaticamente">

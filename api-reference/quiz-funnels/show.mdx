@@ -1,0 +1,92 @@
+---
+title: "Detalhes do quiz de venda"
+api: "GET /v1/quiz-funnels/{quizFunnel}"
+description: "Retorna o quiz com resultados, perguntas, opções e pontuação."
+---
+
+**Escopo:** `quiz-funnels:read`
+
+<ParamField path="quizFunnel" type="integer" required>ID do quiz.</ParamField>
+
+## Response
+
+Mesmos campos de [Listar](/api-reference/quiz-funnels/list), mais:
+
+<ResponseField name="data.outcomes[]" type="object[]">
+  Resultados, na ordem de desempate.
+  <Expandable title="propriedades">
+    <ResponseField name="id" type="integer">ID do resultado.</ResponseField>
+    <ResponseField name="title" type="string">Nome.</ResponseField>
+    <ResponseField name="description" type="string|null">Descrição.</ResponseField>
+    <ResponseField name="image_url" type="string|null">Imagem 16:9 ([recomendações](/api-reference/quiz-funnels/create#imagens)).</ResponseField>
+    <ResponseField name="cta_label" type="string|null">Texto do botão de compra.</ResponseField>
+    <ResponseField name="auto_redirect" type="boolean">Vai direto ao checkout (com um único checkout).</ResponseField>
+    <ResponseField name="is_fallback" type="boolean">Resultado padrão quando nada pontua.</ResponseField>
+    <ResponseField name="checkout_ids" type="integer[]">Checkouts recomendados, em ordem.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="data.questions[]" type="object[]">
+  Perguntas, na ordem de exibição.
+  <Expandable title="propriedades">
+    <ResponseField name="id" type="integer">ID da pergunta.</ResponseField>
+    <ResponseField name="title" type="string">Pergunta.</ResponseField>
+    <ResponseField name="description" type="string|null">Texto de apoio.</ResponseField>
+    <ResponseField name="image_url" type="string|null">Imagem 16:9 ([recomendações](/api-reference/quiz-funnels/create#imagens)).</ResponseField>
+    <ResponseField name="type" type="string">`single` ou `multiple`.</ResponseField>
+    <ResponseField name="options[].id" type="integer">ID da opção.</ResponseField>
+    <ResponseField name="options[].label" type="string">Texto.</ResponseField>
+    <ResponseField name="options[].points" type="object">Mapa `{ "<id do resultado>": pontos }`. Vazio quando a opção não pontua.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+```bash cURL
+curl https://seu-dominio/api/v1/quiz-funnels/7 \
+  -H "Authorization: Bearer aut_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": {
+    "id": 7,
+    "title": "Descubra seu próximo passo",
+    "slug": "descubra-seu-proximo-passo",
+    "status": "published",
+    "public_url": "https://seu-dominio/quiz/descubra-seu-proximo-passo",
+    "intro": { "headline": "Qual caminho é o seu?", "description": null, "image_url": null, "button_label": "Começar" },
+    "settings": { "show_progress": true, "allow_back": true },
+    "lead_capture": { "enabled": false, "ask_name": true, "ask_phone": false, "headline": null },
+    "meta_pixel": { "pixel_id": "123456789012345", "has_access_token": true },
+    "outcomes": [
+      { "id": 31, "title": "Comece pelo básico", "description": null, "image_url": null, "cta_label": null, "auto_redirect": false, "is_fallback": true, "checkout_ids": [12] },
+      { "id": 32, "title": "Mentoria individual", "description": null, "image_url": null, "cta_label": null, "auto_redirect": false, "is_fallback": false, "checkout_ids": [15] }
+    ],
+    "questions": [
+      {
+        "id": 90,
+        "title": "Você já vende online?",
+        "description": null,
+        "image_url": null,
+        "type": "single",
+        "options": [
+          { "id": 401, "label": "Ainda não", "points": { "31": 2 } },
+          { "id": 402, "label": "Sim, todo mês", "points": { "32": 3 } }
+        ]
+      }
+    ],
+    "published_at": "2026-10-18T15:04:11+00:00",
+    "created_at": "2026-10-18T15:04:11+00:00",
+    "updated_at": "2026-10-18T15:04:11+00:00"
+  }
+}
+```
+
+```json 404
+{
+  "error": { "type": "not_found", "title": "Recurso não encontrado.", "status": 404 }
+}
+```
+</ResponseExample>

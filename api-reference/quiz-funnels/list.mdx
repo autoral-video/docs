@@ -1,0 +1,63 @@
+---
+title: "Listar quizzes de venda"
+api: "GET /v1/quiz-funnels"
+description: "Lista paginada (length-aware) de quizzes, sem a estrutura de perguntas."
+---
+
+**Escopo:** `quiz-funnels:read`
+
+## Query params
+
+<ParamField query="per_page" type="integer" default="25">1-100.</ParamField>
+<ParamField query="page" type="integer" default="1">Página.</ParamField>
+<ParamField query="status" type="string">Filtra por `draft` ou `published`.</ParamField>
+
+## Response
+
+<ResponseField name="data[].id" type="integer">ID.</ResponseField>
+<ResponseField name="data[].title" type="string">Nome do quiz.</ResponseField>
+<ResponseField name="data[].slug" type="string">Slug público.</ResponseField>
+<ResponseField name="data[].status" type="string">`draft` ou `published`.</ResponseField>
+<ResponseField name="data[].public_url" type="string">URL pública (`/quiz/{slug}`). Só responde quando `published`.</ResponseField>
+<ResponseField name="data[].intro" type="object">`headline`, `description`, `image_url`, `button_label`.</ResponseField>
+<ResponseField name="data[].settings" type="object">`show_progress`, `allow_back`.</ResponseField>
+<ResponseField name="data[].lead_capture" type="object">`enabled`, `ask_name`, `ask_phone`, `headline`.</ResponseField>
+<ResponseField name="data[].meta_pixel" type="object">`pixel_id` (próprio do quiz; `null` = herda) e `has_access_token`. O token nunca é devolvido.</ResponseField>
+<ResponseField name="data[].questions_count" type="integer">Quantidade de perguntas.</ResponseField>
+<ResponseField name="data[].published_at" type="string|null">ISO 8601 da primeira publicação.</ResponseField>
+
+<Tip>
+  Para perguntas, opções e resultados, use [Detalhes do quiz](/api-reference/quiz-funnels/show).
+</Tip>
+
+<RequestExample>
+```bash cURL
+curl 'https://seu-dominio/api/v1/quiz-funnels?status=published' \
+  -H "Authorization: Bearer aut_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": [
+    {
+      "id": 7,
+      "title": "Descubra seu próximo passo",
+      "slug": "descubra-seu-proximo-passo",
+      "status": "published",
+      "public_url": "https://seu-dominio/quiz/descubra-seu-proximo-passo",
+      "intro": { "headline": "Qual caminho é o seu?", "description": null, "image_url": null, "button_label": "Começar" },
+      "settings": { "show_progress": true, "allow_back": true },
+      "lead_capture": { "enabled": true, "ask_name": true, "ask_phone": true, "headline": null },
+      "meta_pixel": { "pixel_id": null, "has_access_token": false },
+      "questions_count": 2,
+      "published_at": "2026-10-18T15:04:11+00:00",
+      "created_at": "2026-10-18T15:04:11+00:00",
+      "updated_at": "2026-10-18T15:04:11+00:00"
+    }
+  ],
+  "meta": { "total": 1 }
+}
+```
+</ResponseExample>

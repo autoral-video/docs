@@ -1,0 +1,27 @@
+---
+title: "Remover quiz de venda"
+api: "DELETE /v1/quiz-funnels/{quizFunnel}"
+description: "Soft delete do quiz."
+---
+
+**Escopo:** `quiz-funnels:write`
+
+O link público para de responder na hora (`404`) e o quiz some do painel e da API. Vendas já atribuídas continuam nos pagamentos.
+
+<Note>
+  O slug continua reservado depois da remoção — um quiz novo não pode reutilizá-lo.
+</Note>
+
+<ParamField path="quizFunnel" type="integer" required>ID do quiz.</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X DELETE https://seu-dominio/api/v1/quiz-funnels/7 \
+  -H "Authorization: Bearer aut_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```http 204 No Content
+```
+</ResponseExample>

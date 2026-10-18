@@ -247,6 +247,17 @@
                 ]
               },
               {
+                "group": "Quizzes de venda",
+                "pages": [
+                  "api-reference/quiz-funnels/list",
+                  "api-reference/quiz-funnels/show",
+                  "api-reference/quiz-funnels/create",
+                  "api-reference/quiz-funnels/update",
+                  "api-reference/quiz-funnels/delete",
+                  "api-reference/quiz-funnels/stats"
+                ]
+              },
+              {
                 "group": "Produtos",
                 "pages": [
                   "api-reference/products/list",

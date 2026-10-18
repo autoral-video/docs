@@ -93,7 +93,9 @@ Toda resposta de erro segue o mesmo envelope JSON:
 | Status | Code | Causa |
 |---|---|---|
 | 402 | `plan_limit_exceeded` | Limite de uso do plano atingido (ex: máximo de produtos). |
-| 403 | `plan_feature_unavailable` | Plano não inclui o recurso (ex: Biblioteca de Mídia). |
+| 403 | `plan_feature_unavailable` | Plano não inclui o recurso (ex: Biblioteca de Mídia, Quizzes de venda no plano Autoral Store). |
+| 422 | `platform_limit_exceeded` | Limite de segurança da plataforma atingido (ex: 200 quizzes por conta). Fale com o suporte. |
+| 422 | `quiz_not_publishable` | Quiz incompleto para publicar. Veja `error.problems`. |
 | 429 | `rate_limited` | Rate limit do plano excedido. |
 
 ## Exemplo: tratamento robusto

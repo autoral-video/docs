@@ -1,0 +1,69 @@
+---
+title: "Atualizar quiz de venda"
+api: "PATCH /v1/quiz-funnels/{quizFunnel}"
+description: "Altera campos de topo do quiz e publica/despublica."
+---
+
+**Escopo:** `quiz-funnels:write`
+
+Envie só o que quer mudar. Blocos (`intro`, `settings`, `lead_capture`, `meta_pixel`) também são parciais: campos ausentes ficam como estão.
+
+<Warning>
+  Perguntas, opções e resultados **não** são alterados por esta rota. Regravar a estrutura apagaria as respostas já coletadas e quebraria as estatísticas do quiz. Para mudar a estrutura, use o editor do painel (Configurações → Quizzes de venda) ou crie um quiz novo.
+</Warning>
+
+<ParamField path="quizFunnel" type="integer" required>ID do quiz.</ParamField>
+
+## Body params
+
+<ParamField body="title" type="string">3-120 chars.</ParamField>
+<ParamField body="slug" type="string">Novo endereço público. Único por tenant. O link antigo deixa de funcionar.</ParamField>
+<ParamField body="status" type="string">
+  `published` passa pela mesma validação de publicação de [Criar quiz](/api-reference/quiz-funnels/create). `draft` tira o quiz do ar.
+</ParamField>
+<ParamField body="intro" type="object">`headline`, `description`, `image_url` (1200 × 675 px, 16:9 — veja [Imagens](/api-reference/quiz-funnels/create#imagens)), `button_label`.</ParamField>
+<ParamField body="settings" type="object">`show_progress`, `allow_back`.</ParamField>
+<ParamField body="lead_capture" type="object">`enabled`, `ask_name`, `ask_phone`, `headline`.</ParamField>
+<ParamField body="meta_pixel" type="object">
+  `pixel_id` e `access_token` ([regras](/api-reference/quiz-funnels/create#pixel-da-meta)). `access_token` ausente mantém o atual; `null` remove. `pixel_id: null` volta a herdar e também remove o token.
+</ParamField>
+
+Formatos e limites iguais aos de [Criar quiz](/api-reference/quiz-funnels/create). A resposta traz a estrutura completa, como em [Detalhes](/api-reference/quiz-funnels/show) (abreviada no exemplo).
+
+<RequestExample>
+```bash cURL
+curl -X PATCH https://seu-dominio/api/v1/quiz-funnels/7 \
+  -H "Authorization: Bearer aut_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "status": "published",
+    "intro": { "headline": "Em 1 minuto você descobre" },
+    "settings": { "show_progress": false }
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": {
+    "id": 7,
+    "title": "Descubra seu próximo passo",
+    "status": "published",
+    "intro": { "headline": "Em 1 minuto você descobre", "description": null, "image_url": null, "button_label": "Começar" },
+    "settings": { "show_progress": false, "allow_back": true }
+  }
+}
+```
+
+```json 422 quiz_not_publishable
+{
+  "error": {
+    "type": "quiz_not_publishable",
+    "title": "Quiz incompleto para publicação.",
+    "status": 422,
+    "problems": ["Adicione pelo menos uma pergunta."]
+  }
+}
+```
+</ResponseExample>

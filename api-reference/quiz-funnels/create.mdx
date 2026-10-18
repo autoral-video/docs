@@ -1,0 +1,291 @@
+---
+title: "Criar quiz de venda"
+api: "POST /v1/quiz-funnels"
+description: "Cria um quiz completo — abertura, perguntas, opções, pontuação, resultados e checkouts — numa única chamada."
+---
+
+**Escopo:** `quiz-funnels:write`
+**Idempotency:** suportada
+
+O quiz de venda faz perguntas, soma pontos para cada resultado e mostra o(s) produto(s) do resultado vencedor com botão para o checkout. Esta rota cria tudo numa **transação única**: ou o quiz inteiro é gravado, ou nada é.
+
+## Como a pontuação funciona
+
+1. Você declara os **resultados** em `outcomes`, cada um com uma `key` local (ex.: `"basico"`).
+2. Cada **opção** de resposta aponta pontos para essas keys em `points` (ex.: `{"basico": 2}`).
+3. Ao terminar, o visitante vê o resultado com **mais pontos**. Em empate, vence o que aparece primeiro em `outcomes`.
+4. Se nenhuma resposta pontuar, aparece o resultado com `is_fallback: true` (ou o primeiro, se nenhum for marcado).
+
+<Note>
+  A `key` só existe neste payload — serve para ligar opções a resultados antes de existirem IDs. Na resposta, os pontos vêm indexados pelo **ID** do resultado.
+</Note>
+
+## Imagens
+
+As três imagens do quiz — abertura (`intro.image_url`), pergunta (`questions[].image_url`) e resultado (`outcomes[].image_url`) — usam o **mesmo formato**: ocupam a largura da coluna do quiz, em proporção **16:9**, com cantos arredondados.
+
+| | Valor |
+|---|---|
+| **Tamanho recomendado** | **1200 × 675 px** (16:9) |
+| Tamanho mínimo | 800 × 450 px |
+| Formato | WebP ou JPG (PNG só se precisar de transparência) |
+| Peso | até 300 KB |
+| Protocolo | URL `https`, acessível publicamente |
+
+<Warning>
+  A imagem é **recortada para 16:9 a partir do centro** (`object-fit: cover`). Uma foto vertical ou quadrada perde o topo e a base. Mande já em 16:9 para não ter corte.
+</Warning>
+
+- **Por que 1200 px:** a coluna tem até 536 px de largura no desktop e cerca de 350 px no celular; telas de alta densidade (2× e 3×) precisam de pouco mais de 1000 px para ficar nítidas.
+- **Margem de segurança:** mantenha texto e rostos longe dos cantos — os cantos são arredondados (14 px) e, em telas estreitas, a imagem fica bem menor.
+- **Peso importa:** a imagem de abertura é a primeira coisa que carrega no celular. Acima de 300 KB ela demora mais para aparecer em conexão móvel.
+- **Texto na imagem:** evite. O título e a descrição já aparecem logo abaixo, em texto real, legível em qualquer tela.
+- **Imagens são opcionais.** Sem imagem, a etapa mostra só o texto — o layout se ajusta.
+
+<Note>
+  A miniatura do produto na tela de resultado **não** vem daqui: é a capa (`thumbnail`) do curso ligado ao checkout, exibida em 56 × 56 px (quadrada, recortada pelo centro). Envie a capa do curso em pelo menos **168 × 168 px**.
+</Note>
+
+## Body params
+
+<ParamField body="title" type="string" required>
+  Nome do quiz (3-120 chars). Aparece na aba do navegador.
+</ParamField>
+
+<ParamField body="slug" type="string">
+  Endereço público: `/quiz/{slug}`. Letras, números, `-` e `_` (até 80). Único por tenant. Se omitido, é gerado a partir do `title`.
+</ParamField>
+
+<ParamField body="status" type="string" default="draft">
+  `draft` ou `published`. Com `published`, o quiz passa pela validação de publicação (abaixo) — se falhar, nada é criado.
+</ParamField>
+
+<ParamField body="intro" type="object">
+  Tela de abertura.
+  <Expandable title="propriedades">
+    <ParamField body="headline" type="string">Título (até 255). Default: `title`.</ParamField>
+    <ParamField body="description" type="string">Texto de apoio (até 2000).</ParamField>
+    <ParamField body="image_url" type="string">URL `https` da imagem (até 2048 chars). 1200 × 675 px, 16:9 — veja [Imagens](#imagens).</ParamField>
+    <ParamField body="button_label" type="string">Texto do botão de início (até 80). Default: "Começar".</ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="settings" type="object">
+  <Expandable title="propriedades">
+    <ParamField body="show_progress" type="boolean" default="true">Mostra a barra de progresso.</ParamField>
+    <ParamField body="allow_back" type="boolean" default="true">Permite voltar para a pergunta anterior.</ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="lead_capture" type="object">
+  Etapa de contato antes do resultado. O e-mail é sempre pedido quando ativa; ele chega pré-preenchido no checkout e dispara o evento `Lead` do Pixel/CAPI da Meta (com consentimento do visitante).
+  <Expandable title="propriedades">
+    <ParamField body="enabled" type="boolean" default="false">Ativa a etapa.</ParamField>
+    <ParamField body="ask_name" type="boolean" default="true">Pede nome (obrigatório no formulário).</ParamField>
+    <ParamField body="ask_phone" type="boolean" default="false">Pede WhatsApp (obrigatório no formulário).</ParamField>
+    <ParamField body="headline" type="string">Título da etapa (até 255).</ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="meta_pixel" type="object">
+  Pixel e Conversions API da Meta próprios do quiz. Opcional — veja [Pixel da Meta](#pixel-da-meta) para a herança.
+  <Expandable title="propriedades">
+    <ParamField body="pixel_id" type="string">ID do Pixel, só dígitos (até 32), **como string**. `null` = herdar.</ParamField>
+    <ParamField body="access_token" type="string">Token da Conversions API (até 512). **Só escrita**: nunca é devolvido, a resposta traz só `has_access_token`. Sem `pixel_id`, é descartado.</ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="outcomes" type="object[]" required>
+  Resultados possíveis (1-20).
+  <Expandable title="propriedades">
+    <ParamField body="key" type="string" required>Identificador local, único no payload (até 64). Usado em `questions[].options[].points`.</ParamField>
+    <ParamField body="title" type="string" required>Nome do resultado mostrado ao visitante (até 255).</ParamField>
+    <ParamField body="description" type="string">Explicação do resultado (até 2000).</ParamField>
+    <ParamField body="image_url" type="string">URL `https` da imagem. 1200 × 675 px, 16:9 — veja [Imagens](#imagens).</ParamField>
+    <ParamField body="checkout_ids" type="integer[]">Checkouts recomendados, na ordem de exibição (até 10). Precisam ser do seu tenant. Veja [Listar checkouts](/api-reference/checkouts/list).</ParamField>
+    <ParamField body="cta_label" type="string">Texto do botão de compra (até 80). Default: "Quero esse".</ParamField>
+    <ParamField body="auto_redirect" type="boolean" default="false">Pula a tela de resultado e vai direto ao checkout. Só tem efeito com **exatamente um** checkout.</ParamField>
+    <ParamField body="is_fallback" type="boolean" default="false">Resultado padrão quando nenhuma resposta pontua. No máximo um.</ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="questions" type="object[]" required>
+  Perguntas, na ordem de exibição (1-50).
+  <Expandable title="propriedades">
+    <ParamField body="title" type="string" required>Pergunta (até 500).</ParamField>
+    <ParamField body="description" type="string">Texto de apoio (até 1000).</ParamField>
+    <ParamField body="image_url" type="string">URL `https` da imagem. 1200 × 675 px, 16:9 — veja [Imagens](#imagens).</ParamField>
+    <ParamField body="type" type="string" default="single">`single` (uma opção; avança ao clicar) ou `multiple` (várias; os pontos de todas as marcadas somam).</ParamField>
+    <ParamField body="options" type="object[]" required>
+      Opções (2-12).
+      <Expandable title="propriedades">
+        <ParamField body="label" type="string" required>Texto da opção (até 500).</ParamField>
+        <ParamField body="points" type="object">Mapa `{ "<key do resultado>": pontos }`. Inteiros de -100 a 100. Omitido ou `0` = a opção não pesa para aquele resultado. Negativo afasta do resultado.</ParamField>
+      </Expandable>
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+## Pixel da Meta
+
+O quiz dispara `PageView`, `ViewContent` e `Lead` (com consentimento do visitante). Para a Meta ligar esses eventos à **compra** no checkout, o quiz e o checkout precisam usar o **mesmo Pixel**. O Pixel do quiz é escolhido nesta ordem:
+
+1. **Próprio do quiz** — `meta_pixel.pixel_id`.
+2. **Herdado dos checkouts** — quando `pixel_id` está vazio e **todos** os checkouts dos resultados usam o mesmo Pixel próprio. O token também vem do checkout.
+3. **Configurações** — o Pixel de Configurações → Facebook Conversions API.
+
+| Pixel em uso | Navegador (Pixel) | Servidor (CAPI) |
+|---|---|---|
+| Próprio ou herdado, com token | ✅ | ✅ mesmo com o CAPI das Configurações desligado |
+| Próprio ou herdado, sem token | ✅ | — |
+| Configurações | ✅ | Só com o CAPI ligado nas Configurações |
+
+<Warning>
+  Checkouts com Pixels diferentes não herdam (é ambíguo): o quiz cai no Pixel das Configurações. Nesse caso, defina `meta_pixel.pixel_id` igual ao do checkout principal — a compra nos outros checkouts não será ligada ao quiz.
+</Warning>
+
+<Note>
+  A compra (`Purchase`) é sempre enviada pelo checkout, com o Pixel **do checkout**. O quiz não muda isso.
+</Note>
+
+## Validação de publicação
+
+Com `status: "published"`, o quiz só é criado se:
+
+- toda pergunta tiver texto e pelo menos 2 opções;
+- existir pelo menos um resultado;
+- **todo** resultado tiver pelo menos um checkout **ativo**.
+
+Caso contrário a resposta é `422` com `error.type = "quiz_not_publishable"` e a lista `error.problems`. Envie como `draft` para salvar e completar depois.
+
+## Erros
+
+| Status | `error.type` | Causa |
+|---|---|---|
+| 403 | `authorization_error` | Token sem o escopo `quiz-funnels:write`. |
+| 403 | `plan_feature_unavailable` | Plano Autoral Store não inclui quizzes. |
+| 422 | `validation_error` | Campo inválido (ex.: `meta_pixel.pixel_id` com letras), `key` repetida, `points` para key inexistente, checkout de outro tenant, mais de um `is_fallback`. |
+| 422 | `quiz_not_publishable` | Pediu `published` com quiz incompleto. |
+| 422 | `platform_limit_exceeded` | Limite de segurança atingido (200 quizzes por conta). |
+
+<RequestExample>
+```bash cURL
+curl https://seu-dominio/api/v1/quiz-funnels \
+  -H "Authorization: Bearer aut_..." \
+  -H "Idempotency-Key: quiz-proximo-passo-v1" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Descubra seu próximo passo",
+    "status": "published",
+    "intro": {
+      "headline": "Qual caminho é o seu?",
+      "description": "Responda 2 perguntas rápidas e receba uma recomendação.",
+      "button_label": "Começar"
+    },
+    "lead_capture": { "enabled": true, "ask_name": true, "ask_phone": true },
+    "outcomes": [
+      { "key": "basico", "title": "Comece pelo básico", "checkout_ids": [12], "is_fallback": true },
+      { "key": "mentoria", "title": "Mentoria individual", "checkout_ids": [15], "cta_label": "Quero a mentoria", "auto_redirect": true }
+    ],
+    "questions": [
+      {
+        "title": "Você já vende online?",
+        "options": [
+          { "label": "Ainda não", "points": { "basico": 2 } },
+          { "label": "Sim, todo mês", "points": { "mentoria": 3 } }
+        ]
+      },
+      {
+        "title": "O que você quer agora?",
+        "type": "multiple",
+        "options": [
+          { "label": "Aprender o passo a passo", "points": { "basico": 1 } },
+          { "label": "Acompanhamento próximo", "points": { "mentoria": 1, "basico": -1 } },
+          { "label": "Só curiosidade" }
+        ]
+      }
+    ]
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 201
+{
+  "data": {
+    "id": 7,
+    "title": "Descubra seu próximo passo",
+    "slug": "descubra-seu-proximo-passo",
+    "status": "published",
+    "public_url": "https://seu-dominio/quiz/descubra-seu-proximo-passo",
+    "intro": {
+      "headline": "Qual caminho é o seu?",
+      "description": "Responda 2 perguntas rápidas e receba uma recomendação.",
+      "image_url": null,
+      "button_label": "Começar"
+    },
+    "settings": { "show_progress": true, "allow_back": true },
+    "lead_capture": { "enabled": true, "ask_name": true, "ask_phone": true, "headline": null },
+    "meta_pixel": { "pixel_id": null, "has_access_token": false },
+    "outcomes": [
+      { "id": 31, "title": "Comece pelo básico", "description": null, "image_url": null, "cta_label": null, "auto_redirect": false, "is_fallback": true, "checkout_ids": [12] },
+      { "id": 32, "title": "Mentoria individual", "description": null, "image_url": null, "cta_label": "Quero a mentoria", "auto_redirect": true, "is_fallback": false, "checkout_ids": [15] }
+    ],
+    "questions": [
+      {
+        "id": 90,
+        "title": "Você já vende online?",
+        "description": null,
+        "image_url": null,
+        "type": "single",
+        "options": [
+          { "id": 401, "label": "Ainda não", "points": { "31": 2 } },
+          { "id": 402, "label": "Sim, todo mês", "points": { "32": 3 } }
+        ]
+      },
+      {
+        "id": 91,
+        "title": "O que você quer agora?",
+        "description": null,
+        "image_url": null,
+        "type": "multiple",
+        "options": [
+          { "id": 403, "label": "Aprender o passo a passo", "points": { "31": 1 } },
+          { "id": 404, "label": "Acompanhamento próximo", "points": { "31": -1, "32": 1 } },
+          { "id": 405, "label": "Só curiosidade", "points": {} }
+        ]
+      }
+    ],
+    "published_at": "2026-10-18T15:04:11+00:00",
+    "created_at": "2026-10-18T15:04:11+00:00",
+    "updated_at": "2026-10-18T15:04:11+00:00"
+  }
+}
+```
+
+```json 422 quiz_not_publishable
+{
+  "error": {
+    "type": "quiz_not_publishable",
+    "title": "Quiz incompleto para publicação.",
+    "status": 422,
+    "problems": [
+      "O resultado \"Mentoria individual\" não tem nenhum checkout ativo."
+    ]
+  }
+}
+```
+
+```json 422 validation_error
+{
+  "error": {
+    "type": "validation_error",
+    "title": "Dados inválidos.",
+    "status": 422,
+    "errors": {
+      "questions.0.options.0.points": ["Resultado 'avancado' não existe em outcomes."]
+    }
+  }
+}
+```
+</ResponseExample>
