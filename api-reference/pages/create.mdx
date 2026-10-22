@@ -1,0 +1,189 @@
+---
+title: "Criar página"
+api: "POST /v1/pages"
+description: "Cria uma página pública com HTML próprio — termos, política de privacidade, landing page, FAQ."
+---
+
+**Escopo:** `pages:write`
+**Idempotency:** suportada
+
+A página fica em `https://seu-dominio/p/{slug}` e só responde quando `is_published` é `true`. É o mesmo recurso do painel em **Configurações → Páginas**.
+
+## Body params
+
+<ParamField body="title" type="string" required>
+  Título da página (até 255 chars).
+</ParamField>
+
+<ParamField body="slug" type="string">
+  Endereço público: `/p/{slug}`. Só letras minúsculas, números e hífens (ex.: `termos-de-uso`), até 255. Único por conta. Se omitido, é gerado a partir do `title` (com sufixo `-1`, `-2`… se já existir).
+</ParamField>
+
+<ParamField body="content" type="string">
+  HTML da página (até 200.000 chars). Aceita [variáveis dinâmicas](#variáveis-dinâmicas).
+</ParamField>
+
+<ParamField body="render_mode" type="string" default="layout">
+  `layout`: o `content` entra dentro do layout da plataforma (CSS, JS e tema do sistema). `document`: o `content` é o documento HTML inteiro. Veja [Landing page completa](#landing-page-completa-modo-documento).
+</ParamField>
+
+<ParamField body="meta_title" type="string">
+  Título SEO (até 255). Se omitido, a página usa o `title`.
+</ParamField>
+
+<ParamField body="meta_description" type="string">
+  Descrição SEO (até 500). Também vira o `og:description`.
+</ParamField>
+
+<ParamField body="og_title" type="string">
+  Título no compartilhamento (WhatsApp, Instagram, Facebook, X), até 255. Se omitido: `meta_title`, depois `title`.
+</ParamField>
+
+<ParamField body="og_image" type="string">
+  URL `https` da imagem de compartilhamento (até 2048 chars). Recomendado **1200 × 630 px** (1,91:1), JPG ou PNG, até 1 MB.
+</ParamField>
+
+<ParamField body="canonical_url" type="string">
+  URL canônica (`<link rel="canonical">`), `http` ou `https`. Use quando o mesmo conteúdo existir em outro endereço. Também vira o `og:url`. Se omitido, `og:url` é a URL pública da página.
+</ParamField>
+
+<ParamField body="is_published" type="boolean" default="false">
+  Coloca a página no ar. Em `false`, o link público responde `404`.
+</ParamField>
+
+<ParamField body="is_homepage" type="boolean" default="false">
+  Usa esta página como inicial do domínio (raiz `/`). Só vale com `is_published: true`. Só uma página pode ser inicial: marcar esta desmarca a anterior. Sem página inicial, a raiz redireciona para o login.
+</ParamField>
+
+<ParamField body="tracking_disabled" type="boolean" default="false">
+  Desliga captura de UTMs, eventos e Pixel nesta página. Recomendado para termos e política de privacidade.
+</ParamField>
+
+## Landing page completa (modo documento)
+
+Com `render_mode: "document"`, o `content` é a resposta inteira: você manda `<!DOCTYPE html>`, `<head>` e `<body>` próprios, com o CSS e o JS que quiser (inline ou de CDN). A plataforma **não** carrega o layout, o CSS, o JS nem o tema do sistema, então nada interfere no seu design.
+
+A plataforma só injeta:
+
+| Onde | O quê |
+|---|---|
+| Antes do `</head>` | `<title>` (só se o seu `<head>` não tiver um), meta tags de SEO e compartilhamento (`description`, `canonical`, `og:*`, `twitter:*`) e os scripts globais do cabeçalho (Configurações → Scripts). |
+| Antes do `</body>` | Rastreamento, se `tracking_disabled` for `false`: banner de consentimento (LGPD), Pixel da Meta, Google (GA4/GTM) e eventos da página (`page_view`, rolagem, tempo, cliques em `data-track` e em links de checkout). Script leve, cerca de 3 KB. |
+
+<Tip>
+  Não repita no seu `<head>` as tags que a plataforma injeta (`og:*`, `description`, `canonical`): use os campos da API. Se faltar `</head>` ou `</body>`, o bloco correspondente vai para o começo ou o fim do HTML.
+</Tip>
+
+No modo `layout` (padrão), o `content` entra dentro do `<body>` de um layout pronto, que já carrega o CSS do sistema (Tailwind compilado, só com as classes usadas pelo próprio app), Alpine.js e o tema da conta. Bom para termos e políticas; para landing page com design próprio, prefira `document`.
+
+## Variáveis dinâmicas
+
+Placeholders no `content` trocados pelo valor real quando a página é carregada:
+
+| Variável | Valor |
+|---|---|
+| `{{site_name}}` | Nome da plataforma |
+| `{{site_url}}` | URL da plataforma |
+| `{{year}}` | Ano atual |
+| `{{logo_url}}` | URL do logotipo |
+| `{{contact_email}}` | E-mail de contato |
+
+<Warning>
+  O `content` é publicado como HTML, sem filtro. Só use tokens com `pages:write` em integrações confiáveis: quem tem o token publica qualquer HTML no seu domínio.
+</Warning>
+
+## Erros
+
+| Status | `error.type` | Causa |
+|---|---|---|
+| 402 | `plan_limit_exceeded` | Limite de páginas do plano (`max_landing_pages`) atingido. |
+| 403 | `authorization_error` | Token sem o escopo `pages:write`. |
+| 403 | `plan_feature_unavailable` | Plano Autoral Store não inclui páginas. |
+| 422 | `validation_error` | Campo inválido: `title` ausente, `slug` fora do formato ou já usado, `content` acima do limite, `render_mode` desconhecido, `og_image` sem `https`. |
+| 422 | `platform_limit_exceeded` | Limite de segurança atingido (200 páginas por conta). |
+
+<RequestExample>
+```bash cURL
+curl https://seu-dominio/api/v1/pages \
+  -H "Authorization: Bearer aut_..." \
+  -H "Idempotency-Key: pagina-privacidade-v1" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Política de Privacidade",
+    "content": "<h1>Privacidade</h1><p>© {{year}} {{site_name}}</p>",
+    "meta_description": "Como tratamos seus dados",
+    "render_mode": "layout",
+    "og_title": null,
+    "og_image": null,
+    "canonical_url": null,
+    "is_published": true,
+    "tracking_disabled": true
+  }'
+```
+
+```bash Landing page (documento)
+curl https://seu-dominio/api/v1/pages \
+  -H "Authorization: Bearer aut_..." \
+  -H "Idempotency-Key: lp-black-friday-v1" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Black Friday",
+    "slug": "black-friday",
+    "render_mode": "document",
+    "content": "<!DOCTYPE html><html lang=\"pt-BR\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Black Friday</title><style>body{margin:0;font-family:system-ui}</style></head><body><h1>Oferta</h1><a href=\"/checkout/meu-curso\" data-track=\"click_cta\">Quero</a><script>console.log(\"oi\")</script></body></html>",
+    "meta_description": "50% off só esta semana",
+    "og_title": "Black Friday: 50% off",
+    "og_image": "https://cdn.exemplo.com/black-friday.jpg",
+    "is_published": true
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 201
+{
+  "data": {
+    "id": 4,
+    "title": "Política de Privacidade",
+    "slug": "politica-de-privacidade",
+    "public_url": "https://seu-dominio/p/politica-de-privacidade",
+    "content": "<h1>Privacidade</h1><p>© {{year}} {{site_name}}</p>",
+    "meta_title": null,
+    "meta_description": "Como tratamos seus dados",
+    "is_published": true,
+    "is_homepage": false,
+    "tracking_disabled": true,
+    "order": 0,
+    "created_at": "2026-10-20T14:02:10+00:00",
+    "updated_at": "2026-10-20T14:02:10+00:00"
+  }
+}
+```
+
+```json 402
+{
+  "error": {
+    "type": "plan_limit_exceeded",
+    "title": "Limite de páginas do plano atingido.",
+    "status": 402
+  }
+}
+```
+
+```json 422
+{
+  "error": {
+    "type": "validation_error",
+    "errors": {
+      "slug": ["Este slug já está em uso. Escolha outro."]
+    },
+    "status": 422
+  }
+}
+```
+</ResponseExample>
+
+## Limites
+
+- **Plano**: `max_landing_pages` define quantas páginas sua conta pode ter.
+- **Plataforma**: limite de segurança de 200 páginas por conta (anti-abuso).

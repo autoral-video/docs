@@ -1,0 +1,72 @@
+---
+title: "Atualizar página"
+api: "PATCH /v1/pages/{page}"
+description: "Altera conteúdo, SEO, slug e publica/despublica uma página."
+---
+
+**Escopo:** `pages:write`
+
+Envie só o que quer mudar: campos ausentes ficam como estão. Editar não conta no limite de páginas do plano.
+
+<ParamField path="page" type="integer" required>ID da página.</ParamField>
+
+## Body params
+
+<ParamField body="title" type="string">Até 255 chars.</ParamField>
+<ParamField body="slug" type="string">
+  Novo endereço público (letras minúsculas, números e hífens). Único por conta. O link antigo deixa de funcionar.
+</ParamField>
+<ParamField body="content" type="string|null">HTML (até 200.000 chars). Substitui o conteúdo inteiro. Aceita [variáveis](/api-reference/pages/create#variáveis-dinâmicas).</ParamField>
+<ParamField body="meta_title" type="string|null">Título SEO. `null` volta a usar o `title`.</ParamField>
+<ParamField body="meta_description" type="string|null">Descrição SEO (até 500).</ParamField>
+<ParamField body="render_mode" type="string">`layout` ou `document` ([diferença](/api-reference/pages/create#landing-page-completa-modo-documento)).</ParamField>
+<ParamField body="og_title" type="string|null">Título de compartilhamento. `null` volta ao padrão.</ParamField>
+<ParamField body="og_image" type="string|null">URL `https` da imagem de compartilhamento. `null` remove.</ParamField>
+<ParamField body="canonical_url" type="string|null">URL canônica. `null` remove.</ParamField>
+<ParamField body="is_published" type="boolean">`true` publica, `false` tira do ar.</ParamField>
+<ParamField body="is_homepage" type="boolean">`true` torna esta a página inicial e desmarca a anterior.</ParamField>
+<ParamField body="tracking_disabled" type="boolean">Liga/desliga rastreamento.</ParamField>
+
+## Erros
+
+| Status | `error.type` | Causa |
+|---|---|---|
+| 403 | `authorization_error` | Token sem o escopo `pages:write`. |
+| 403 | `plan_feature_unavailable` | Plano Autoral Store não inclui páginas. |
+| 404 | `not_found` | Página não existe nesta conta. |
+| 422 | `validation_error` | Campo inválido ou `slug` já usado por outra página. |
+
+<RequestExample>
+```bash cURL
+curl -X PATCH https://seu-dominio/api/v1/pages/4 \
+  -H "Authorization: Bearer aut_..." \
+  -H "Content-Type: application/json" \
+  -d '{ "is_published": false }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": {
+    "id": 4,
+    "title": "Política de Privacidade",
+    "slug": "politica-de-privacidade",
+    "public_url": "https://seu-dominio/p/politica-de-privacidade",
+    "content": "<h1>Privacidade</h1><p>© {{year}} {{site_name}}</p>",
+    "meta_title": null,
+    "meta_description": "Como tratamos seus dados",
+    "render_mode": "layout",
+    "og_title": null,
+    "og_image": null,
+    "canonical_url": null,
+    "is_published": false,
+    "is_homepage": false,
+    "tracking_disabled": true,
+    "order": 0,
+    "created_at": "2026-10-20T14:02:10+00:00",
+    "updated_at": "2026-10-20T14:30:45+00:00"
+  }
+}
+```
+</ResponseExample>

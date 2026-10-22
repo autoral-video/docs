@@ -41,6 +41,13 @@ Há duas formas de criar uma página: **manualmente** (você escreve o HTML) ou 
 
 <Note>O slug é gerado automaticamente a partir do título conforme você digita, mas pode ser editado manualmente.</Note>
 
+### Exibição
+
+| Opção | Efeito |
+|---|---|
+| **Dentro do layout da plataforma** (padrão) | O HTML entra dentro do layout do sistema, com o CSS e o tema da sua conta. Ideal para termos, políticas e FAQ. |
+| **Documento HTML completo** | O HTML é a página inteira: você escreve `<html>`, `<head>` e `<body>` com o CSS e o JS que quiser. O sistema não carrega o próprio CSS nem o tema, e só adiciona SEO, os scripts globais e o rastreamento. Ideal para landing page com design próprio. |
+
 ### Opções
 
 | Opção | Efeito |
@@ -55,6 +62,9 @@ Há duas formas de criar uma página: **manualmente** (você escreve o HTML) ou 
 |---|---|
 | **Meta Título** | Título exibido nos mecanismos de busca. Se vazio, usa o **Título** da página. |
 | **Meta Descrição** | Resumo exibido nos mecanismos de busca. Limite de 500 caracteres. |
+| **Título de compartilhamento** | Título do card quando o link é compartilhado no WhatsApp, Instagram ou Facebook. Se vazio, usa o Meta Título ou o Título. |
+| **Imagem de compartilhamento** | Imagem do card de compartilhamento. URL `https`, de preferência 1200 × 630 px. |
+| **URL canônica** | Endereço principal do conteúdo, para buscadores. Use só se a mesma página existir em outro endereço. |
 
 ## Variáveis dinâmicas
 

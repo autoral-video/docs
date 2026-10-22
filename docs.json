@@ -258,6 +258,16 @@
                 ]
               },
               {
+                "group": "Páginas",
+                "pages": [
+                  "api-reference/pages/list",
+                  "api-reference/pages/show",
+                  "api-reference/pages/create",
+                  "api-reference/pages/update",
+                  "api-reference/pages/delete"
+                ]
+              },
+              {
                 "group": "Produtos",
                 "pages": [
                   "api-reference/products/list",

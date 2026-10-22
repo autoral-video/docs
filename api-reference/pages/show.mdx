@@ -1,0 +1,60 @@
+---
+title: "Detalhes da página"
+api: "GET /v1/pages/{page}"
+description: "Retorna a página com o HTML completo do conteúdo."
+---
+
+**Escopo:** `pages:read`
+
+<ParamField path="page" type="integer" required>ID da página.</ParamField>
+
+## Response
+
+Mesmos campos da [listagem](/api-reference/pages/list), mais:
+
+<ResponseField name="data.content" type="string|null">
+  HTML **cru**, como foi salvo: as variáveis (`{{site_name}}`, `{{year}}`…) aparecem sem substituição. A troca pelos valores reais acontece só na página pública.
+</ResponseField>
+
+<RequestExample>
+```bash cURL
+curl https://seu-dominio/api/v1/pages/4 \
+  -H "Authorization: Bearer aut_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": {
+    "id": 4,
+    "title": "Política de Privacidade",
+    "slug": "politica-de-privacidade",
+    "public_url": "https://seu-dominio/p/politica-de-privacidade",
+    "content": "<h1>Privacidade</h1><p>© {{year}} {{site_name}}</p>",
+    "meta_title": null,
+    "meta_description": "Como tratamos seus dados",
+    "render_mode": "layout",
+    "og_title": null,
+    "og_image": null,
+    "canonical_url": null,
+    "is_published": true,
+    "is_homepage": false,
+    "tracking_disabled": true,
+    "order": 0,
+    "created_at": "2026-10-20T14:02:10+00:00",
+    "updated_at": "2026-10-20T14:02:10+00:00"
+  }
+}
+```
+
+```json 404
+{
+  "error": {
+    "type": "not_found",
+    "title": "Recurso não encontrado.",
+    "status": 404
+  }
+}
+```
+</ResponseExample>

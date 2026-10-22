@@ -66,6 +66,8 @@ Cada token carrega uma lista fixa de escopos no formato `recurso:ação`. O serv
 | `questions:read` | Listar e ver perguntas em aulas. |
 | `webhooks:read` | Listar e ver webhooks outgoing. |
 | `webhooks:write` | Criar e remover webhooks. |
+| `pages:read` | Listar e ver páginas públicas (termos, landing pages). |
+| `pages:write` | Criar, atualizar, publicar e remover páginas públicas. |
 
 ## Combinações comuns
 
@@ -88,6 +90,10 @@ Cada token carrega uma lista fixa de escopos no formato `recurso:ação`. O serv
 
   <Accordion title="Gerar quizzes de venda (IA/automação)">
     `quiz-funnels:write`, `quiz-funnels:read`, `checkouts:read`
+  </Accordion>
+
+  <Accordion title="Publicar páginas (CMS/IA/automação)">
+    `pages:read`, `pages:write`
   </Accordion>
 
   <Accordion title="Provisionar webhooks programaticamente">

@@ -1,0 +1,71 @@
+---
+title: "Listar páginas"
+api: "GET /v1/pages"
+description: "Lista paginada (length-aware) das páginas públicas, sem o HTML do conteúdo."
+---
+
+**Escopo:** `pages:read`
+
+Ordenada como no painel: campo `order`, depois `title`.
+
+## Query params
+
+<ParamField query="per_page" type="integer" default="25">1-100.</ParamField>
+<ParamField query="page" type="integer" default="1">Página.</ParamField>
+<ParamField query="published" type="boolean">`1` só publicadas, `0` só rascunhos. Omitido: todas.</ParamField>
+
+## Response
+
+<ResponseField name="data[].id" type="integer">ID.</ResponseField>
+<ResponseField name="data[].title" type="string">Título.</ResponseField>
+<ResponseField name="data[].slug" type="string">Slug público.</ResponseField>
+<ResponseField name="data[].public_url" type="string">URL pública (`/p/{slug}`). Só responde quando `is_published`.</ResponseField>
+<ResponseField name="data[].meta_title" type="string|null">Título SEO.</ResponseField>
+<ResponseField name="data[].meta_description" type="string|null">Descrição SEO (também usada como `og:description`).</ResponseField>
+<ResponseField name="data[].render_mode" type="string">`layout` (dentro do layout da plataforma) ou `document` (HTML completo). Veja [modo documento](/api-reference/pages/create#landing-page-completa-modo-documento).</ResponseField>
+<ResponseField name="data[].og_title" type="string|null">Título de compartilhamento (`og:title`).</ResponseField>
+<ResponseField name="data[].og_image" type="string|null">Imagem de compartilhamento (`og:image`).</ResponseField>
+<ResponseField name="data[].canonical_url" type="string|null">URL canônica.</ResponseField>
+<ResponseField name="data[].is_published" type="boolean">Página no ar.</ResponseField>
+<ResponseField name="data[].is_homepage" type="boolean">É a página inicial do domínio.</ResponseField>
+<ResponseField name="data[].tracking_disabled" type="boolean">Rastreamento (UTMs, eventos, Pixel) desligado.</ResponseField>
+<ResponseField name="data[].order" type="integer">Posição na listagem.</ResponseField>
+
+<Tip>
+  O HTML pode ter até 200 KB, por isso não vem na listagem. Use [Detalhes da página](/api-reference/pages/show) para obter o `content`.
+</Tip>
+
+<RequestExample>
+```bash cURL
+curl 'https://seu-dominio/api/v1/pages?published=1' \
+  -H "Authorization: Bearer aut_..."
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": [
+    {
+      "id": 4,
+      "title": "Política de Privacidade",
+      "slug": "politica-de-privacidade",
+      "public_url": "https://seu-dominio/p/politica-de-privacidade",
+      "meta_title": null,
+      "meta_description": "Como tratamos seus dados",
+      "render_mode": "layout",
+      "og_title": null,
+      "og_image": null,
+      "canonical_url": null,
+      "is_published": true,
+      "is_homepage": false,
+      "tracking_disabled": true,
+      "order": 0,
+      "created_at": "2026-10-20T14:02:10+00:00",
+      "updated_at": "2026-10-20T14:02:10+00:00"
+    }
+  ],
+  "meta": { "total": 1 }
+}
+```
+</ResponseExample>
