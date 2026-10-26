@@ -66,10 +66,12 @@ curl https://seu-dominio/api/v1/coupons \
 {
   "error": {
     "type": "validation_error",
+    "title": "Dados inválidos.",
+    "status": 422,
     "errors": {
       "code": ["Já existe um cupom com este código."]
     },
-    "status": 422
+    "request_id": "..."
   }
 }
 ```

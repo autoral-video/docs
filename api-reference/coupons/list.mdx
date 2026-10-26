@@ -26,6 +26,8 @@ description: "Lista paginada (length-aware) de cupons."
 <ResponseField name="data[].is_active" type="boolean">Ativo.</ResponseField>
 <ResponseField name="data[].starts_at" type="string|null">ISO 8601.</ResponseField>
 <ResponseField name="data[].expires_at" type="string|null">ISO 8601.</ResponseField>
+<ResponseField name="data[].applies_to_all_products" type="boolean">Vale para todos os produtos.</ResponseField>
+<ResponseField name="data[].created_at" type="string">ISO 8601.</ResponseField>
 
 <RequestExample>
 ```bash cURL

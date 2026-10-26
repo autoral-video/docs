@@ -9,6 +9,7 @@ description: "Lista paginada (cursor) de perguntas em aulas."
 ## Query params
 
 <ParamField query="per_page" type="integer" default="25">1-100.</ParamField>
+<ParamField query="cursor" type="string">Cursor.</ParamField>
 <ParamField query="status" type="string">`pending`, `viewed`, `answered`.</ParamField>
 <ParamField query="lesson_id" type="integer">Filtra por aula.</ParamField>
 
@@ -23,6 +24,7 @@ description: "Lista paginada (cursor) de perguntas em aulas."
 <ResponseField name="data[].status" type="string">Status atual.</ResponseField>
 <ResponseField name="data[].viewed_at" type="string|null">ISO 8601.</ResponseField>
 <ResponseField name="data[].answered_at" type="string|null">ISO 8601.</ResponseField>
+<ResponseField name="data[].created_at" type="string">ISO 8601.</ResponseField>
 
 <RequestExample>
 ```bash cURL

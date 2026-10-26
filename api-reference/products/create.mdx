@@ -53,7 +53,8 @@ curl https://seu-dominio/api/v1/products \
   "error": {
     "type": "plan_limit_exceeded",
     "title": "Limite de produtos do plano atingido.",
-    "status": 402
+    "status": 402,
+    "request_id": "..."
   }
 }
 ```
@@ -62,10 +63,12 @@ curl https://seu-dominio/api/v1/products \
 {
   "error": {
     "type": "validation_error",
+    "title": "Dados inválidos.",
+    "status": 422,
     "errors": {
       "course_id": ["Curso não encontrado."]
     },
-    "status": 422
+    "request_id": "..."
   }
 }
 ```

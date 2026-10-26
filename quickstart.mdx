@@ -5,11 +5,11 @@ description: "Crie um token e faça sua primeira chamada à API em menos de 5 mi
 
 <Steps>
   <Step title="Verifique seu plano">
-    O recurso de tokens de API só está disponível em planos pagos (Lite, Pro, Scale). Acesse **Configurações → Planos** para ver o seu.
+    Todos os planos incluem API, inclusive o Grátis. O que muda é a quantidade de tokens e o limite de requisições por minuto — veja a tabela em [Rate limiting](/essentials/rate-limiting).
 
-    <Warning>
-      Se seu plano não inclui API, o item de menu aparecerá com cadeado e qualquer requisição retornará erro `402 Payment Required`.
-    </Warning>
+    <Note>
+      Se você já usou todos os tokens do plano, o botão **Novo token** fica desabilitado. Revogue um token sem uso ou faça upgrade.
+    </Note>
   </Step>
 
   <Step title="Crie um token de API">
@@ -85,8 +85,8 @@ description: "Crie um token e faça sua primeira chamada à API em menos de 5 mi
           "name": "Minha Escola"
         },
         "plan": {
-          "slug": "pro",
-          "name": "Pro",
+          "slug": "mentor",
+          "name": "Mentor",
           "api_rate_limit_per_minute": 300,
           "max_api_tokens": 10
         },

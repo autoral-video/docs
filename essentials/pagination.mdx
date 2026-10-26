@@ -10,8 +10,14 @@ A API usa **dois estilos de paginação** dependendo do volume esperado do recur
 Recursos de baixo volume usam paginação tradicional com `page` + `total`:
 
 - `GET /courses`
+- `GET /courses/{id}/modules`
 - `GET /modules/{id}/lessons`
+- `GET /media`
 - `GET /coupons`
+- `GET /quiz-funnels`
+- `GET /pages`
+- `GET /products`
+- `GET /offers`
 - `GET /webhooks`
 
 ### Request
@@ -35,6 +41,8 @@ GET /api/v1/courses?page=2&per_page=25
     "current_page": 2,
     "from": 26,
     "last_page": 10,
+    "links": [...],
+    "path": "https://.../courses",
     "per_page": 25,
     "to": 50,
     "total": 247
@@ -66,14 +74,22 @@ GET /api/v1/payments?per_page=50
 ```json
 {
   "data": [...],
-  "path": "https://.../payments",
-  "per_page": 50,
-  "next_cursor": "eyJpZCI6MTIzfQ",
-  "next_page_url": "https://.../payments?cursor=eyJpZCI6MTIzfQ&per_page=50",
-  "prev_cursor": null,
-  "prev_page_url": null
+  "links": {
+    "first": null,
+    "last": null,
+    "prev": null,
+    "next": "https://.../payments?per_page=50&cursor=eyJpZCI6MTIzfQ"
+  },
+  "meta": {
+    "path": "https://.../payments",
+    "per_page": 50,
+    "next_cursor": "eyJpZCI6MTIzfQ",
+    "prev_cursor": null
+  }
 }
 ```
+
+O próximo cursor fica em `meta.next_cursor` e a URL pronta da próxima página em `links.next`. Na última página, ambos são `null`. Paginação por cursor não informa `total`.
 
 ### Iteração
 
@@ -87,7 +103,7 @@ while url:
     res = requests.get(url, headers=headers).json()
     for payment in res['data']:
         process(payment)
-    url = res.get('next_page_url')
+    url = res['links']['next']
 ```
 
 ## Limites
@@ -105,7 +121,7 @@ while url:
 Muitos endpoints aceitam filtros via query string:
 
 ```http
-GET /api/v1/payments?status=succeeded&gateway=stripe&user_id=42
+GET /api/v1/payments?status=succeeded&gateway=pagarme&user_id=42
 GET /api/v1/access?course_id=10&active_only=true
 GET /api/v1/leads?status=pending&checkout_id=5
 ```
@@ -114,4 +130,4 @@ Veja a página de cada endpoint para a lista completa de filtros suportados.
 
 ## Ordem padrão
 
-Listagens vêm em **ordem decrescente por `id`** (mais recente primeiro). Não há suporte a `?sort=` no v1.
+Listagens vêm em **ordem decrescente por `id`** (mais recente primeiro). As exceções são `GET /courses/{id}/modules` e `GET /modules/{id}/lessons`, que seguem a ordem definida no curso (`sort_order`). Não há suporte a `?sort=` no v1.

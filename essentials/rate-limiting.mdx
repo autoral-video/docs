@@ -3,17 +3,18 @@ title: "Rate limiting"
 description: "Limites de requisições por minuto e como lidar com 429."
 ---
 
-A API aplica rate limit por **token + tenant** — não por IP, não por user. Cada token tem sua própria janela.
+A API aplica rate limit **por token** — não por IP, não por user. Cada token tem sua própria janela, com o limite por minuto definido pelo plano da tenant.
 
 ## Limites por plano
 
-| Plano | Requests/minuto |
-|---|---|
-| Free | — (sem API) |
-| Lite | 60 |
-| Pro | 300 |
-| Scale | 1.200 |
-| Custom | Sob consulta |
+| Plano | Requests/minuto | Tokens de API |
+|---|---|---|
+| Autoral | 60 | 2 |
+| Expert | 60 | 3 |
+| Mentor | 300 | 10 |
+| Academy | 1.200 | 50 |
+
+O limite e a quantidade de tokens do seu plano aparecem em [`GET /me`](/api-reference/identity/me) (`plan.api_rate_limit_per_minute` e `plan.max_api_tokens`).
 
 ## Comportamento ao exceder
 

@@ -15,6 +15,7 @@ Para o guia completo — configuração no painel, lista de eventos com payloads
 ## Query params
 
 <ParamField query="per_page" type="integer" default="25">1-100.</ParamField>
+<ParamField query="page" type="integer" default="1">Página.</ParamField>
 <ParamField query="active" type="boolean">Filtra ativos/inativos.</ParamField>
 
 ## Response
@@ -52,5 +53,5 @@ curl https://seu-dominio/api/v1/webhooks \
 </ResponseExample>
 
 <Note>
-  O **secret** do webhook nunca é retornado pela API — fica encriptado no banco. Para regenerar, delete e crie outro.
+  O **secret** do webhook só aparece na resposta de [criação](/api-reference/webhooks/create) — depois disso nunca é retornado (fica encriptado no banco). Para trocar, remova e crie outro.
 </Note>

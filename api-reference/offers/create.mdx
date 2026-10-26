@@ -26,7 +26,7 @@ description: "Cria uma oferta (preço/plano) vinculada a um produto."
 </ParamField>
 
 <ParamField body="billing_period" type="string">
-  `month`, `quarter`, `semester`, `year`. Obrigatório quando `payment_type=subscription`.
+  `month`, `quarter`, `semester`, `year`. Obrigatório quando `payment_type=subscription` (senão **422**).
 </ParamField>
 
 <ParamField body="schedule_iterations" type="integer">
@@ -91,10 +91,12 @@ await fetch('https://seu-dominio/api/v1/offers', {
 {
   "error": {
     "type": "validation_error",
+    "title": "Dados inválidos.",
+    "status": 422,
     "errors": {
       "payment_type": ["Tipo de pagamento deve ser \"one_time\" ou \"subscription\"."]
     },
-    "status": 422
+    "request_id": "..."
   }
 }
 ```

@@ -11,17 +11,18 @@ Toda resposta de erro segue o mesmo envelope JSON:
     "type": "validation_error",
     "title": "Mensagem legível.",
     "status": 422,
-    "code": "field.specific.code",
     "errors": { "field": ["..."] },
-    "request_id": "uuid-v4"
+    "request_id": "9f1c2b7e-0d4a-4c1e-9b8a-2f3e4d5c6b7a"
   }
 }
 ```
 
+`type`, `title`, `status` e `request_id` estão sempre presentes. `code` e `errors` aparecem só quando se aplicam.
+
 ## Campos
 
 <ResponseField name="error.type" type="string">
-  Categoria do erro: `validation_error`, `authentication_error`, `authorization_error`, `not_found`, `rate_limited`, `plan_limit_exceeded`, `plan_feature_unavailable`, etc.
+  Categoria do erro: `validation_error`, `authentication_error`, `authorization_error`, `not_found`, `conflict`, `rate_limited`, `plan_limit_exceeded`, `plan_feature_unavailable`, `platform_limit_exceeded` ou um tipo específico do endpoint (ex: `payment_not_refundable`). Use este campo para decidir o tratamento no cliente.
 </ResponseField>
 
 <ResponseField name="error.title" type="string">
@@ -33,7 +34,7 @@ Toda resposta de erro segue o mesmo envelope JSON:
 </ResponseField>
 
 <ResponseField name="error.code" type="string">
-  Código específico (ex: `missing_token`, `token_revoked`). Útil para branch lógico no cliente.
+  Detalhe da causa dentro da categoria (ex: `missing_token`, `token_revoked`, `invalid_idempotency_key`). Presente nos erros de autenticação, IP, tenant e idempotência.
 </ResponseField>
 
 <ResponseField name="error.errors" type="object">
@@ -41,7 +42,7 @@ Toda resposta de erro segue o mesmo envelope JSON:
 </ResponseField>
 
 <ResponseField name="error.request_id" type="string">
-  UUID da request. Use para correlacionar com logs do servidor.
+  Identificador da request — o mesmo valor do header `X-Request-Id` da resposta. Veja [Request ID](/essentials/request-id).
 </ResponseField>
 
 ## Códigos HTTP
@@ -57,10 +58,11 @@ Toda resposta de erro segue o mesmo envelope JSON:
 | 402 | Payment Required | Limite de uso do plano atingido (ex: máximo de produtos) |
 | 403 | Forbidden | Sem escopo, IP não permitido, tenant inativo, plano não inclui o recurso |
 | 404 | Not Found | Recurso inexistente ou de outro tenant |
+| 409 | Conflict | Request com a mesma `Idempotency-Key` ainda em processamento |
 | 422 | Unprocessable Entity | Validação falhou |
 | 429 | Too Many Requests | Rate limit excedido |
 | 500 | Internal Server Error | Bug do servidor |
-| 502 | Bad Gateway | Falha em gateway externo (Stripe/MP) |
+| 502 | Bad Gateway | Falha no gateway de pagamento externo |
 
 ## Códigos específicos por categoria
 
@@ -88,15 +90,28 @@ Toda resposta de erro segue o mesmo envelope JSON:
 | `invalid_idempotency_key` | Chave de idempotência malformada. |
 | (sem code) | Falha de validação de campo. Veja `errors`. |
 
+### Idempotência (409)
+
+| `code` | Causa |
+|---|---|
+| `idempotency_in_progress` | Outra request com a mesma `Idempotency-Key` ainda está rodando. Aguarde e repita — veja [Idempotência](/essentials/idempotency). |
+
 ### Outros
 
-| Status | Code | Causa |
+Nestes erros a categoria vem em `error.type`.
+
+| Status | `type` | Causa |
 |---|---|---|
 | 402 | `plan_limit_exceeded` | Limite de uso do plano atingido (ex: máximo de produtos). |
-| 403 | `plan_feature_unavailable` | Plano não inclui o recurso (ex: Biblioteca de Mídia, Quizzes de venda no plano Autoral Store). |
+| 403 | `plan_feature_unavailable` | Plano não inclui o recurso. |
 | 422 | `platform_limit_exceeded` | Limite de segurança da plataforma atingido (ex: 200 quizzes por conta). Fale com o suporte. |
 | 422 | `quiz_not_publishable` | Quiz incompleto para publicar. Veja `error.problems`. |
-| 429 | `rate_limited` | Rate limit do plano excedido. |
+| 422 | `upload_rejected` | Arquivo recusado na Biblioteca de Mídia (tipo, tamanho ou armazenamento do plano). |
+| 422 | `payment_not_refundable` | Pagamento fora das regras de reembolso. |
+| 422 | `partial_refund_unsupported` | `amount` diferente do valor total do pagamento. |
+| 422 | `subscription_already_canceled` | Assinatura já cancelada. |
+| 429 | `rate_limited` | Rate limit do plano excedido. Inclui `retry_after`. |
+| 502 | `gateway_cancel_failed` | Gateway de pagamento recusou ou falhou ao cancelar a assinatura. |
 
 ## Exemplo: tratamento robusto
 
@@ -111,7 +126,7 @@ async function apiCall(path, options = {}) {
     // Branch por categoria
     switch (err.type) {
       case 'authentication_error':
-        // Token inválido — força login / rotação
+        // Token ausente, inválido, revogado ou expirado — veja err.code
         throw new AuthError(err.code, err.request_id);
 
       case 'rate_limited':

@@ -3,7 +3,7 @@ title: "Introdução"
 description: "API REST pública da plataforma autoral.me — multi-tenant, escopo-restrita, com rate-limit por plano."
 ---
 
-A API da **autoral.me** permite que tenants integrem programaticamente sistemas externos (CRMs, automações n8n/Zapier, ERPs, dashboards próprios) com a plataforma de cursos.
+A API da **autoral.me** permite integrar sua área de membros a sistemas externos (CRMs, automações n8n/Zapier, ERPs, dashboards próprios): matricular alunos, consultar vendas, montar catálogo, capturar leads e receber eventos por webhook.
 
 ## Características
 
@@ -15,7 +15,7 @@ A API da **autoral.me** permite que tenants integrem programaticamente sistemas 
     Autenticação via Personal Access Tokens (Laravel Sanctum) com prefixo `aut_`.
   </Card>
   <Card title="Escopos granulares" icon="shield-check">
-    21 escopos do tipo `recurso:ação` (ex: `courses:read`, `students:write`).
+    Escopos do tipo `recurso:ação` (ex: `courses:read`, `students:write`) — veja a [lista completa](/authentication/scopes).
   </Card>
   <Card title="Tenant-isolated" icon="building">
     Cada token é amarrado a um tenant na emissão. Recursos de outros tenants retornam 404.
@@ -48,18 +48,21 @@ Substitua `{seu-dominio}` pelo domínio da sua tenant (ex: `escola.autoral.me` o
 | Cursos | list, show, modules | `courses:read` |
 | Módulos | lessons | `modules:read` |
 | Aulas | show | `lessons:read` |
+| Biblioteca de Mídia | list, show, create, delete | `media-library:read`, `media-library:write` |
 | Alunos | list, show, grant/revoke access | `students:read`, `students:write` |
-| Acesso | CRUD | `access:read`, `access:write` |
+| Acesso | list, show, create, delete | `access:read`, `access:write` |
 | Pagamentos | list, show, refund | `payments:read`, `payments:refund` |
 | Assinaturas | list, show, cancel | `subscriptions:read`, `subscriptions:cancel` |
-| Cupons | CRUD | `coupons:read`, `coupons:write` |
+| Cupons | list, show, create, delete | `coupons:read`, `coupons:write` |
 | Leads | list, show, create | `leads:read`, `leads:write` |
 | Checkouts | list, show | `checkouts:read` |
-| Produtos | CRUD | `products:read`, `products:write` |
-| Ofertas | CRUD | `offers:read`, `offers:write` |
+| Quizzes de venda | list, show, create, update, delete, stats | `quiz-funnels:read`, `quiz-funnels:write` |
+| Páginas | list, show, create, update, delete | `pages:read`, `pages:write` |
+| Produtos | list, show, create, delete | `products:read`, `products:write` |
+| Ofertas | list, show, create, delete | `offers:read`, `offers:write` |
 | Certificados | list, show | `certificates:read` |
 | Perguntas | list, show | `questions:read` |
-| Webhooks | CRUD | `webhooks:read`, `webhooks:write` |
+| Webhooks | list, show, create, delete | `webhooks:read`, `webhooks:write` |
 
 ## Próximos passos
 

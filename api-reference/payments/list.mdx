@@ -10,8 +10,8 @@ description: "Lista paginada (cursor) de pagamentos da tenant."
 
 <ParamField query="per_page" type="integer" default="25">1-100.</ParamField>
 <ParamField query="cursor" type="string">Cursor.</ParamField>
-<ParamField query="status" type="string">Filtra por status (`pending`, `succeeded`, `failed`, `refunded`).</ParamField>
-<ParamField query="gateway" type="string">Filtra por gateway (`stripe`, `mercadopago`, `asaas`).</ParamField>
+<ParamField query="status" type="string">Filtra por status: `pending`, `processing`, `succeeded`, `failed`, `refunded`, `partially_refunded` ou `cancelled`.</ParamField>
+<ParamField query="gateway" type="string">Filtra por gateway: `pagarme` (vendas em BRL), `stripe` (vendas internacionais) ou, em pagamentos antigos, `mercadopago` e `asaas`.</ParamField>
 <ParamField query="user_id" type="integer">Filtra por usuário.</ParamField>
 
 ## Response
@@ -21,9 +21,9 @@ description: "Lista paginada (cursor) de pagamentos da tenant."
 <ResponseField name="data[].user_id" type="integer">FK do user.</ResponseField>
 <ResponseField name="data[].checkout_id" type="integer|null">FK do checkout.</ResponseField>
 <ResponseField name="data[].subscription_id" type="integer|null">FK da assinatura.</ResponseField>
-<ResponseField name="data[].gateway" type="string">`stripe`, `mercadopago`, `asaas`.</ResponseField>
-<ResponseField name="data[].method" type="string">`card`, `pix`, `boleto`, etc.</ResponseField>
-<ResponseField name="data[].status" type="string">Status do pagamento.</ResponseField>
+<ResponseField name="data[].gateway" type="string">`pagarme`, `stripe`, `mercadopago` ou `asaas`.</ResponseField>
+<ResponseField name="data[].method" type="string">`card`, `card_installments`, `pix` ou `boleto`.</ResponseField>
+<ResponseField name="data[].status" type="string">Mesmos valores do filtro `status`.</ResponseField>
 <ResponseField name="data[].amount" type="integer">Valor em centavos.</ResponseField>
 <ResponseField name="data[].original_amount" type="integer">Valor antes do desconto.</ResponseField>
 <ResponseField name="data[].discount_amount" type="integer">Desconto aplicado.</ResponseField>
@@ -31,6 +31,8 @@ description: "Lista paginada (cursor) de pagamentos da tenant."
 <ResponseField name="data[].net_amount" type="integer">Líquido.</ResponseField>
 <ResponseField name="data[].currency" type="string">ISO 4217 (`BRL`, `USD`).</ResponseField>
 <ResponseField name="data[].installments" type="integer">Parcelas.</ResponseField>
+<ResponseField name="data[].created_at" type="string">ISO 8601.</ResponseField>
+<ResponseField name="data[].updated_at" type="string">ISO 8601.</ResponseField>
 
 <RequestExample>
 ```bash cURL
@@ -49,7 +51,7 @@ curl 'https://seu-dominio/api/v1/payments?status=succeeded&per_page=50' \
       "user_id": 42,
       "checkout_id": 88,
       "subscription_id": null,
-      "gateway": "stripe",
+      "gateway": "pagarme",
       "method": "card",
       "status": "succeeded",
       "amount": 19990,
@@ -63,8 +65,13 @@ curl 'https://seu-dominio/api/v1/payments?status=succeeded&per_page=50' \
       "updated_at": "2026-05-05T15:01:00+00:00"
     }
   ],
-  "next_cursor": "...",
-  "next_page_url": "..."
+  "links": { "first": null, "last": null, "prev": null, "next": "https://.../payments?per_page=50&cursor=eyJpZCI6NTAwMH0" },
+  "meta": {
+    "path": "https://.../payments",
+    "per_page": 50,
+    "next_cursor": "eyJpZCI6NTAwMH0",
+    "prev_cursor": null
+  }
 }
 ```
 </ResponseExample>

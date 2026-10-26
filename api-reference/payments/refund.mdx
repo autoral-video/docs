@@ -7,7 +7,7 @@ description: "Cria solicitação de reembolso e processa no gateway."
 **Escopo:** `payments:refund`
 **Idempotency:** **fortemente recomendada**
 
-Cria um `RefundRequest`, aprova automaticamente e dispara o reembolso no gateway (Stripe/MP/Asaas). O acesso vinculado ao pagamento é revogado.
+Cria um `RefundRequest`, aprova automaticamente e dispara o reembolso **total** no gateway em que o pagamento foi feito. As matrículas vinculadas ao pagamento são revogadas.
 
 <Warning>
   Operação **sensível**. Use sempre `Idempotency-Key` para evitar reembolsos duplicados em caso de retry.
@@ -24,7 +24,7 @@ Cria um `RefundRequest`, aprova automaticamente e dispara o reembolso no gateway
 </ParamField>
 
 <ParamField body="amount" type="integer">
-  Valor parcial em centavos. Se omitido, reembolsa o total.
+  Opcional. Reembolso parcial **não é suportado**: se enviado, precisa ser igual ao valor total do pagamento em centavos (`amount` do pagamento). Qualquer outro valor retorna `422 partial_refund_unsupported`.
 </ParamField>
 
 <RequestExample>
@@ -48,6 +48,17 @@ curl https://seu-dominio/api/v1/payments/5001/refunds \
 }
 ```
 
+```json 422 partial_refund_unsupported
+{
+  "error": {
+    "type": "partial_refund_unsupported",
+    "title": "Reembolso parcial não é suportado. Omita `amount` ou envie o valor total do pagamento.",
+    "status": 422,
+    "request_id": "..."
+  }
+}
+```
+
 ```json 422
 {
   "error": {
@@ -67,4 +78,4 @@ Um pagamento é reembolsável se:
 - `status` = `succeeded`
 - Não tem `RefundRequest` pendente/processado
 - O checkout permite refund (`allow_refund=true`)
-- Está dentro do prazo (`refund_days_limit`)
+- Está dentro do prazo (`refund_days_limit` dias a partir da aprovação do pagamento; sem limite se `null`)

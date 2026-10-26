@@ -10,11 +10,17 @@ Endpoints de escrita aceitam um header opcional `Idempotency-Key`. Requisições
 <Check>`POST /students/{id}/access`</Check>
 <Check>`POST /access`</Check>
 <Check>`POST /payments/{id}/refunds`</Check>
+<Check>`POST /media`</Check>
 <Check>`POST /coupons`</Check>
 <Check>`POST /leads`</Check>
+<Check>`POST /quiz-funnels`</Check>
+<Check>`POST /pages`</Check>
+<Check>`POST /products`</Check>
+<Check>`POST /offers`</Check>
 <Check>`POST /webhooks`</Check>
 
-DELETEs **não precisam** de idempotency — são idempotentes por natureza.
+`PATCH` e `DELETE` ignoram o header.
+
 
 ## Como usar
 
@@ -98,8 +104,26 @@ def refund(payment_id):
 try:
     res = refund(123)
 except requests.Timeout:
-    res = refund(123)  # Mesma key → retorna a resposta original
+    res = refund(123)  # Mesma key → resposta original (ou 409 se a 1ª ainda roda: aguarde e repita)
 ```
+
+## Requests simultâneas com a mesma chave
+
+Se uma segunda request chega com a mesma chave e o mesmo body **enquanto a primeira ainda está em processamento** (ex: seu cliente deu timeout e repetiu, mas o servidor continua trabalhando), ela **não é executada**:
+
+```json 409
+{
+  "error": {
+    "type": "conflict",
+    "title": "Já existe uma requisição com esta Idempotency-Key em processamento. Tente novamente em instantes.",
+    "code": "idempotency_in_progress",
+    "status": 409,
+    "request_id": "..."
+  }
+}
+```
+
+A resposta traz `Retry-After: 1`. Aguarde e repita com a **mesma chave**: quando a primeira terminar, você recebe a resposta dela com `Idempotent-Replay: true`.
 
 ## Erros não cacheados
 

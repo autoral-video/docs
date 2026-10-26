@@ -9,6 +9,7 @@ description: "Lista paginada (cursor) de certificados emitidos."
 ## Query params
 
 <ParamField query="per_page" type="integer" default="25">1-100.</ParamField>
+<ParamField query="cursor" type="string">Cursor.</ParamField>
 <ParamField query="course_id" type="integer">Filtra por curso.</ParamField>
 <ParamField query="user_id" type="integer">Filtra por aluno.</ParamField>
 
@@ -22,6 +23,7 @@ description: "Lista paginada (cursor) de certificados emitidos."
 <ResponseField name="data[].issued_at" type="string|null">ISO 8601.</ResponseField>
 <ResponseField name="data[].expires_at" type="string|null">ISO 8601.</ResponseField>
 <ResponseField name="data[].revoked_at" type="string|null">ISO 8601.</ResponseField>
+<ResponseField name="data[].created_at" type="string">ISO 8601.</ResponseField>
 
 <RequestExample>
 ```bash cURL

@@ -60,10 +60,12 @@ curl https://seu-dominio/api/v1/media \
 {
   "error": {
     "type": "validation_error",
+    "title": "Dados inválidos.",
+    "status": 422,
     "errors": {
       "file": ["O campo file deve conter uma das seguintes extensões: jpg, jpeg, png, webp, gif, pdf, docx, xlsx, mp3, wav."]
     },
-    "status": 422
+    "request_id": "..."
   }
 }
 ```

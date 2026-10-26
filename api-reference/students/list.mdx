@@ -6,7 +6,7 @@ description: "Lista paginada (cursor) de alunos da tenant."
 
 **Escopo:** `students:read`
 
-Retorna usuários com role `student` na tenant atual.
+Retorna usuários com papel de aluno na tenant atual. Membros da equipe (admin, dono, mentor) não aparecem.
 
 ## Query params
 
@@ -40,7 +40,7 @@ while url:
     res = requests.get(url, headers=headers).json()
     for s in res['data']:
         print(s['email'])
-    url = res.get('next_page_url')
+    url = res['links']['next']
 ```
 </RequestExample>
 
@@ -60,10 +60,13 @@ while url:
       "created_at": "2026-04-01T09:00:00+00:00"
     }
   ],
-  "next_cursor": "eyJpZCI6NDF9",
-  "next_page_url": "https://.../students?cursor=eyJpZCI6NDF9&per_page=50",
-  "prev_cursor": null,
-  "prev_page_url": null
+  "links": { "first": null, "last": null, "prev": null, "next": "https://.../students?per_page=50&cursor=eyJpZCI6NDF9" },
+  "meta": {
+    "path": "https://.../students",
+    "per_page": 50,
+    "next_cursor": "eyJpZCI6NDF9",
+    "prev_cursor": null
+  }
 }
 ```
 </ResponseExample>

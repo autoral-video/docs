@@ -8,6 +8,10 @@ description: "Retorna dados de um aluno."
 
 <ParamField path="student" type="integer" required>ID do user.</ParamField>
 
+<Note>
+  Só retorna alunos. IDs de membros da equipe (admin, dono, mentor) ou de outras tenants retornam **404**.
+</Note>
+
 <RequestExample>
 ```bash cURL
 curl https://seu-dominio/api/v1/students/42 \

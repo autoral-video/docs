@@ -35,7 +35,7 @@ Endpoint para validar token, descobrir escopos ativos e ver limites do plano. **
 
 <ResponseField name="data.plan" type="object">
   <Expandable title="propriedades">
-    <ResponseField name="slug" type="string">`free`, `lite`, `pro`, `scale`.</ResponseField>
+    <ResponseField name="slug" type="string">Plano atual: `autoral`, `expert`, `mentor`, `academy`.</ResponseField>
     <ResponseField name="name" type="string">Nome.</ResponseField>
     <ResponseField name="api_rate_limit_per_minute" type="integer">Requests/minuto.</ResponseField>
     <ResponseField name="max_api_tokens" type="integer">Limite total de tokens.</ResponseField>
@@ -85,8 +85,8 @@ requests.get(
       "name": "Minha Escola"
     },
     "plan": {
-      "slug": "pro",
-      "name": "Pro",
+      "slug": "mentor",
+      "name": "Mentor",
       "api_rate_limit_per_minute": 300,
       "max_api_tokens": 10
     },

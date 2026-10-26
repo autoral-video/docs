@@ -9,6 +9,7 @@ description: "Lista paginada (cursor) de páginas de checkout."
 ## Query params
 
 <ParamField query="per_page" type="integer" default="25">1-100.</ParamField>
+<ParamField query="cursor" type="string">Cursor.</ParamField>
 <ParamField query="active" type="boolean">Filtra ativos/inativos.</ParamField>
 
 ## Response
@@ -16,14 +17,21 @@ description: "Lista paginada (cursor) de páginas de checkout."
 <ResponseField name="data[].id" type="integer">ID.</ResponseField>
 <ResponseField name="data[].name" type="string">Nome.</ResponseField>
 <ResponseField name="data[].slug" type="string">Slug (URL pública).</ResponseField>
+<ResponseField name="data[].description" type="string|null">Descrição.</ResponseField>
 <ResponseField name="data[].course_id" type="integer">Curso vinculado.</ResponseField>
 <ResponseField name="data[].offer_id" type="integer">Oferta vinculada.</ResponseField>
 <ResponseField name="data[].class_id" type="integer|null">Turma.</ResponseField>
 <ResponseField name="data[].access_type" type="string">`lifetime`, `temporary`, `subscription`.</ResponseField>
+<ResponseField name="data[].access_duration" type="string|null">`monthly`, `quarterly`, `semiannual` ou `annual` (acesso temporário).</ResponseField>
+<ResponseField name="data[].access_days" type="integer|null">Duração customizada do acesso, em dias.</ResponseField>
 <ResponseField name="data[].is_active" type="boolean">Ativo.</ResponseField>
 <ResponseField name="data[].sales_count" type="integer">Vendas totais.</ResponseField>
-<ResponseField name="data[].payment_methods" type="array">Métodos aceitos.</ResponseField>
+<ResponseField name="data[].allow_installments" type="boolean">Aceita parcelamento.</ResponseField>
+<ResponseField name="data[].max_installments" type="integer">Máximo de parcelas.</ResponseField>
+<ResponseField name="data[].payment_methods" type="array">Métodos aceitos (`card`, `card_installments`, `pix`, `boleto`).</ResponseField>
 <ResponseField name="data[].allow_refund" type="boolean">Permite reembolso.</ResponseField>
+<ResponseField name="data[].refund_days_limit" type="integer|null">Prazo de reembolso em dias.</ResponseField>
+<ResponseField name="data[].created_at" type="string">ISO 8601.</ResponseField>
 
 <RequestExample>
 ```bash cURL

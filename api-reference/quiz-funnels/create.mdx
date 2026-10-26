@@ -163,7 +163,7 @@ Caso contrário a resposta é `422` com `error.type = "quiz_not_publishable"` e 
 | Status | `error.type` | Causa |
 |---|---|---|
 | 403 | `authorization_error` | Token sem o escopo `quiz-funnels:write`. |
-| 403 | `plan_feature_unavailable` | Plano Autoral Store não inclui quizzes. |
+| 403 | `plan_feature_unavailable` | Plano não inclui o recurso. |
 | 422 | `validation_error` | Campo inválido (ex.: `meta_pixel.pixel_id` com letras), `key` repetida, `points` para key inexistente, checkout de outro tenant, mais de um `is_fallback`. |
 | 422 | `quiz_not_publishable` | Pediu `published` com quiz incompleto. |
 | 422 | `platform_limit_exceeded` | Limite de segurança atingido (200 quizzes por conta). |

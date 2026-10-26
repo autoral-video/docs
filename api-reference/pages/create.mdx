@@ -98,7 +98,7 @@ Placeholders no `content` trocados pelo valor real quando a página é carregada
 |---|---|---|
 | 402 | `plan_limit_exceeded` | Limite de páginas do plano (`max_landing_pages`) atingido. |
 | 403 | `authorization_error` | Token sem o escopo `pages:write`. |
-| 403 | `plan_feature_unavailable` | Plano Autoral Store não inclui páginas. |
+| 403 | `plan_feature_unavailable` | Plano não inclui o recurso. |
 | 422 | `validation_error` | Campo inválido: `title` ausente, `slug` fora do formato ou já usado, `content` acima do limite, `render_mode` desconhecido, `og_image` sem `https`. |
 | 422 | `platform_limit_exceeded` | Limite de segurança atingido (200 páginas por conta). |
 
@@ -165,7 +165,8 @@ curl https://seu-dominio/api/v1/pages \
   "error": {
     "type": "plan_limit_exceeded",
     "title": "Limite de páginas do plano atingido.",
-    "status": 402
+    "status": 402,
+    "request_id": "..."
   }
 }
 ```
@@ -174,10 +175,12 @@ curl https://seu-dominio/api/v1/pages \
 {
   "error": {
     "type": "validation_error",
+    "title": "Dados inválidos.",
+    "status": 422,
     "errors": {
       "slug": ["Este slug já está em uso. Escolha outro."]
     },
-    "status": 422
+    "request_id": "..."
   }
 }
 ```

@@ -25,20 +25,39 @@ description: "Registra um endpoint externo para receber eventos."
 
 <ParamField body="is_active" type="boolean">Default `true`.</ParamField>
 
+## Response
+
+<ResponseField name="data.secret" type="string">Secret de assinatura. Retornado **apenas** na criação.</ResponseField>
+
 ## Eventos disponíveis
 
 Veja o **payload de cada evento** na Central de Ajuda: [Eventos disponíveis](/help-center/pt/webhooks/eventos-disponiveis).
 
 | Evento | Disparo |
 |---|---|
-| `payment.approved` | Pagamento único aprovado |
-| `payment.failed` | Pagamento recusado |
-| `subscription.created` | Nova assinatura |
-| `subscription.updated` | Mudança de status |
-| `subscription.canceled` | Cancelamento |
-| `student.enrolled` | Aluno matriculado |
-| `access.revoked` | Acesso revogado |
-| `refund.created` | Reembolso processado |
+| `payment.approved` | Pagamento único aprovado. |
+| `payment.pending` | Pagamento aguardando confirmação (PIX/boleto gerado). |
+| `payment.failed` | Pagamento recusado ou com erro. |
+| `payment.chargeback` | Chargeback recebido. |
+| `subscription.created` | Primeira cobrança da assinatura aprovada. |
+| `subscription.updated` | Mudança de status da assinatura. |
+| `subscription.renewed` | Renovação aprovada (ciclos seguintes). |
+| `subscription.past_due` | Assinatura em atraso. |
+| `subscription.payment_failed` | Falha na cobrança de uma renovação. |
+| `subscription.canceled` | Assinatura cancelada. |
+| `student.enrolled` | Acesso concedido a um aluno. |
+| `access.revoked` | Acesso revogado. |
+| `enrollment.expired` | Acesso com prazo expirado. |
+| `refund.created` | Reembolso processado. |
+| `certificate.issued` | Certificado emitido. |
+| `waitlist.joined` | Lead entrou na lista de espera de uma turma. |
+| `waitlist.promoted` | Lead promovido da lista de espera. |
+| `waitlist.expired` | Prazo da promoção expirou. |
+| `lesson.completed` | Aluno concluiu uma aula. |
+| `course.completed` | Aluno concluiu 100% do curso. |
+| `assignment.submitted` | Aluno entregou uma atividade. |
+| `assignment.reviewed` | Atividade avaliada. |
+| `community.post_created` | Nova publicação na comunidade. |
 
 <RequestExample>
 ```bash cURL
@@ -62,13 +81,15 @@ curl https://seu-dominio/api/v1/webhooks \
     "name": "n8n produção",
     "url": "https://n8n.example.com/webhook/autoral",
     "events": ["payment.approved", "student.enrolled"],
+    "secret": "9b1f0c6e2d7a4b3c8e5f1a2d6c9b0e7f3a4d5c6b",
     "is_active": true,
-    "created_at": "2026-05-05T19:00:00+00:00"
+    "created_at": "2026-05-05T19:00:00+00:00",
+    "updated_at": "2026-05-05T19:00:00+00:00"
   }
 }
 ```
 </ResponseExample>
 
 <Warning>
-  O `secret` retornado **só aparece na criação**. Anote-o se gerado pelo servidor.
+  O `secret` (enviado por você ou gerado pelo servidor) **só aparece nesta resposta**. Guarde-o para validar a assinatura `X-Webhook-Signature` — listagem e detalhes nunca o retornam.
 </Warning>

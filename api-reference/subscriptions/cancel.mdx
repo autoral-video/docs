@@ -6,7 +6,7 @@ description: "Cancela imediatamente no gateway e marca como canceled."
 
 **Escopo:** `subscriptions:cancel`
 
-Cancela no gateway externo (Stripe/MP/Asaas) e atualiza o registro local com `status=canceled`, `canceled_at=now()`, `ended_at=now()`.
+Cancela no gateway de pagamento da assinatura e atualiza o registro local com `status=canceled`, `canceled_at=now()`, `ended_at=now()`.
 
 <Warning>
   Operação **sensível e irreversível**. O usuário perde acesso imediatamente (não há grace period).
