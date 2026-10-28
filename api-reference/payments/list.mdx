@@ -11,7 +11,7 @@ description: "Lista paginada (cursor) de pagamentos da tenant."
 <ParamField query="per_page" type="integer" default="25">1-100.</ParamField>
 <ParamField query="cursor" type="string">Cursor.</ParamField>
 <ParamField query="status" type="string">Filtra por status: `pending`, `processing`, `succeeded`, `failed`, `refunded`, `partially_refunded` ou `cancelled`.</ParamField>
-<ParamField query="gateway" type="string">Filtra por gateway: `pagarme` (vendas em BRL), `stripe` (vendas internacionais) ou, em pagamentos antigos, `mercadopago` e `asaas`.</ParamField>
+<ParamField query="gateway" type="string">Filtra por gateway: `pagarme` (vendas em BRL), `stripe` (vendas internacionais) ou `paypal` (vendas internacionais).</ParamField>
 <ParamField query="user_id" type="integer">Filtra por usuário.</ParamField>
 
 ## Response
@@ -21,7 +21,7 @@ description: "Lista paginada (cursor) de pagamentos da tenant."
 <ResponseField name="data[].user_id" type="integer">FK do user.</ResponseField>
 <ResponseField name="data[].checkout_id" type="integer|null">FK do checkout.</ResponseField>
 <ResponseField name="data[].subscription_id" type="integer|null">FK da assinatura.</ResponseField>
-<ResponseField name="data[].gateway" type="string">`pagarme`, `stripe`, `mercadopago` ou `asaas`.</ResponseField>
+<ResponseField name="data[].gateway" type="string">`pagarme`, `stripe`, `paypal`.</ResponseField>
 <ResponseField name="data[].method" type="string">`card`, `card_installments`, `pix` ou `boleto`.</ResponseField>
 <ResponseField name="data[].status" type="string">Mesmos valores do filtro `status`.</ResponseField>
 <ResponseField name="data[].amount" type="integer">Valor em centavos.</ResponseField>
