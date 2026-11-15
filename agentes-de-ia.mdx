@@ -1,0 +1,125 @@
+---
+title: "Skill para agentes de IA"
+description: "Instale a skill oficial autoral-api e peça em português para o Claude Code, Claude.ai, Cursor e outros agentes integrarem seu projeto com a API da autoral.me."
+---
+
+A skill **`autoral-api`** ensina assistentes de IA a usar a API pública da autoral.me. Com ela instalada, o agente conhece os endpoints, os escopos, o formato de erro, a paginação e os webhooks, e escreve código de integração correto sem você colar documentação no chat.
+
+Repositório: [github.com/autoral-video/ia-api-skill](https://github.com/autoral-video/ia-api-skill)
+
+## O que dá para pedir
+
+Basta pedir em linguagem natural:
+
+> "Crie um endpoint no meu backend que recebe o formulário do site e cria o lead na autoral.me"
+
+> "Liste todos os alunos ativos do curso 12 e exporte em CSV"
+
+> "Monte um quiz de venda com 4 perguntas que recomenda entre os checkouts 15 e 18"
+
+> "Receba o webhook `payment.approved` e mande boas-vindas no WhatsApp"
+
+A skill cobre alunos e matrículas, leads, cupons, produtos e ofertas, checkouts, pagamentos e reembolsos, assinaturas, certificados, perguntas, biblioteca de mídia, quizzes de venda, páginas e webhooks.
+
+## Antes de instalar
+
+<Steps>
+  <Step title="Crie um token de API">
+    Como **Super Admin**, acesse **Configurações → Tokens de API** e crie um token só com os escopos de que a integração precisa. Veja [Criando tokens](/authentication/creating-tokens). Todos os planos incluem API; o que muda é a quantidade de tokens e o [limite de requisições](/essentials/rate-limiting).
+  </Step>
+  <Step title="Configure as variáveis de ambiente">
+    No projeto em que o agente vai trabalhar (nunca faça commit do token):
+
+    ```bash
+    export AUTORAL_BASE_URL="https://sua-escola.autoral.me"
+    export AUTORAL_TOKEN="aut_..."
+    export AUTORAL_WEBHOOK_SECRET="..."   # só se for receber webhooks
+    ```
+
+    `AUTORAL_BASE_URL` é o domínio da sua plataforma (ou o seu domínio próprio).
+  </Step>
+</Steps>
+
+## Instalação
+
+<Tabs>
+  <Tab title="Claude Code (plugin)">
+    Recomendado. No Claude Code:
+
+    ```
+    /plugin install autoral-api --marketplace autoral-video/ia-api-skill
+    ```
+
+    Em versões mais antigas do Claude Code, em dois passos:
+
+    ```
+    /plugin marketplace add autoral-video/ia-api-skill
+    /plugin install autoral-api@autoral
+    ```
+
+    Para atualizar depois: `/plugin marketplace update autoral`.
+
+    Para que todo o time receba o plugin ao abrir o projeto, adicione ao `.claude/settings.json` do repositório:
+
+    ```json
+    {
+      "extraKnownMarketplaces": {
+        "autoral": { "source": { "source": "github", "repo": "autoral-video/ia-api-skill" } }
+      },
+      "enabledPlugins": { "autoral-api@autoral": true }
+    }
+    ```
+  </Tab>
+  <Tab title="Claude Code (manual)">
+    Copie a pasta da skill:
+
+    ```bash
+    git clone https://github.com/autoral-video/ia-api-skill.git /tmp/ia-api-skill
+    cp -r /tmp/ia-api-skill/skills/autoral-api .claude/skills/      # só neste projeto
+    # ou
+    cp -r /tmp/ia-api-skill/skills/autoral-api ~/.claude/skills/    # todos os projetos
+    ```
+  </Tab>
+  <Tab title="Claude.ai / Claude Desktop">
+    1. Baixe o repositório e compacte a skill:
+
+       ```bash
+       cd skills && zip -r autoral-api.zip autoral-api
+       ```
+
+    2. Em **Configurações → Capacidades → Skills**, envie o arquivo `autoral-api.zip`.
+  </Tab>
+  <Tab title="Cursor, Codex, Gemini CLI e outros">
+    Copie `skills/autoral-api/` para o diretório de skills do agente, ou referencie `skills/autoral-api/SKILL.md` nas instruções do projeto (`AGENTS.md`, `.cursorrules` etc.).
+  </Tab>
+</Tabs>
+
+## Como o agente trabalha
+
+1. **Valida o token primeiro** com `GET /me`, que devolve os escopos, o plano e o limite de requisições. Se faltar um escopo, ele avisa que é preciso criar outro token — escopos não são editáveis.
+2. **Consulta a referência** do assunto (vendas, financeiro, webhooks...) e usa só campos documentados.
+3. **Escreve com segurança:** envia `Idempotency-Key` nos POST, trata o envelope de erro e segue a paginação até o fim.
+
+Para código de produção, a skill traz modelos de cliente em TypeScript, Python e PHP/Laravel, e receptores de webhook com validação da assinatura.
+
+## CLI incluso
+
+A skill vem com um cliente de linha de comando sem dependências (Python 3.8+), útil para explorar a API:
+
+```bash
+python3 skills/autoral-api/scripts/autoral.py me                              # valida token e escopos
+python3 skills/autoral-api/scripts/autoral.py get /courses --all              # lista tudo, segue a paginação
+python3 skills/autoral-api/scripts/autoral.py post /leads --data @lead.json   # Idempotency-Key automática
+python3 skills/autoral-api/scripts/autoral.py upload --file capa.png --field folder_id=3
+python3 skills/autoral-api/scripts/autoral.py verify-signature --body-file corpo.json --signature <hex>
+```
+
+Ele repete a chamada em `429` respeitando o `Retry-After`, mostra o `X-Request-Id` e nunca envia o token para outro domínio.
+
+## Segurança
+
+- A skill instrui o agente a **pedir sua confirmação** antes de reembolsos, cancelamentos de assinatura, remoções definitivas e publicações.
+- O agente nunca deve escrever o token em código, commits, logs ou na resposta. Se você colar um token no chat, troque-o depois.
+- Use um token por integração, com o mínimo de escopos e expiração em testes. Veja [Boas práticas de segurança](/authentication/security-best-practices).
+
+<Warning>Um token com `pages:write` publica HTML no seu domínio. Use esse escopo só em integrações em que você confia.</Warning>
