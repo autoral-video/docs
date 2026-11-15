@@ -1,0 +1,50 @@
+---
+title: "Vendas internacionais"
+description: "Venda em dólar e euro para compradores de fora do Brasil, com cartão pelo Stripe e PayPal, conectados à sua própria conta."
+---
+
+A Pagar.me continua sendo o gateway principal, para vendas em reais (Pix, cartão e boleto). Para vender em **dólar (USD)** ou **euro (EUR)** a compradores de fora do Brasil, você conecta sua própria conta **Stripe** e/ou **PayPal**. O dinheiro dessas vendas cai direto na sua conta Stripe ou PayPal.
+
+## Como funciona
+
+Um link de pagamento com **Pagamento internacional** ativado passa a ter dois caminhos:
+
+- Comprador em português, com preço em BRL: paga pela Pagar.me, normalmente.
+- Comprador em inglês, ou oferta sem preço em BRL: vai para o **checkout internacional** e paga em USD ou EUR — com cartão (Stripe) ou PayPal.
+
+Se a oferta tiver preço em USD e em EUR, o comprador escolhe a moeda.
+
+<Warning>O checkout internacional vale só para **pagamento único**. Ele não é usado para assinaturas nem para links vinculados a turma, e não gera comissão de afiliado.</Warning>
+
+## Conectando o Stripe
+
+1. Acesse **Configurações → Stripe (vendas internacionais)**.
+2. Clique em **Conectar com Stripe** e autorize a plataforma na sua conta. As chaves de API e o webhook são configurados automaticamente — você não copia nenhuma credencial.
+3. Com a conta conectada, ative **Ativar Stripe**.
+
+Para desconectar, use **Desconectar conta**. Isso remove as credenciais e revoga o acesso à sua conta Stripe.
+
+## Conectando o PayPal
+
+O PayPal aparece no checkout internacional como opção ao lado do cartão.
+
+1. Acesse **Configurações → PayPal (vendas internacionais)**.
+2. Entre no portal de desenvolvedores do PayPal com sua conta **PayPal Business**.
+3. Em **Apps & Credentials**, escolha **Live** (ou **Sandbox** para testar) e clique em **Create App**.
+4. Copie o **Client ID** e o **Secret** do app, escolha o **Ambiente** correspondente e clique em **Conectar PayPal**. O webhook de pagamentos é configurado automaticamente.
+5. Ative **Ativar PayPal**.
+
+<Warning>Contas PayPal brasileiras costumam vir configuradas para pedir **aprovação manual** de cada pagamento em moeda estrangeira. Nesse caso a venda fica pendente e o aluno só recebe acesso depois que você aceitar o pagamento no PayPal. Para liberar o acesso na hora, nas preferências de recebimento do PayPal, em "Pagamentos em moedas que não tenho", escolha aceitar e converter para reais. A tela de configuração tem o link direto.</Warning>
+
+## Ativando no link de pagamento
+
+1. Abra o link em **Vendas → Link Builder**.
+2. Adicione o preço em **USD** e/ou **EUR** na oferta.
+3. Na seção de pagamento, marque **Pagamento internacional**. O rótulo mostra quais gateways estão conectados.
+4. Salve.
+
+<Tip>Produtos digitais também podem ser vendidos em dólar e euro: crie o produto em **Produtos digitais** e depois adicione os preços pelo Link Builder.</Tip>
+
+## Idioma do comprador
+
+Quem compra pelo checkout internacional em inglês passa a receber os e-mails da plataforma em inglês. No checkout em reais há um link **English**, que leva o comprador ao checkout internacional.

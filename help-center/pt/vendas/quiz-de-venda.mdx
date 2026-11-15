@@ -1,0 +1,82 @@
+---
+title: "Quiz de venda"
+description: "Um quiz curto que descobre o que o visitante precisa e recomenda o produto certo, com o botão de compra e estatísticas do funil."
+---
+
+O quiz de venda faz de 3 a 6 perguntas rápidas sobre o momento da pessoa e, no final, mostra o produto que resolve o problema dela, com o botão de compra. É útil quando você tem mais de um produto e o visitante não sabe por onde começar.
+
+Acesse **Admin → Configurações → Quizzes de venda**.
+
+<Note>O quiz de venda é diferente do quiz de aula, que avalia o aluno dentro de uma jornada.</Note>
+
+## Como a recomendação é escolhida
+
+Cada opção de resposta soma pontos a um ou mais **resultados**. No final, vence o resultado com mais pontos. Em caso de empate, vale a ordem da lista de resultados. Se nenhuma resposta pontuar, aparece o resultado **Padrão**.
+
+## Criando um quiz
+
+Clique em **Novo quiz**, dê um nome e clique em **Criar e editar**. O editor tem as etapas abaixo; as três primeiras são obrigatórias para publicar.
+
+### Abertura
+
+A primeira tela que o visitante vê. Diga o que ele ganha ao responder.
+
+| Campo | Descrição |
+|---|---|
+| **Título** | Ex.: "Descubra qual curso combina com você". |
+| **Descrição** | Ex.: "Responda 5 perguntas rápidas e receba uma recomendação personalizada." |
+| **Texto do botão** | Ex.: "Começar". |
+| **Imagem de abertura** | Opcional. |
+| **Nome do quiz** | Aparece no topo do quiz e na aba do navegador. |
+| **Endereço** | O final do link público do quiz (`/quiz/seu-endereco`). |
+
+Em **Navegação**, escolha se mostra a barra de progresso e se o visitante pode voltar para a pergunta anterior.
+
+### Perguntas
+
+Clique em **Adicionar pergunta**, escreva a pergunta e escolha o **Tipo de resposta**: **Escolha única** ou **Múltipla escolha**. Cada pergunta pode ter texto de apoio e imagem.
+
+Para cada opção, clique na pílula de um resultado para ligar a opção a ele e use **−** / **+** para dar mais peso. Uma opção pode pontuar para mais de um resultado.
+
+<Tip>Se nenhuma opção de uma pergunta pontua, o editor avisa: ela não influencia o resultado.</Tip>
+
+### Resultados
+
+Cada resultado é uma recomendação. Para cada um:
+
+| Campo | Descrição |
+|---|---|
+| **Nome do resultado** | Ex.: "Comece pelo básico". |
+| **Por que essa é a recomendação certa** | Fale com a pessoa: o que as respostas dela mostram e por que este caminho resolve. |
+| **Produtos recomendados** | Um ou mais checkouts ativos. |
+| **Texto do botão** | Ex.: "Quero esse". |
+| **Ir direto para o checkout** | Pula a tela de resultado e leva direto à compra. |
+
+Use **Usar como padrão** no resultado que aparece quando nenhuma resposta pontua.
+
+<Warning>Você precisa de pelo menos um checkout ativo para recomendar produtos. Crie um pelo [Link Builder](/help-center/pt/checkout/criando-um-link).</Warning>
+
+### Contato (opcional)
+
+Ative **Pedir contato antes de mostrar o resultado** para que quem responde deixe nome, e-mail e WhatsApp antes de ver a recomendação. Os dados chegam preenchidos no checkout e ficam registrados na sessão da pessoa, em **Estatísticas → Sessões**.
+
+### Rastreamento (opcional)
+
+Em **Pixel da Meta**, o quiz usa o pixel próprio do quiz, o pixel herdado dos checkouts do quiz ou o pixel das Configurações. Quem deixa o contato dispara o evento **Lead**. Para a venda ser ligada ao quiz no Gerenciador de Anúncios, use o mesmo pixel no quiz e nos checkouts.
+
+## Publicando e divulgando
+
+Clique em **Publicar** e use **Copiar link** para divulgar. Para tirar do ar, use **Despublicar**. Na lista de quizzes você também pode **Duplicar** um quiz.
+
+## Estatísticas
+
+Clique em **Estatísticas** no quiz para ver:
+
+- **Funil e abandono por etapa:** abriram, iniciaram, concluíram, deixaram contato, foram ao checkout e compraram.
+- **Vendas atribuídas ao quiz** e **Conversão geral** (vendas ÷ visitas).
+- **Desempenho por resultado:** quantas pessoas receberam cada recomendação e quantas clicaram.
+- **O que as pessoas responderam**, pergunta por pergunta.
+- **Origem (utm_source)** das visitas e das vendas.
+- **Sessões**, com as respostas de cada pessoa.
+
+A venda é atribuída ao quiz quando a pessoa compra pelo botão do resultado.

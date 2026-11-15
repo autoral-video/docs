@@ -1,0 +1,49 @@
+---
+title: "Aparência e tema"
+description: "Personalize cores, fonte e arredondamento da área de membros com pré-visualização ao vivo, ou edite o tema a fundo pela edição avançada."
+---
+
+A área de membros usa um **tema base** (há 20 opções prontas) e as personalizações que você faz por cima dele. Você ajusta tudo sem código, vendo o resultado na hora, direto na tela que o aluno vê.
+
+## Editor de tema (recomendado)
+
+1. Entre na área de membros com sua conta de administrador.
+2. Clique em **Personalizar tema**, na barra superior.
+3. Ajuste os controles. A tela muda na hora, sem salvar.
+4. Clique em salvar para publicar para todos os alunos, ou cancele para descartar.
+
+| Controle | O que muda |
+|---|---|
+| **Tema** | O tema base. As personalizações são aplicadas por cima dele. |
+| **Cor de destaque** | Botões, links e elementos ativos. |
+| **Cor neutra** | Fundos, textos e bordas da interface. |
+| **Arredondamento** | Cantos de botões, cards e campos. **Herdar** usa o valor do tema base. |
+| **Sombras** | Profundidade de cards, menus e botões. |
+| **Escala de espaçamento** | Densidade geral de margens e espaços. |
+| **Fonte** | Família de fonte da plataforma. **Padrão do tema** usa a fonte do tema base. |
+
+<Note>A barra de edição só aparece para quem tem permissão para gerenciar as configurações da plataforma. Alunos nunca a veem.</Note>
+
+Para desfazer tudo, use **Restaurar tema base**. Isso remove todas as personalizações e volta ao tema base escolhido.
+
+## Edição avançada
+
+Para controle total, clique em **Edição avançada** no editor, ou acesse **Configurações → Personalização de Tema**. Lá você edita os valores brutos do tema:
+
+| Seção | O que aceita |
+|---|---|
+| **Fontes** | Famílias Sans, Mono e Serif e URLs de importação (ex.: Google Fonts), uma por linha. |
+| **Cores — Modo Claro** e **Cores — Modo Escuro** | Accent, Accent Content, Accent Foreground, escala Zinc e cores semânticas (JSON). Aceita `oklch()`, hex, `rgb()` ou `hsl()`. |
+| **Arredondamento de Bordas** | Qualquer unidade CSS: rem, px, em, %. |
+| **Sombras** | Sintaxe completa de `box-shadow`. |
+| **Escala de Espaçamento** | Unidade base de espaçamento (ex.: `0.25rem`). |
+| **CSS Personalizado** | CSS aplicado em toda a área de membros, para o que não cabe nas variáveis. |
+| **Efeitos Visuais** | CSS de efeitos, como brilhos e animações. |
+
+Campos em branco herdam o valor do tema base. O editor de tema respeita o que você define na edição avançada: ajustar a cor de destaque no editor não apaga o seu CSS personalizado.
+
+<Warning>CSS personalizado é aplicado em todas as páginas da área de membros. Teste em uma aula e na comunidade antes de salvar mudanças grandes.</Warning>
+
+## Logo, nome e favicon
+
+Logo, nome da plataforma e favicon ficam em **Configurações → Configurações Básicas**, não no tema.

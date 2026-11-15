@@ -1,0 +1,66 @@
+---
+title: "Programa de afiliados"
+description: "Transforme alunos e parceiros em vendedores: comissão configurável, janela de cookie, aprovação automática e pagamento das comissões."
+---
+
+Com o programa de afiliados, outras pessoas (alunos, parceiros, influenciadores) divulgam seus links de venda com um código próprio e recebem comissão pelas vendas que trouxerem.
+
+<Note>O programa de afiliados está disponível nos planos pagos.</Note>
+
+## Configurando o programa
+
+Acesse **Configurações → Programa de Afiliados**.
+
+| Configuração | Descrição |
+|---|---|
+| **Programa de Afiliados Ativo** | Liga o programa. Desligado, os links de afiliado não rastreiam cliques. |
+| **Exigir Aprovação Manual** | Novos afiliados precisam ser aprovados por você antes de começar a divulgar. |
+| **Tipo de Comissão** | **Percentual (%)** ou **Valor Fixo (R$)** por venda. |
+| **Base de Cálculo** | **Valor líquido** (sem as taxas do gateway) ou **Valor bruto da venda**. A tela mostra um exemplo em uma venda de R$ 100,00. |
+| **Janela de Cookie (dias)** | Por quantos dias a venda é atribuída ao afiliado depois que o visitante clica no link. Padrão: 30. |
+| **Valor Mínimo para Pagamento** | Saldo mínimo para o afiliado entrar no lote de pagamento. Informado em centavos (5000 = R$ 50,00). |
+| **Aprovar Comissões Automaticamente** | Aprova sozinha as comissões pendentes depois de um período de carência. |
+| **Dias para Aprovação Automática** | O período de carência. Use um prazo maior que o da sua garantia para não pagar comissão de venda reembolsada. |
+
+## Cadastrando afiliados
+
+Acesse **Afiliados → Afiliados** e clique em **Novo Afiliado**:
+
+| Campo | Descrição |
+|---|---|
+| **Usuário** | A pessoa que será afiliada. Ela precisa ter conta na sua plataforma. |
+| **Código do Afiliado** | Código único usado nos links (ex.: `JOAO2024`). Use **Gerar automaticamente** se preferir. |
+| **Status** | Aguardando Aprovação, Aprovado, Suspenso ou Rejeitado. |
+| **Comissão** | Deixe em branco para usar a comissão padrão do programa, ou defina uma comissão própria para este afiliado. |
+| **Dados de Pagamento** | Chave PIX ou dados bancários para receber as comissões. O próprio afiliado também pode preencher. |
+| **Notas Internas** | Visíveis só para a sua equipe. |
+
+Na lista você busca por nome ou e-mail, filtra por status e usa **Aprovar** ou **Suspender**.
+
+## Como o afiliado divulga
+
+O afiliado aprovado acessa o painel de afiliado na sua plataforma, copia os links dos seus checkouts com o código dele e compartilha. O link leva o parâmetro `?ref=CODIGO`. Veja [Painel do afiliado](/help-center/pt/afiliados/aluno/painel-do-afiliado).
+
+Quando alguém compra dentro da janela de cookie, a comissão é registrada para o afiliado.
+
+## Comissões
+
+Em **Afiliados → Comissões** você vê todas as comissões e o status de cada uma. Elas nascem pendentes e são aprovadas por você ou automaticamente, depois da carência.
+
+## Pagando os afiliados
+
+O pagamento das comissões aos seus afiliados é feito por você, fora da plataforma (PIX ou transferência), e registrado aqui:
+
+1. Acesse **Afiliados → Pagamentos**. Aparecem os afiliados com comissões aprovadas e saldo acima do mínimo.
+2. Faça o PIX ou a transferência para o afiliado, usando os dados de pagamento cadastrados.
+3. Clique em **Pagar**, preencha **Comprovante / Notas do Pagamento** (ex.: "PIX enviado às 14h") e clique em **Confirmar Pagamento**.
+
+O afiliado é avisado por e-mail e vê o pagamento no histórico dele.
+
+<Warning>Afiliados sem **Dados bancários** aparecem com aviso na lista de pagamentos. Peça para preencherem a chave PIX no painel antes de pagar.</Warning>
+
+## Disputas
+
+Se um afiliado discordar de uma comissão, ele abre uma contestação pelo painel. As disputas aparecem em **Afiliados → Disputas**, com a conversa e os anexos. Responda, resolva e registre as notas de resolução.
+
+<Note>Vendas pelo [checkout internacional](/help-center/pt/vendas/vendas-internacionais) (USD/EUR) não geram comissão de afiliado.</Note>

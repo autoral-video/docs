@@ -27,20 +27,46 @@
                 "group": "Início",
                 "pages": [
                   "help-center/pt/index",
+                  "help-center/pt/visao-geral",
                   "help-center/pt/faq"
                 ]
               },
               {
-                "group": "Cursos",
+                "group": "Área de membros",
                 "pages": [
-                  "help-center/pt/cursos/criando-um-curso"
+                  "help-center/pt/area-de-membros/o-que-e",
+                  "help-center/pt/area-de-membros/aparencia-e-tema",
+                  "help-center/pt/area-de-membros/gamificacao"
                 ]
               },
               {
-                "group": "Checkout",
+                "group": "Área de membros — Aluno",
                 "pages": [
-                  "help-center/pt/checkout/criando-um-link",
-                  "help-center/pt/checkout/configuracoes-avancadas"
+                  "help-center/pt/area-de-membros/aluno/anotacoes-e-aulas-salvas",
+                  "help-center/pt/area-de-membros/aluno/conquistas-e-ranking"
+                ]
+              },
+              {
+                "group": "Jornadas e aulas",
+                "pages": [
+                  "help-center/pt/cursos/criando-um-curso",
+                  "help-center/pt/cursos/video-legendas-e-capitulos"
+                ]
+              },
+              {
+                "group": "Comunidade",
+                "pages": [
+                  "help-center/pt/comunidade/habilitando-a-comunidade",
+                  "help-center/pt/comunidade/criando-um-grupo",
+                  "help-center/pt/comunidade/membros-e-moderadores",
+                  "help-center/pt/comunidade/moderacao"
+                ]
+              },
+              {
+                "group": "Comunidade — Área do Aluno",
+                "pages": [
+                  "help-center/pt/comunidade/aluno/acessando-a-comunidade",
+                  "help-center/pt/comunidade/aluno/participando"
                 ]
               },
               {
@@ -71,19 +97,26 @@
                 ]
               },
               {
-                "group": "Comunidade",
+                "group": "Ao vivo",
                 "pages": [
-                  "help-center/pt/comunidade/habilitando-a-comunidade",
-                  "help-center/pt/comunidade/criando-um-grupo",
-                  "help-center/pt/comunidade/membros-e-moderadores",
-                  "help-center/pt/comunidade/moderacao"
+                  "help-center/pt/ao-vivo/salas-ao-vivo"
                 ]
               },
               {
-                "group": "Comunidade — Área do Aluno",
+                "group": "Vendas",
                 "pages": [
-                  "help-center/pt/comunidade/aluno/acessando-a-comunidade",
-                  "help-center/pt/comunidade/aluno/participando"
+                  "help-center/pt/checkout/criando-um-link",
+                  "help-center/pt/checkout/configuracoes-avancadas",
+                  "help-center/pt/vendas/minha-loja",
+                  "help-center/pt/vendas/quiz-de-venda",
+                  "help-center/pt/vendas/vendas-internacionais"
+                ]
+              },
+              {
+                "group": "Afiliados",
+                "pages": [
+                  "help-center/pt/afiliados/programa-de-afiliados",
+                  "help-center/pt/afiliados/aluno/painel-do-afiliado"
                 ]
               },
               {
@@ -134,7 +167,8 @@
                 "group": "Introdução",
                 "pages": [
                   "introduction",
-                  "quickstart"
+                  "quickstart",
+                  "agentes-de-ia"
                 ]
               },
               {
