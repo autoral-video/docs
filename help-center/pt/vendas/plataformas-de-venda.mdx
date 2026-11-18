@@ -1,0 +1,141 @@
+---
+title: "Plataformas de venda (Hotmart e Kiwify)"
+description: "Continue vendendo na Hotmart ou na Kiwify e libere o acesso automaticamente na sua área de membros do Autoral."
+---
+
+Se você já vende na **Hotmart** ou na **Kiwify**, não precisa mudar onde o aluno paga. Conecte a plataforma ao Autoral: a cada compra aprovada, o aluno recebe acesso aos cursos que você escolheu, na sua área de membros. Reembolso e chargeback tiram esse acesso automaticamente.
+
+<Info>Pagamento, nota fiscal e reembolso continuam na plataforma de venda. Essas vendas não passam pelo financeiro do Autoral e não pagam taxa de transação aqui.</Info>
+
+## Como funciona
+
+1. **O aluno compra na plataforma.** O checkout e o pagamento continuam na Hotmart ou na Kiwify.
+2. **A plataforma avisa o Autoral.** Cada compra, reembolso ou cancelamento chega por webhook em segundos.
+3. **O acesso é liberado.** O aluno recebe o e-mail de boas-vindas e entra nos cursos vinculados ao produto.
+
+O comprador é identificado pelo **e-mail** usado na compra. Se ele já tiver conta na sua área de membros, os cursos novos entram na conta que já existe. Se não tiver, a conta é criada.
+
+## Conectando uma plataforma
+
+1. Acesse **Configurações → Integrações → Plataformas de venda**.
+2. Escolha a plataforma e preencha:
+   - **Nome da conexão**: só para você identificar a conexão. O aluno não vê.
+   - **Token**: o segredo do webhook no painel da plataforma (veja abaixo). Ele fica guardado criptografado.
+3. Clique em **Criar e ver próximos passos**. A tela da conexão mostra a **URL do webhook**, que é exclusiva dessa conexão.
+4. Cadastre essa URL no painel da plataforma, seguindo o passo a passo da plataforma abaixo.
+
+Você pode ter mais de uma conexão por plataforma, uma para cada conta que você usa nela.
+
+### Hotmart
+
+- **Onde fica o token (Hottok):** **Ferramentas → Webhook (API e notificações)**.
+- **Cadastrando o webhook:**
+  1. Em **Ferramentas → Webhook (API e notificações)**, crie uma configuração na versão **2.0.0**.
+  2. Cole a URL do webhook da sua conexão.
+  3. Marque os eventos de **compra**, **cancelamento de assinatura** e **troca de data de cobrança**.
+  4. Salve e use o botão de teste da Hotmart.
+
+<Tip>No produto da Hotmart, configure a área de membros como **externa**. Assim o comprador não recebe dois acessos.</Tip>
+
+### Kiwify
+
+- **Onde fica o token:** **Apps → Webhooks →** seu webhook. Na Kiwify é você quem escolhe o token: use um com **pelo menos 16 caracteres**.
+- **Cadastrando o webhook:**
+  1. Em **Apps → Webhooks**, clique em **Criar webhook**.
+  2. Cole a URL do webhook da sua conexão e escolha os produtos.
+  3. Marque os gatilhos: **compra aprovada**, **compra reembolsada**, **chargeback**, **assinatura renovada**, **assinatura atrasada**, **assinatura cancelada**, **período grátis iniciado** e **período grátis cancelado**.
+  4. Salve e use o botão **Testar Webhook**.
+
+<Tip>Se o produto entrega acesso pela área de membros da Kiwify, desative essa entrega. Assim o comprador não recebe dois acessos.</Tip>
+
+Quando o primeiro aviso chega, o status da conexão muda de **Aguardando o primeiro aviso** para **Recebendo vendas**.
+
+## Vinculando produtos aos cursos
+
+O vínculo diz ao Autoral o que liberar quando um produto é vendido.
+
+1. Na tela da conexão, abra **Produtos vinculados** e clique em **Vincular produto**.
+2. Informe o **ID do produto**:
+   - Hotmart: em **Produtos →** seu produto **→ ID**.
+   - Kiwify: está na URL da página de edição do produto.
+3. Escolha um ou mais **cursos** a liberar. Se quiser, escolha também uma **turma** em cada curso.
+4. Opcional: dê um **apelido** ao produto, que aparece na lista de vendas.
+5. Clique em **Salvar vínculo**.
+
+Na Hotmart também dá para vincular por **oferta**. Preencha o **Código da oferta** para que só aquela oferta libere esses cursos. Se deixar em branco, o vínculo vale para qualquer oferta do produto. Quando existem os dois vínculos, o da oferta tem prioridade.
+
+<Note>Mudar ou remover um vínculo vale só para as próximas vendas. Quem já comprou mantém o acesso que recebeu.</Note>
+
+## Vendas sem vínculo
+
+A venda de um produto que ainda não foi vinculado fica com o status **Não mapeada**: o comprador pagou e ainda não recebeu acesso. Para liberar:
+
+1. Vincule o produto aos cursos.
+2. Na lista de vendas, filtre por **Pendentes** e clique em **Liberar agora**.
+
+Você também recebe um alerta quando chega uma venda sem vínculo.
+
+## Assinaturas
+
+- **Cada cobrança aprovada** renova o acesso até a data da próxima cobrança, com **3 dias de tolerância**.
+- **Recorrência atrasada** ou **assinatura cancelada**: o aluno continua com acesso até o fim do período já pago, e depois o acesso expira sozinho.
+- **Troca do dia de cobrança** (Hotmart): o acesso é estendido até a nova data. Ele nunca é encurtado.
+- **Período grátis** (Kiwify): libera o acesso durante o teste, até o fim do período grátis mais a tolerância. Se o período grátis for cancelado, o acesso é retirado.
+
+## Reembolsos e cancelamentos
+
+Reembolso, chargeback e compra cancelada retiram **somente o acesso liberado por aquela venda**. Se o aluno já tinha o curso por outro caminho (compra no checkout do Autoral, matrícula manual ou outra venda), esse acesso continua.
+
+Depois de reembolsada, cancelada ou com chargeback, a venda não é reaberta por nenhum aviso que chegue depois.
+
+## Status das vendas
+
+| Status | O que significa |
+|---|---|
+| **Aprovada** | Acesso liberado para o comprador. |
+| **Não mapeada** | O produto não está vinculado a nenhum curso. Vincule e clique em **Liberar agora**. |
+| **Retida pelo plano** | O limite de alunos externos do plano foi atingido. A venda é liberada no upgrade. |
+| **Recorrência atrasada** | A cobrança da recorrência atrasou. O acesso expira no fim do período pago. |
+| **Assinatura cancelada** | A assinatura foi cancelada. O acesso expira no fim do período pago. |
+| **Reembolsada** | A compra foi reembolsada e o acesso liberado por ela foi retirado. |
+| **Chargeback** | O comprador contestou a compra no cartão e o acesso liberado por ela foi retirado. |
+| **Cancelada** | A compra foi cancelada e o acesso liberado por ela foi retirado. |
+
+## Limites
+
+### Plano gratuito
+
+No plano gratuito, a integração atende até **30 alunos** vindos de plataformas externas. Quem já é seu aluno não ocupa uma vaga nova quando compra de novo.
+
+Quando você atinge o limite, os compradores novos ficam com o status **Retida pelo plano** e você recebe um alerta. Ao fazer upgrade para um plano pago, essas vendas são liberadas automaticamente.
+
+### Contas novas por dia
+
+Por segurança, existe um limite de contas **novas** criadas por dia a partir de vendas externas: **30 por dia no plano gratuito** e **500 por dia nos planos pagos**. O que passar desse número fica retido e é liberado automaticamente no dia seguinte, logo depois da meia-noite. Você também pode liberar manualmente com **Liberar agora**.
+
+## Trocando o token
+
+Na tela da conexão, em **Configurações → Dados da conexão**, use **Atualizar token** e salve o token novo.
+
+Depois da troca, o token anterior continua aceito por **24 horas**, para que os reenvios da plataforma não se percam. Se o token antigo vazou, use **Descartar agora** para recusá-lo na hora.
+
+<Warning>Se os avisos chegarem com um token diferente do que está salvo, a conexão mostra **Token recusado** e você recebe um alerta. Confira se o token salvo no Autoral é o mesmo do painel da plataforma.</Warning>
+
+## Pausar ou excluir uma conexão
+
+- **Pausar:** a conexão ignora os avisos novos, e os acessos já liberados continuam. Use **Reativar** para voltar a receber vendas.
+- **Excluir:** só é possível excluir uma conexão que nunca recebeu vendas. Para as outras, use **Pausar**.
+
+## Perguntas frequentes
+
+<AccordionGroup>
+  <Accordion title="Consigo trazer os alunos que compraram antes da integração?">
+    A integração libera acesso a partir das vendas que chegam depois de conectada. Para trazer quem comprou antes, use a [importação de alunos](/help-center/pt/alunos/importando-e-exportando-alunos).
+  </Accordion>
+  <Accordion title="O comprador usou outro e-mail na plataforma de venda. E agora?">
+    A venda é ligada ao e-mail informado na compra. Se o aluno já tinha conta com outro e-mail, ele recebe uma conta nova com o e-mail da compra.
+  </Accordion>
+  <Accordion title="Eduzz e outras plataformas?">
+    Hoje estão disponíveis Hotmart e Kiwify. Outras plataformas aparecem como **Em breve** na tela de conexão.
+  </Accordion>
+</AccordionGroup>
